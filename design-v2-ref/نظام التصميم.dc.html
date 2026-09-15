@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+</helmet>
+
+<div dir="rtl" style="min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <header style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;height:58px;padding:0 24px;background:var(--bg-card);border-bottom:1px solid var(--border-1);box-shadow:var(--shadow-1)">
+    <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:15px;flex:none">م</span>
+    <div style="line-height:1.2">
+      <div style="font-size:15px;font-weight:600">مسار — نظام التصميم</div>
+      <div style="font-size:11px;color:var(--text-muted)">الإصدار 2.0 · إدارة الطلبيات والمناقصات وفق SCPP</div>
+    </div>
+    <div style="display:flex;gap:6px;margin-inline-start:8px">
+      <span style="font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--bg-muted);color:var(--text-3);border:1px solid var(--border-1)">RTL</span>
+      <span style="font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--bg-muted);color:var(--text-3);border:1px solid var(--border-1)">WCAG AA</span>
+      <span style="font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--bg-muted);color:var(--text-3);border:1px solid var(--border-1)">وضعان</span>
+    </div>
+    <div style="margin-inline-start:auto;display:flex;align-items:center;gap:10px">
+      <div style="display:flex;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:2px">
+        <button onClick="{{ setLight }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ lightBtnBg }};color:{{ lightBtnFg }};box-shadow:{{ lightBtnSh }};transition:background var(--dur-fast) var(--ease-out)">فاتح</button>
+        <button onClick="{{ setDark }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ darkBtnBg }};color:{{ darkBtnFg }};box-shadow:{{ darkBtnSh }};transition:background var(--dur-fast) var(--ease-out)">داكن</button>
+      </div>
+      <a href="لوحة التحكم.dc.html" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font-size:13px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-primary-hover);box-shadow:var(--shadow-2);text-decoration:none">لوحة التحكم
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+      </a>
+    </div>
+  </header>
+
+  <nav aria-label="أقسام الصفحة" style="position:sticky;top:58px;z-index:30;display:flex;gap:6px;flex-wrap:wrap;padding:10px 24px;background:var(--bg-page);border-bottom:1px solid var(--border-1)">
+    <sc-for list="{{ anchors }}" as="a" hint-placeholder-count="8">
+      <a href="{{ a.href }}" style="font-size:12px;font-weight:500;color:var(--text-3);padding:4px 10px;border-radius:999px;border:1px solid var(--border-1);background:var(--bg-card);text-decoration:none;transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)" style-hover="color:var(--link);border-color:var(--border-control);text-decoration:none">{{ a.label }}</a>
+    </sc-for>
+  </nav>
+
+  <main style="max-width:1280px;margin:0 auto;padding:36px 24px 80px">
+
+    <!-- ═══ ٠١ الألوان ═══ -->
+    <section id="sec-colors" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠١ · الأساس اللوني</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">الألوان والرموز Tokens</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">سلالم 50–950 للأساسي والثانوي والأسطح، وألوان دلالية لحالات الطلبية بزوجَي نص/خلفية مدقَّقين على تباين 4.5:1 في الوضعين. لا يُكتب hex داخل المكوّنات — كل لون عبر <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px">var(--token)</span>.</p>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px">
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px">
+            <div style="font-size:13.5px;font-weight:600">الأساسي Primary — أزرق نيلي</div>
+            <div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">blue · #1E3A8A → #3B82F6</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:6px;direction:ltr">
+            <sc-for list="{{ primaryRamp }}" as="c" hint-placeholder-count="11">
+              <div style="text-align:center">
+                <div style="height:52px;border-radius:6px;background:{{ c.hex }};border:1px solid var(--border-1);display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;color:{{ c.ink }};font-size:10px;font-weight:600;font-family:var(--font-mono)">{{ c.n }}</div>
+                <div style="font-size:9.5px;color:var(--text-muted);font-family:var(--font-mono);margin-top:4px">{{ c.hex }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:16px">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font-size:13px;font-weight:600">الثانوي Secondary — تركوازي</div><div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">sky · #0EA5E9 للحالات النشطة</div></div>
+              <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;direction:ltr">
+                <sc-for list="{{ secondaryRamp }}" as="c" hint-placeholder-count="8">
+                  <div style="height:40px;border-radius:6px;background:{{ c.hex }};border:1px solid var(--border-1);display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;color:{{ c.ink }};font-size:9.5px;font-weight:600;font-family:var(--font-mono)">{{ c.n }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font-size:13px;font-weight:600">الأسطح Surface — رمادي بارد</div><div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">slate · #F8FAFC → #0F172A</div></div>
+              <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:6px;direction:ltr">
+                <sc-for list="{{ surfaceRamp }}" as="c" hint-placeholder-count="11">
+                  <div style="height:40px;border-radius:6px;background:{{ c.hex }};border:1px solid var(--border-1);display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;color:{{ c.ink }};font-size:9.5px;font-weight:600;font-family:var(--font-mono)">{{ c.n }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:18px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px">
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:4px">الألوان الدلالية — حالات الطلبية</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">لكل حالة: نص (fg) وخلفية (bg) وحد (bd) ونقطة (base). «مُسلَّم» ممتلئة لأنها الحالة الختامية، و«متأخر» بُعد زمني يُركَّب فوق أي حالة ولا يلغيها.</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:12px;padding:8px 10px;border-radius:6px;border:1px solid var(--border-1)">
+                  <span style="display:inline-flex;align-items:center;gap:7px;justify-self:start;padding:3.5px 11px;border-radius:999px;border:1px solid var(--st-{{ s.k }}-bd);background:var(--st-{{ s.k }}-bg);color:var(--st-{{ s.k }}-fg);font-size:12px;font-weight:600;white-space:nowrap">
+                    <span style="width:6px;height:6px;border-radius:50%;background:{{ s.dotVar }};flex:none"></span>{{ s.label }}
+                  </span>
+                  <span style="font-size:12px;color:var(--text-3)">{{ s.desc }}</span>
+                  <span style="font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">{{ s.base }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px">
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:4px">طبقات الموافقة — سلّم ترتيبي</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">تدرّج إضاءة داخل الأزرق النيلي، لا ألوان حالة. الرقاقة مربّعة الزوايا لتمييزها عن شارة الحالة القرصية.</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="display:inline-flex;align-items:center;gap:7px;padding:3px 9px;border-radius:5px;background:{{ t.bg }};color:{{ t.fg }};border:1px solid {{ t.bd }};font-size:11.5px;font-weight:600"><span style="font-family:var(--font-mono);font-size:10.5px">{{ t.n }}</span>{{ t.label }}</span>
+                    <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">{{ t.cap }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;font-size:12px;color:var(--text-3);line-height:1.9">
+              <div style="font-weight:600;color:var(--text-1);font-size:12.5px;margin-bottom:4px">قواعد الاستخدام</div>
+              الأحمر خارج الشارات محجوز لأمرين فقط: حالة «ملغي» ومؤشر <b style="color:var(--st-cancelled-fg)">المرحلة الحالية</b> في مسار الطلبية · الكهرماني للانتظار · الأخضر للاعتماد والتسليم · التركوازي للعناصر النشطة والتحديد، لا للحالات.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 14px;margin-top:16px;overflow-x:auto;white-space:pre">// Tailwind: colors.primary = blue scale · colors.surface = slate · darkMode: ['selector','[data-theme="dark"]']
+// status.* exposed as CSS vars → bg-[var(--st-approved-bg)] or extend: { approved:{fg,bg,bd,base} … }</div>
+    </section>
+
+    <!-- ═══ ٠٢ مسار الطلبية — صناديق المراحل ═══ -->
+    <section id="sec-path" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٢ · المكوّن المركزي</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">مسار الطلبية — صناديق المراحل Stage Boxes</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:76ch">كل طلبية تُعرض مراحلها صناديق ملوّنة متسلسلة مزوّدة بالمعلومات: المدة المخططة والفعلية، الفترة من–إلى، والحيود. <b style="color:var(--st-cancelled-fg)">المرحلة الحالية تُؤشَّر بالأحمر دائماً</b> — إطار أحمر ووسم «المرحلة الحالية» — والمنجزة خضراء، والقادمة محايدة. الصفوف والبطاقات تحمل زر «عرض المسار» المؤدي إليه.</p>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+          <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px;color:var(--text-3);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:5px;padding:2px 8px">PO-2026-0148</span>
+          <span style="font-size:13.5px;font-weight:600">توريد مضخات غاطسة — حقل الأحدب</span>
+          <span style="font-size:12px;color:var(--text-muted)">المسار: المناقصة العامة (11.1)</span>
+          <span style="margin-inline-start:auto;display:flex;align-items:center;gap:14px;font-size:12px;color:var(--text-3)">
+            <span>المرحلة <b style="font-family:var(--font-mono)">5</b> من <b style="font-family:var(--font-mono)">12</b></span>
+            <span>إنجاز <b style="font-family:var(--font-mono)">33%</b></span>
+            <span style="color:var(--st-late-fg);font-weight:600">حيود <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">+3</span> أيام</span>
+          </span>
+        </div>
+        <div style="display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 2px 10px">
+          <sc-for list="{{ stages }}" as="g" hint-placeholder-count="6">
+            <div style="display:flex;align-items:stretch;flex:none">
+              <div title="{{ g.name }}" style="width:148px;border:{{ g.bw }} solid {{ g.bd }};background-color:{{ g.bg }};background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 52%,rgba(2,6,23,.1));border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;position:relative;box-shadow:{{ g.sh }};transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out)" style-hover="transform:translateY(-2px);filter:brightness(1.07) saturate(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 12px 24px rgba(15,23,42,.22)">
+                <sc-if value="{{ g.isCur }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;top:-9px;inset-inline-start:10px;display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--st-cancelled-base);border:1px solid var(--st-cancelled-base);font-size:9.5px;font-weight:700;padding:1.5px 8px;border-radius:999px;letter-spacing:.02em;box-shadow:var(--shadow-1)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:var(--st-cancelled-base);animation:pulse-soft 1.6s var(--ease-out) infinite"></span>المرحلة الحالية
+                  </span>
+                </sc-if>
+                <div style="display:flex;align-items:center;gap:7px">
+                  <span style="width:19px;height:19px;border-radius:5px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--font-mono);background:{{ g.numBg }};color:{{ g.numFg }}">{{ g.n }}</span>
+                  <span style="font-size:11.5px;font-weight:600;color:{{ g.nameFg }};line-height:1.25">{{ g.name }}</span>
+                </div>
+                <div style="font-size:10.5px;color:{{ g.metaFg }};display:flex;flex-direction:column;gap:2px">
+                  <span>مخطط: <b style="font-family:var(--font-mono);color:{{ g.nameFg }}">{{ g.planned }}</b> يوم</span>
+                  <span>{{ g.line2label }}<b style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;color:{{ g.line2color }}">{{ g.line2 }}</b></span>
+                </div>
+                <span style="align-self:flex-start;font-size:9.5px;font-weight:700;padding:1.5px 7px;border-radius:999px;background:{{ g.chipBg }};color:{{ g.chipFg }};border:1px solid {{ g.chipBd }}">{{ g.stateLabel }}</span>
+              </div>
+              <sc-if value="{{ g.notLast }}" hint-placeholder-val="{{ true }}">
+                <span style="display:flex;align-items:center;padding:0 3px;color:var(--text-disabled)">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+                </span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;padding-top:12px;border-top:1px solid var(--border-1);font-size:11px;color:var(--text-3)">
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--st-approved-base)"></span>منجزة — أخضر ممتلئ</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--st-cancelled-base);box-shadow:0 0 0 2px var(--st-late-bg)"></span>الحالية — أحمر ممتلئ</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--surface-500)"></span>لم تبدأ — رمادي ممتلئ</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;color:var(--st-late-fg)"><span style="width:10px;height:10px;border-radius:3px;background:var(--st-late-bg);border:1.5px solid var(--st-late-base)"></span>وسم «حيود +n» يُضاف على الحالية إذا تجاوزت مدتها</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">المسار المصغّر Mini-rail — للصفوف والبطاقات</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">مربعات صغيرة بنفس الترميز، الحالية أكبر وبحلقة حمراء. يُقرأ الموقع من الشكل دون فتح الملف.</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="display:inline-flex;align-items:center;gap:3px;direction:rtl">
+              <sc-for list="{{ miniRail }}" as="m" hint-placeholder-count="12">
+                <span title="{{ m.name }}" style="width:{{ m.size }};height:{{ m.size }};border-radius:3px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }};flex:none"></span>
+              </sc-for>
+            </span>
+            <span style="font-size:11.5px;color:var(--text-3)">5/12 · الإعلان</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--border-1)">
+            <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 6-9 6-9-6 9-6z"></path><path d="M3 14l9 6 9-6"></path></svg>
+              عرض المسار
+            </button>
+            <span style="font-size:11.5px;color:var(--text-muted)">الزر المؤدي إلى المسار — يفتح درج التفاصيل على صناديق المراحل (جرّبه)</span>
+          </div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">حالة خاصة — المرحلة الحالية متأخرة</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">يبقى الإطار أحمر (الموقع الحالي) ويُضاف وسم الحيود؛ لا يتغيّر لون الصندوق كي لا يختلط الموقع بالحكم.</div>
+          <div style="width:190px;border:2px solid #991B1B;background:var(--st-cancelled-base);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:7px;position:relative;box-shadow:0 0 0 4px var(--st-late-bg), var(--shadow-2)">
+            <span style="position:absolute;top:-9px;inset-inline-start:12px;display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--st-cancelled-base);border:1px solid var(--st-cancelled-base);font-size:9.5px;font-weight:700;padding:1.5px 8px;border-radius:999px;box-shadow:var(--shadow-1)"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-cancelled-base);animation:pulse-soft 1.6s var(--ease-out) infinite"></span>المرحلة الحالية</span>
+            <div style="display:flex;align-items:center;gap:7px">
+              <span style="width:19px;height:19px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--font-mono);background:rgba(255,255,255,.24);color:#fff">5</span>
+              <span style="font-size:12px;font-weight:600;color:#fff">الإعلان</span>
+            </div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.82)">مخطط: <b style="font-family:var(--font-mono);color:#fff">21</b> يوم · مضى: <b style="font-family:var(--font-mono);color:#FFE08A">24</b></div>
+            <div style="display:flex;gap:6px">
+              <span style="font-size:9.5px;font-weight:700;padding:1.5px 7px;border-radius:999px;background:#fff;color:var(--st-cancelled-base)">جارية</span>
+              <span style="font-size:9.5px;font-weight:700;padding:1.5px 7px;border-radius:999px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.42);direction:ltr;unicode-bidi:isolate">حيود +3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 14px;margin-top:16px;overflow-x:auto;white-space:pre">// &lt;StageRail stages={stages} currentId=… size="full|mini" /&gt; — box states: done | current(RED ring+flag) | next
+// current: border-2 border-red-600 bg-red-50 · done: bg-green-50 border-green-200 · next: bg-slate-100
+// «عرض المسار» button opens Drawer anchored to the rail; row click = same affordance</div>
+    </section>
+
+    <!-- ═══ ٠٣ الخطوط ═══ -->
+    <section id="sec-type" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٣ · الطباعة</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">الخطوط Typography</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">IBM Plex Sans Arabic للنصوص، وJetBrains Mono للأرقام والأكواد ورقم الطلبية — دائماً LTR وبأرقام tabular كي تصطف الأعمدة المالية.</p>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:18px">
+        <div style="min-width:0;background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:6px 20px">
+          <sc-for list="{{ typeScale }}" as="t" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:110px 1fr;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-1)">
+              <div><div style="font-size:11.5px;font-weight:600;color:var(--text-3)">{{ t.name }}</div><div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr;text-align:right">{{ t.spec }}</div></div>
+              <div style="min-width:0;font-size:{{ t.size }};font-weight:{{ t.w }};line-height:1.6;letter-spacing:{{ t.ls }};color:var(--text-1);padding-block:2px">{{ t.sample }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:18px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px">الأرقام والأكواد — JetBrains Mono</div>
+            <div style="font-family:var(--font-mono);direction:ltr;font-size:13px;display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums;color:var(--text-2)">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">PO-2026-0148</span><span>$1,284,900.00</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">PO-2026-0141</span><span>$48,210.75</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">PO-2026-0139</span><span>$903,114.20</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text-3);margin-top:12px;padding-top:10px;border-top:1px solid var(--border-1)">داخل جملة عربية يبقى الرقم جزيرة LTR: قُدِّمت الطلبية <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px">2026-08-24 14:32</span> بمبلغ <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px">$482,900</span>.</div>
+          </div>
+          <div style="min-width:0;direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 14px;white-space:pre;overflow-x:auto">fontFamily: { sans:['IBM Plex Sans Arabic'],
+  mono:['JetBrains Mono'] }
+.num { @apply font-mono tabular-nums;
+  direction:ltr; unicode-bidi:isolate }</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ٠٤ الشبكة والمسافات ═══ -->
+    <section id="sec-grid" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٤ · البنية</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">المسافات والشبكة والأشكال</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">نظام 4px، شبكة 12 عموداً، شريط جانبي 260px يُطوى إلى 72px. زوايا 8px للبطاقات و6px للأزرار والحقول، وحدود 1px بدل الظلال الثقيلة.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">سلّم المسافات — قاعدة 4px</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <sc-for list="{{ spacing }}" as="s" hint-placeholder-count="10">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="width:74px;font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr;text-align:right">{{ s.t }}</span>
+                <span style="height:12px;width:{{ s.w }};background:var(--primary-200);border-inline-start:3px solid var(--primary-600);border-radius:2px"></span>
+                <span style="font-size:10.5px;color:var(--text-3);font-family:var(--font-mono)">{{ s.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-1)">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px">شبكة 12 عموداً · هامش 24 · فجوة 16</div>
+            <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:6px;height:34px">
+              <sc-for list="{{ gridCols }}" as="c" hint-placeholder-count="12"><div style="background:var(--primary-100);border:1px dashed var(--primary-300);border-radius:3px"></div></sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">الزوايا والظلال</div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+              <sc-for list="{{ radii }}" as="r" hint-placeholder-count="4">
+                <div style="text-align:center">
+                  <div style="width:72px;height:52px;background:var(--bg-muted);border:1.5px solid var(--border-2);border-radius:{{ r.v }}"></div>
+                  <div style="font-size:10px;font-family:var(--font-mono);direction:ltr;color:var(--text-3);margin-top:5px">{{ r.t }} · {{ r.v }}</div>
+                  <div style="font-size:10px;color:var(--text-muted)">{{ r.use }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:16px">
+              <sc-for list="{{ shadows }}" as="s" hint-placeholder-count="4">
+                <div style="text-align:center">
+                  <div style="width:72px;height:52px;background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:{{ s.v }}"></div>
+                  <div style="font-size:10px;font-family:var(--font-mono);direction:ltr;color:var(--text-3);margin-top:6px">{{ s.t }}</div>
+                  <div style="font-size:10px;color:var(--text-muted)">{{ s.use }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px">الشريط الجانبي — 260 / 72</div>
+            <div style="display:flex;gap:12px;align-items:flex-end">
+              <div style="width:130px;height:88px;border-radius:8px;background:var(--side-bg);padding:8px;display:flex;flex-direction:column;gap:5px"><span style="height:8px;width:70%;background:rgba(255,255,255,.28);border-radius:3px"></span><span style="height:8px;width:85%;background:rgba(255,255,255,.14);border-radius:3px"></span><span style="height:8px;width:85%;background:rgba(255,255,255,.14);border-radius:3px"></span></div>
+              <div style="width:38px;height:88px;border-radius:8px;background:var(--side-bg);padding:8px 6px;display:flex;flex-direction:column;gap:6px;align-items:center"><span style="width:12px;height:12px;background:rgba(255,255,255,.28);border-radius:3px"></span><span style="width:12px;height:12px;background:rgba(255,255,255,.14);border-radius:3px"></span><span style="width:12px;height:12px;background:rgba(255,255,255,.14);border-radius:3px"></span></div>
+              <span style="font-size:11px;color:var(--text-muted)">قابل للطي · انتقال 200ms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ٠٥ الأزرار ═══ -->
+    <section id="sec-buttons" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٥ · الإجراءات</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">الأزرار Buttons</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">أربعة أنواع × خمس حالات. زر أساسي ممتلئ واحد لكل سطح؛ التحويم يرفع بظل خفيف دون تكبير، والضغط يعتّم ويسطّح. الأعمدة المعنونة أدناه حالات مثبّتة للمراجعة — وزر «الافتراضي» حي فجرّب التحويم والضغط عليه.</p>
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px;overflow-x:auto">
+        <div style="display:grid;grid-template-columns:96px repeat(5,1fr);gap:12px;align-items:center;min-width:820px">
+          <span></span>
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center">الافتراضي (حي)</span>
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center">تحويم</span>
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center">ضغط</span>
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center">تحميل</span>
+          <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center">معطّل</span>
+
+          <span style="font-size:12px;font-weight:600;color:var(--text-3)">Primary</span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-primary-hover);box-shadow:var(--shadow-2);transform:translateY(-1px)" style-active="background:var(--btn-primary-active);box-shadow:none;transform:none">اعتماد الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-hover);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:600;box-shadow:var(--shadow-2);transform:translateY(-1px)">اعتماد الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-active);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:600">اعتماد الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:600;opacity:.85;cursor:progress"><span style="width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;flex:none"></span>جارٍ الحفظ…</button></span>
+          <span style="text-align:center"><button disabled="{{ true }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:600;opacity:.45;cursor:not-allowed">اعتماد الطلبية</button></span>
+
+          <span style="font-size:12px;font-weight:600;color:var(--text-3)">Secondary</span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)" style-active="background:var(--btn-secondary-active)">تصدير الكشف</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-hover);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600">تصدير الكشف</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-active);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600">تصدير الكشف</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:progress"><span style="width:13px;height:13px;border-radius:50%;border:2px solid var(--btn-secondary-bd);border-top-color:var(--btn-secondary-fg);animation:spin .7s linear infinite;flex:none"></span>جارٍ التصدير…</button></span>
+          <span style="text-align:center"><button disabled="{{ true }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;opacity:.45;cursor:not-allowed">تصدير الكشف</button></span>
+
+          <span style="font-size:12px;font-weight:600;color:var(--text-3)">Ghost</span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--btn-ghost-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover)" style-active="background:var(--btn-ghost-active)">عرض المسار</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:var(--btn-ghost-hover);color:var(--btn-ghost-fg);font:inherit;font-size:13px;font-weight:600">عرض المسار</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:var(--btn-ghost-active);color:var(--btn-ghost-fg);font:inherit;font-size:13px;font-weight:600">عرض المسار</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--btn-ghost-fg);font:inherit;font-size:13px;font-weight:600;cursor:progress"><span style="width:13px;height:13px;border-radius:50%;border:2px solid var(--border-control);border-top-color:var(--btn-ghost-fg);animation:spin .7s linear infinite;flex:none"></span>جارٍ الفتح…</button></span>
+          <span style="text-align:center"><button disabled="{{ true }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--btn-ghost-fg);font:inherit;font-size:13px;font-weight:600;opacity:.45;cursor:not-allowed">عرض المسار</button></span>
+
+          <span style="font-size:12px;font-weight:600;color:var(--text-3)">Destructive</span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-bg);color:var(--btn-danger-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-danger-hover);box-shadow:var(--shadow-2)" style-active="background:var(--btn-danger-active);box-shadow:none">إلغاء الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-hover);color:var(--btn-danger-fg);font:inherit;font-size:13px;font-weight:600;box-shadow:var(--shadow-2)">إلغاء الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-active);color:var(--btn-danger-fg);font:inherit;font-size:13px;font-weight:600">إلغاء الطلبية</button></span>
+          <span style="text-align:center"><button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-bg);color:var(--btn-danger-fg);font:inherit;font-size:13px;font-weight:600;cursor:progress"><span style="width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;flex:none"></span>جارٍ الإلغاء…</button></span>
+          <span style="text-align:center"><button disabled="{{ true }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-bg);color:var(--btn-danger-fg);font:inherit;font-size:13px;font-weight:600;opacity:.45;cursor:not-allowed">إلغاء الطلبية</button></span>
+        </div>
+      </div>
+      <div style="direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 14px;margin-top:16px;white-space:pre;overflow-x:auto">// h-[34px] px-3.5 rounded-md(6px) text-[13px] font-semibold · primary: bg-primary-600 hover:bg-primary-700 active:bg-primary-800
+// hover lifts: shadow-md -translate-y-px · press flattens · loading: spinner 13px + cursor-progress · disabled: opacity-45</div>
+    </section>
+
+    <!-- ═══ ٠٦ شارات الحالة ═══ -->
+    <section id="sec-badges" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٦ · الدلالة</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">شارات الحالة Status Badges</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">شارة قرصية بنقطة ملوّنة. تغيير الحالة يحرّك اللون لا الحجم (200ms). الحجم الصغير للجداول الكثيفة، ونقطة مجرّدة عندما يضيق العمود.</p>
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="6">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:999px;border:1px solid var(--st-{{ s.k }}-bd);background:var(--st-{{ s.k }}-bg);color:var(--st-{{ s.k }}-fg);font-size:12.5px;font-weight:600;transition:background var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out)"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.dotVar }}"></span>{{ s.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding-top:14px;border-top:1px solid var(--border-1)">
+          <span style="font-size:11.5px;color:var(--text-muted);width:110px">صغيرة — للجداول:</span>
+          <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="6">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:999px;border:1px solid var(--st-{{ s.k }}-bd);background:var(--st-{{ s.k }}-bg);color:var(--st-{{ s.k }}-fg);font-size:11px;font-weight:600"><span style="width:5px;height:5px;border-radius:50%;background:{{ s.dotVar }}"></span>{{ s.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding-top:14px;border-top:1px solid var(--border-1)">
+          <span style="font-size:11.5px;color:var(--text-muted);width:110px">نقطة + تلميح:</span>
+          <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="6">
+            <span title="{{ s.label }}" style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-3)"><span style="width:8px;height:8px;border-radius:50%;background:{{ s.dotVar }}"></span>{{ s.label }}</span>
+          </sc-for>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--st-late-fg);font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:var(--st-late-base);animation:pulse-soft 1.8s var(--ease-out) infinite"></span>متأخرة — نبضة هادئة لا وميض</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ٠٧ حقول الإدخال ═══ -->
+    <section id="sec-inputs" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٧ · الإدخال</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">حقول الإدخال Inputs</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">ارتفاع 36px، زوايا 6px، حد بتباين ≥3:1 لأن الحد هو ما يقول «هذا حقل». البؤرة حلقة خارجية 2px لا تبديل حدود — بلا إزاحة تخطيط.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-2)">عنوان الطلبية</label>
+          <input placeholder="مثال: توريد مضخات غاطسة" style="height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;outline:none;transition:border-color var(--dur-fast) var(--ease-out)" />
+          <span style="font-size:11px;color:var(--text-muted)">الافتراضي — placeholder بلون صامت مقروء</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-2)">بحث برقم الطلبية</label>
+          <div style="position:relative">
+            <span style="position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></span>
+            <input value="PO-2026" style="width:100%;height:36px;padding:0 32px 0 46px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font-family:var(--font-mono);font-size:12.5px;direction:ltr;outline:none" />
+            <span style="position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);font-size:10px;font-family:var(--font-mono);color:var(--text-muted);border:1px solid var(--border-2);border-radius:4px;padding:1px 5px;background:var(--bg-muted)">/</span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">مع أيقونة واختصار — الرقم LTR تلقائياً</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-2)">حالة البؤرة</label>
+          <input value="نص قيد الكتابة" style="height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--primary-500);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;outline:2px solid var(--focus-color);outline-offset:2px" />
+          <span style="font-size:11px;color:var(--text-muted)">حلقة 2px بإزاحة 2px — تجلس على لون الصفحة</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-2)">الكلفة التخمينية (USD)</label>
+          <div style="position:relative">
+            <span style="position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);color:var(--st-cancelled-base);display:flex"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></span>
+            <input value="-4800" style="width:100%;height:36px;padding:0 32px 0 12px;border-radius:6px;border:1.5px solid var(--st-cancelled-base);background:var(--bg-card);color:var(--text-1);font-family:var(--font-mono);font-size:12.5px;direction:ltr;outline:none" />
+          </div>
+          <span style="font-size:11px;color:var(--st-cancelled-fg);display:flex;align-items:center;gap:5px">القيمة يجب أن تكون أكبر من صفر.</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-disabled)">رقم العقد المرجعي</label>
+          <input value="يُملأ تلقائياً بعد الإحالة" disabled="{{ true }}" style="height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--border-1);background:var(--bg-muted);color:var(--text-disabled);font:inherit;font-size:13px;cursor:not-allowed" />
+          <span style="font-size:11px;color:var(--text-muted)">معطّل — opacity على النص لا على الحاوية</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;font-weight:600;color:var(--text-2)">الشركة المشغّلة</label>
+          <div style="position:relative">
+            <select style="width:100%;height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;appearance:none;outline:none;cursor:pointer">
+              <option>شركة نفط الواحة الصينية</option><option>مشروع بدرة</option><option>جيو-جاد الصينية</option>
+            </select>
+            <span style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;display:flex"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">Select بنفس تشريح الحقل</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ٠٨ القوائم ومنتقي المدى ═══ -->
+    <section id="sec-menus" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٨ · الاختيار</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">القوائم المنسدلة ومنتقي المدى الزمني</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:72ch">قائمة تغيير الحالة تعرض الشارات نفسها وتُظهر تأكيداً خفيفاً قبل التنفيذ. منتقي المدى يدعم التقويمين الهجري والميلادي معاً — جرّب التبديل.</p>
+      <div style="display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Dropdown — تغيير حالة الطلبية</div>
+          <div style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:6px;border:none;background-color:var(--st-pending-base);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);font-size:12.5px;font-weight:600;color:#fff">
+            <span style="width:6px;height:6px;border-radius:50%;background:#fff"></span>معلق
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+          <div style="margin-top:8px;width:230px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:8px;box-shadow:var(--shadow-3);padding:5px;display:flex;flex-direction:column;gap:3px;animation:pop-in var(--dur-base) var(--ease-out)">
+            <sc-for list="{{ menuStatuses }}" as="s" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:5px;font-size:12.5px;font-weight:600;color:#fff;cursor:pointer;background-color:{{ s.dotVar }};background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 55%,rgba(2,6,23,.08));box-shadow:inset 0 1px 0 rgba(255,255,255,.28);transition:filter var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="filter:brightness(1.09) saturate(1.05);transform:translateY(-1px)">
+                <span style="width:6px;height:6px;border-radius:50%;background:#fff"></span>{{ s.label }}
+                <sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-inline-start:auto"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+              </div>
+            </sc-for>
+            <div style="margin:5px;padding:9px 10px;border-radius:6px;background:var(--bg-muted);border:1px solid var(--border-1)">
+              <div style="font-size:11.5px;color:var(--text-2);margin-bottom:7px">تأكيد التغيير إلى «معتمد»؟</div>
+              <div style="display:flex;gap:6px">
+                <button style="height:26px;padding:0 12px;border-radius:5px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:11px;font-weight:600;cursor:pointer">تأكيد</button>
+                <button style="height:26px;padding:0 12px;border-radius:5px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:11px;font-weight:600;cursor:pointer">رجوع</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600">Date Range — المدى الزمني</div>
+            <div style="display:flex;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:2px;margin-inline-start:auto">
+              <button onClick="{{ calGreg }}" style="border:none;cursor:pointer;font:inherit;font-size:11.5px;font-weight:600;padding:4px 12px;border-radius:5px;background:{{ gregBg }};color:{{ gregFg }};box-shadow:{{ gregSh }}">ميلادي</button>
+              <button onClick="{{ calHijri }}" style="border:none;cursor:pointer;font:inherit;font-size:11.5px;font-weight:600;padding:4px 12px;border-radius:5px;background:{{ hijriBg }};color:{{ hijriFg }};box-shadow:{{ hijriSh }}">هجري</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:3px;border-inline-end:1px solid var(--border-1);padding-inline-end:12px">
+              <sc-for list="{{ presets }}" as="p" hint-placeholder-count="5">
+                <button style="text-align:start;border:none;background:{{ p.bg }};color:{{ p.fg }};font:inherit;font-size:12px;font-weight:{{ p.fw }};padding:6px 9px;border-radius:5px;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">{{ p.label }}</button>
+              </sc-for>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="display:flex;color:var(--text-muted)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></span>
+                <div style="text-align:center"><div style="font-size:13px;font-weight:600">{{ calTitle }}</div><div style="font-size:10.5px;color:var(--text-muted)">{{ calSub }}</div></div>
+                <span style="display:flex;color:var(--text-muted)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-bottom:4px">
+                <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7"><span style="font-size:10px;font-weight:600;color:var(--text-muted);padding:3px 0">{{ w.d }}</span></sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center">
+                <sc-for list="{{ calDays }}" as="d" hint-placeholder-count="35">
+                  <span style="font-size:11.5px;font-family:var(--font-mono);padding:5px 0;border-radius:{{ d.rad }};background:{{ d.bg }};color:{{ d.fg }};font-weight:{{ d.fw }};border:{{ d.bd }};cursor:pointer">{{ d.label }}</span>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-1);font-size:11.5px;color:var(--text-3)">
+                المدى: <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;color:var(--text-1);font-weight:600">{{ rangeLabel }}</span>
+                <span style="margin-inline-start:auto;display:flex;gap:6px">
+                  <button style="height:26px;padding:0 12px;border-radius:5px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:11px;font-weight:600;cursor:pointer">تطبيق</button>
+                  <button style="height:26px;padding:0 12px;border-radius:5px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:11px;font-weight:600;cursor:pointer">مسح</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 14px;margin-top:16px;white-space:pre;overflow-x:auto">// Hijri via Intl.DateTimeFormat('ar-u-ca-islamic-umalqura', …) — no lib needed; store ISO, render per calendar
+// status change = optimistic UI + inline confirm; badge color transitions 200ms (never size)</div>
+    </section>
+
+    <!-- ═══ ٠٩ الطبقات العائمة ═══ -->
+    <section id="sec-overlays" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">٠٩ · الطبقات العائمة</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">Toast · Modal · Drawer</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 14px;max-width:72ch">الدُرج يعرض تفاصيل الطلبية ومسارها دون مغادرة الصفحة، والنافذة للقرارات التي تتطلب تركيزاً، والتنبيه للإشعار العابر. جرّبها حيّة:</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+        <button onClick="{{ demoToastOk }}" style="height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)">عرض Toast نجاح</button>
+        <button onClick="{{ demoToastErr }}" style="height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)">عرض Toast خطأ</button>
+        <button onClick="{{ openModal }}" style="height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)">فتح Modal</button>
+        <button onClick="{{ openDrawer }}" style="height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)">فتح Drawer — ملف طلبية</button>
+        <span style="font-size:11.5px;color:var(--text-muted);align-self:center">Esc يغلق أي طبقة · التركيز يعود للمُطلِق</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px">تشريح التنبيه Toast</div>
+          <div style="display:flex;flex-direction:column;gap:8px;max-width:360px">
+            <div style="display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid var(--st-approved-base);border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px">
+              <span style="color:var(--st-approved-base);display:flex"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+              <span style="font-size:12.5px;color:var(--text-1)">تم تحديث حالة الطلبية.</span>
+              <span style="margin-inline-start:auto;color:var(--text-muted);display:flex;cursor:pointer"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid var(--st-cancelled-base);border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px">
+              <span style="color:var(--st-cancelled-base);display:flex"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></span>
+              <div style="font-size:12.5px;color:var(--text-1)">تعذّر تحميل بيانات المناقصة. <span style="color:var(--link);font-weight:600;cursor:pointer">حاول مجدداً</span></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:10px">أسفل البداية · دخول 200ms صعوداً 10px · خروج 150ms · يُغلق تلقائياً بعد 4 ثوانٍ</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px">تشريح النافذة Modal</div>
+          <div style="max-width:380px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:12px;box-shadow:var(--shadow-pop);overflow:hidden">
+            <div style="padding:16px 18px 0"><div style="font-size:14.5px;font-weight:600">إلغاء الطلبية PO-2026-0118؟</div>
+            <div style="font-size:12.5px;color:var(--text-3);margin-top:6px;line-height:1.7">سيُوقف المسار عند مرحلته الحالية ويُسجَّل القرار في سجل التدقيق باسمك. لا يمكن التراجع.</div></div>
+            <div style="display:flex;gap:8px;justify-content:flex-start;padding:14px 18px;margin-top:10px;background:var(--bg-muted)">
+              <button style="height:32px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-danger-bg);color:#fff;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer">إلغاء الطلبية</button>
+              <button style="height:32px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer">رجوع</button>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:10px">ستارة rgba(2,6,23,.5) + ضبابية 4px · حبس البؤرة · الفعل المدمّر يسمّي فعله لا «تأكيد»</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ١٠ لوحة الأوامر ═══ -->
+    <section id="sec-palette" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">١٠ · التنقل السريع</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">لوحة الأوامر Command Palette</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 14px;max-width:72ch">Ctrl+K من أي مكان (جرّبها الآن). تجمع الشاشات والطلبيات والإجراءات؛ ↑↓ للتنقل وEnter للفتح وEsc للإغلاق. اختصار N لطلبية جديدة و«/» للبحث.</p>
+      <button onClick="{{ openPalette }}" style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--btn-secondary-bd);background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:16px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-secondary-hover)">فتح اللوحة <span style="font-family:var(--font-mono);font-size:10px;border:1px solid var(--btn-secondary-bd);border-radius:4px;padding:1px 6px;direction:ltr">Ctrl K</span></button>
+      <div style="max-width:560px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:12px;box-shadow:var(--shadow-pop);overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border-1)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+          <span style="font-size:13px;color:var(--text-muted)">ابحث عن شاشة أو طلبية أو إجراء…</span>
+          <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);border:1px solid var(--border-2);border-radius:4px;padding:1px 6px">Esc</span>
+        </div>
+        <div style="padding:6px;display:flex;flex-direction:column;gap:3px">
+          <div style="font-size:10px;font-weight:700;color:var(--link);padding:6px 10px 2px;letter-spacing:.04em;animation:toast-in .2s var(--ease-out) both">الشاشات</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;background-color:var(--primary-600);background-image:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 60%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 4px 12px rgba(30,58,138,.25);font-size:13px;font-weight:600;color:#fff;cursor:pointer;animation:toast-in .22s var(--ease-out) .03s both"><span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.2);flex:none"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 17V9"></path><path d="M13 17v-4"></path><path d="M17 17v-6"></path></svg></span>لوحة التحكم<span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;color:#fff;background:rgba(255,255,255,.2);border-radius:4px;padding:1px 6px;direction:ltr">Alt 1</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;transition:background var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out);animation:toast-in .22s var(--ease-out) .06s both" style-hover="background:var(--bg-muted);transform:translateX(-3px)"><span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:var(--primary-50);color:var(--primary-700);flex:none"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18"></path><path d="M7 12h14"></path><path d="M3 18h12"></path></svg></span>قائمة الطلبيات</div>
+          <div style="font-size:10px;font-weight:700;color:var(--st-pending-fg);padding:8px 10px 2px;letter-spacing:.04em;animation:toast-in .22s var(--ease-out) .09s both">الطلبيات</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;transition:background var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out);animation:toast-in .22s var(--ease-out) .12s both" style-hover="background:var(--bg-muted);transform:translateX(-3px)"><span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:var(--st-pending-bg);border:1px solid var(--st-pending-bd);color:var(--st-pending-fg);font-family:var(--font-mono);font-size:9px;font-weight:700;flex:none">PO</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);direction:ltr">PO-2026-0148</span>توريد مضخات غاطسة — حقل الأحدب<span style="margin-inline-start:auto"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;background-color:var(--st-pending-base);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 60%);color:#fff;font-size:10.5px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.28)">معلق</span></span></div>
+          <div style="font-size:10px;font-weight:700;color:var(--st-approved-fg);padding:8px 10px 2px;letter-spacing:.04em;animation:toast-in .22s var(--ease-out) .15s both">إجراءات</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;transition:background var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out);animation:toast-in .22s var(--ease-out) .18s both" style-hover="background:var(--bg-muted);transform:translateX(-3px)"><span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background-color:var(--st-approved-base);background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 60%);color:#fff;flex:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>طلبية جديدة<span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;color:var(--st-approved-fg);background:var(--st-approved-bg);border:1px solid var(--st-approved-bd);border-radius:4px;padding:1px 6px">N</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ١١ الجداول والبطاقات ═══ -->
+    <section id="sec-data" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">١١ · عرض البيانات</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">الجداول · كانبان · الهياكل العظمية · KPI</h2>
+      <p style="font-size:13px;color:var(--text-3);margin:0 0 20px;max-width:76ch">الصف يحمل المسار المصغّر وإجراءات سريعة تظهر عند التمرير، والنقر يفتح الدُرج. على الموبايل يتحوّل الجدول إلى بطاقات. Skeleton بدل Spinner، وأرقام KPI تُعدّ تصاعدياً عند التحميل.</p>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden;margin-bottom:18px">
+        <div style="display:grid;grid-template-columns:118px 1.7fr 1.1fr 110px 128px 96px 90px;gap:10px;padding:9px 16px;background:var(--bg-muted);border-bottom:1px solid var(--border-1);font-size:11px;font-weight:600;color:var(--text-muted)">
+          <span style="border-inline-end:1px solid var(--border-1)">رقم الطلبية</span><span style="border-inline-end:1px solid var(--border-1)">العنوان</span><span style="border-inline-end:1px solid var(--border-1)">الشركة المشغّلة</span><span style="border-inline-end:1px solid var(--border-1);text-align:end;padding-inline-end:10px">القيمة</span><span style="border-inline-end:1px solid var(--border-1)">المسار</span><span style="border-inline-end:1px solid var(--border-1)">الحالة</span><span></span>
+        </div>
+        <sc-for list="{{ orders }}" as="o" hint-placeholder-count="5">
+          <div onClick="{{ openDrawer }}" style="display:grid;grid-template-columns:118px 1.7fr 1.1fr 110px 128px 96px 90px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-1);cursor:pointer;background:{{ o.rowBg }};transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+            <span style="align-self:stretch;display:flex;align-items:center;border-inline-end:1px solid var(--border-1);font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-3)">{{ o.code }}</span>
+            <span style="align-self:stretch;border-inline-end:1px solid var(--border-1);padding-inline-end:10px;display:block;line-height:22px;font-size:12.5px;font-weight:500;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.title }}</span>
+            <span style="align-self:stretch;border-inline-end:1px solid var(--border-1);padding-inline-end:10px;display:block;line-height:22px;font-size:12px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.op }}</span>
+            <span style="align-self:stretch;display:flex;align-items:center;justify-content:flex-start;border-inline-end:1px solid var(--border-1);padding-inline-end:10px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2);margin-inline-start:auto"></span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2)">{{ o.value }}</span></span>
+            <span style="align-self:stretch;border-inline-end:1px solid var(--border-1);display:inline-flex;align-items:center;gap:2.5px;direction:rtl">
+              <sc-for list="{{ o.rail }}" as="m" hint-placeholder-count="8"><span style="width:{{ m.size }};height:{{ m.size }};border-radius:2.5px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }};flex:none"></span></sc-for>
+            </span>
+            <span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;border:1px solid var(--st-{{ o.st }}-bd);background:var(--st-{{ o.st }}-bg);color:var(--st-{{ o.st }}-fg);font-size:10.5px;font-weight:600;white-space:nowrap"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-{{ o.st }}-base)"></span>{{ o.stLabel }}</span></span>
+            <span style="display:flex;gap:4px;justify-content:flex-end;opacity:{{ o.actionsOp }}" title="إجراءات سريعة — تظهر عند التمرير">
+              <span style="width:26px;height:26px;border-radius:5px;border:1px solid var(--border-2);display:inline-flex;align-items:center;justify-content:center;color:var(--text-3);background:var(--bg-card)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 6-9 6-9-6 9-6z"></path><path d="M3 14l9 6 9-6"></path></svg></span>
+              <span style="width:26px;height:26px;border-radius:5px;border:1px solid var(--border-2);display:inline-flex;align-items:center;justify-content:center;color:var(--text-3);background:var(--bg-card)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+            </span>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:11.5px;color:var(--text-muted)">الصف الثاني مثبَّت بحالة التحويم للمراجعة · النقر على أي صف يفتح الدُرج</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:18px">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">كانبان — سحب وإفلات</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">بطاقة شبح بعتامة 40٪ ودوران 2°، والعمود الهدف يُظلَّل بحد متقطّع تركوازي.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <sc-for list="{{ kanban }}" as="col" hint-placeholder-count="3">
+              <div style="background:var(--bg-muted);border:{{ col.bd }};border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:150px">
+                <div style="display:flex;align-items:center;gap:7px;padding:2px 4px"><span style="width:7px;height:7px;border-radius:50%;background:{{ col.dot }}"></span><span style="font-size:11.5px;font-weight:600">{{ col.label }}</span><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted)">{{ col.n }}</span></div>
+                <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                  <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:6px;padding:9px 11px;box-shadow:var(--shadow-1);cursor:grab;opacity:{{ c.op }};transform:{{ c.tr }};border-style:{{ c.bs }};transition:box-shadow var(--dur-fast) var(--ease-out)" style-hover="box-shadow:var(--shadow-2)">
+                    <div style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:10px;color:var(--text-muted);text-align:right">{{ c.code }}</div>
+                    <div style="font-size:11.5px;font-weight:500;margin:3px 0 6px;line-height:1.4">{{ c.title }}</div>
+                    <div style="display:flex;align-items:center;gap:6px"><span style="font-family:var(--font-mono);direction:ltr;font-size:10px;color:var(--text-3)">{{ c.value }}</span><span style="margin-inline-start:auto;display:inline-flex;gap:2px">
+                      <sc-for list="{{ c.rail }}" as="m" hint-placeholder-count="6"><span style="width:{{ m.size }};height:{{ m.size }};border-radius:2px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }}"></span></sc-for>
+                    </span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px">Skeleton — أثناء الجلب</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ skels }}" as="s" hint-placeholder-count="3">
+                <div style="height:12px;border-radius:5px;background:var(--bg-inset);position:relative;overflow:hidden;width:{{ s.w }}"><span style="position:absolute;inset:0;width:60%;background:linear-gradient(90deg,transparent,var(--bg-muted),transparent);animation:shimmer 1.2s linear infinite"></span></div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:10px">يظهر بعد 200ms من بدء الجلب · عدد الصفوف = حجم الصفحة · بلا دوّارات</div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px">بطاقة KPI</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:#D97706;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow-1)">
+                <div style="display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)"><span style="width:7px;height:7px;border-radius:50%;background:#fff"></span>بانتظار المصادقة</div>
+                <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;margin-top:4px;color:#fff">7</div>
+                <div style="font-size:10.5px;color:rgba(255,255,255,.72);margin-top:2px">فتح السجل المصفّى ←</div>
+              </div>
+              <div style="background:#BE123C;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow-1)">
+                <div style="display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)"><span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse-soft 1.8s var(--ease-out) infinite"></span>مراحل متأخرة</div>
+                <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;margin-top:4px;color:#fff">5</div>
+                <div style="font-size:10.5px;color:rgba(255,255,255,.72);margin-top:2px">عدّ تصاعدي 600ms عند الظهور</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ١٢ الحركة ═══ -->
+    <section id="sec-motion" style="margin-bottom:60px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">١٢ · الحركة</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">التفاعلات الدقيقة Micro-interactions</h2>
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
+        <div>
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">الرموز</div>
+          <div style="font-family:var(--font-mono);direction:ltr;text-align:left;font-size:11px;color:var(--text-3);line-height:2">--dur-fast: 150ms<br />--dur-base: 200ms<br />--dur-slow: 250ms<br />--ease-out: cubic-bezier(0.2,0.8,0.2,1)</div>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">القواعد</div>
+          <div style="font-size:12px;color:var(--text-3);line-height:1.9">حركة عند تغيّر حالة فقط · بلا قفزات دخول متتالية · رفع بالظل لا بالتكبير · نبضة هادئة للمتأخرات لا وميض · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px">prefers-reduced-motion</span> يوقف كل شيء.</div>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">عيّنات</div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--st-late-base);animation:pulse-soft 1.8s var(--ease-out) infinite"></span>
+            <span style="width:16px;height:16px;border-radius:50%;border:2.5px solid var(--border-2);border-top-color:var(--primary-600);animation:spin .8s linear infinite"></span>
+            <span style="width:110px;height:3px;border-radius:2px;background:var(--bg-inset);overflow:hidden;position:relative"><span style="position:absolute;inset-block:0;inset-inline-start:0;width:70%;background:var(--primary-600);border-radius:2px;animation:bar-load 1.6s var(--ease-out) infinite alternate"></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ١٣ ملاحظات التنفيذ ═══ -->
+    <section id="sec-dev" style="margin-bottom:40px;scroll-margin-top:120px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--link)">١٣ · للتطوير</div>
+      <h2 style="font-size:20px;font-weight:600;margin:4px 0 6px">ملاحظات التنفيذ — React + Tailwind</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="min-width:0;direction:ltr;text-align:left;font-family:var(--font-mono);font-size:11px;line-height:1.85;color:var(--text-2);background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px;white-space:pre;overflow-x:auto">// tailwind.config.ts
+darkMode: ['selector', '[data-theme="dark"]'],
+theme: { extend: {
+  colors: {
+    primary: colors.blue,      // 900 #1E3A8A → 500 #3B82F6
+    secondary: colors.sky,     // active #0EA5E9
+    surface: colors.slate,     // #F8FAFC → #0F172A
+    status: { approved:'#16A34A', pending:'#D97706',
+      cancelled:'#DC2626', preparing:'#7C3AED',
+      delivered:'#166534', late:'#BE123C' } },
+  borderRadius: { card:'8px', btn:'6px' },
+  fontFamily: { sans:['IBM Plex Sans Arabic'],
+    mono:['JetBrains Mono'] },
+  transitionTimingFunction:
+    { out:'cubic-bezier(0.2,0.8,0.2,1)' } } }</div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 18px;font-size:12.5px;color:var(--text-2);line-height:2">
+          <b>قواعد ملزمة:</b><br />
+          · خصائص منطقية فقط (<span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px">ps-* pe-* start-*</span>) — لا left/right في RTL.<br />
+          · الأرقام والأكواد: <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px">font-mono tabular-nums direction:ltr</span> داخل جزيرة معزولة.<br />
+          · الوضع الداكن بسمة <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px">[data-theme]</span> على html — تُحفظ في localStorage وتحترم تفضيل النظام أول مرة.<br />
+          · StageRail وStatusBadge وKpiTile مكوّنات واحدة تُستهلك في كل الشاشات — لا نسخ محلية.<br />
+          · كل صف قابل للفتح رابط حقيقي أو زر — لا div onClick.<br />
+          · التقويم الهجري عبر Intl (islamic-umalqura) — التخزين ISO ميلادي دائماً.
+        </div>
+      </div>
+    </section>
+
+    <footer style="display:flex;align-items:center;gap:10px;padding-top:18px;border-top:1px solid var(--border-1);font-size:11.5px;color:var(--text-muted)">
+      مسار v2 · نظام التصميم — إدارة الطلبيات وفق SCPP Rev 1.0
+      <a href="لوحة التحكم.dc.html" style="margin-inline-start:auto;font-weight:600">التالي: لوحة التحكم ←</a>
+    </footer>
+  </main>
+
+  <!-- ═══ الطبقات الحية ═══ -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:90;background:rgba(2,6,23,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;animation:fade-in var(--dur-fast) var(--ease-out)">
+      <div onClick="{{ stop }}" role="dialog" aria-modal="true" style="width:400px;max-width:calc(100vw - 48px);background:var(--bg-card);border:1px solid var(--border-2);border-radius:12px;box-shadow:var(--shadow-pop);overflow:hidden;animation:pop-in var(--dur-base) var(--ease-out)">
+        <div style="padding:18px 20px 0">
+          <div style="font-size:15px;font-weight:600">المصادقة على الإحالة؟</div>
+          <div style="font-size:12.5px;color:var(--text-3);margin-top:6px;line-height:1.7">ستُعتمد إحالة الطلبية <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">PO-2026-0148</span> إلى المتقدّم الأدنى المؤهل، ويُسجَّل القرار في سجل التدقيق. SCPP 6.6</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:14px 20px;margin-top:12px;background:var(--bg-muted)">
+          <button onClick="{{ confirmModal }}" style="height:32px;padding:0 16px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-primary-hover)">تأكيد المصادقة</button>
+          <button onClick="{{ closeModal }}" style="height:32px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer">رجوع</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:80">
+      <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(2,6,23,.45);animation:fade-in var(--dur-fast) var(--ease-out)"></div>
+      <div role="dialog" aria-label="ملف الطلبية" style="position:absolute;inset-block:0;inset-inline-start:0;width:470px;max-width:92vw;background:var(--bg-card);border-inline-end:1px solid var(--border-2);box-shadow:var(--shadow-pop);display:flex;flex-direction:column;animation:panel-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border-1)">
+          <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px;color:var(--text-3);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:5px;padding:2px 8px">PO-2026-0148</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid var(--st-{{ drawerSt }}-bd);background:var(--st-{{ drawerSt }}-bg);color:var(--st-{{ drawerSt }}-fg);font-size:11.5px;font-weight:600;transition:background var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out)"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-{{ drawerSt }}-base)"></span>{{ drawerStLabel }}</span>
+          <button onClick="{{ closeDrawer }}" aria-label="إغلاق" style="margin-inline-start:auto;width:30px;height:30px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="font-size:15px;font-weight:600;line-height:1.4">توريد مضخات غاطسة — حقل الأحدب</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">شركة نفط الواحة الصينية · المناقصة العامة (11.1)</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;font-size:12px;background:var(--bg-muted);border-radius:8px;padding:12px 14px">
+            <span style="color:var(--text-muted)">القيمة التخمينية</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left;font-weight:600">$482,900</span>
+            <span style="color:var(--text-muted)">طبقة الموافقة</span><span style="text-align:start"><span style="display:inline-flex;align-items:center;gap:5px;padding:1.5px 8px;border-radius:5px;background:var(--primary-50);color:var(--primary-700);border:1px solid var(--primary-200);font-size:10.5px;font-weight:600">ط١ · ضمن صلاحية المشغّل</span></span>
+            <span style="color:var(--text-muted)">تاريخ التقديم</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left">2026-07-01</span>
+            <span style="color:var(--text-muted)">الغلق المخطط</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left">2026-10-19</span>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="font-size:12.5px;font-weight:600">مسار الطلبية</span>
+              <span style="font-size:11px;color:var(--text-3)">المرحلة 5 من 12</span>
+              <span style="margin-inline-start:auto;font-size:11px;color:var(--st-late-fg);font-weight:600;direction:ltr;unicode-bidi:isolate">حيود +3</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ drawerStages }}" as="g" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:10px;border:{{ g.bw }} solid {{ g.bd }};background:{{ g.bg }};border-radius:7px;padding:7px 11px;position:relative">
+                  <span style="width:18px;height:18px;border-radius:5px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;font-family:var(--font-mono);background:{{ g.numBg }};color:{{ g.numFg }}">{{ g.n }}</span>
+                  <span style="font-size:11.5px;font-weight:600;color:{{ g.nameFg }}">{{ g.name }}</span>
+                  <sc-if value="{{ g.isCur }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:4px;background:#fff;color:var(--st-cancelled-base);font-size:9px;font-weight:700;padding:1.5px 7px;border-radius:999px"><span style="width:4px;height:4px;border-radius:50%;background:var(--st-cancelled-base);animation:pulse-soft 1.6s var(--ease-out) infinite"></span>الحالية</span></sc-if>
+                  <span style="margin-inline-start:auto;font-size:10px;color:{{ g.metaFg }}">{{ g.mini }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-1);border-radius:8px;padding:12px 14px">
+            <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">تغيير الحالة</div>
+            <div style="position:relative">
+              <button onClick="{{ toggleStMenu }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);font:inherit;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--st-{{ drawerSt }}-base)"></span>{{ drawerStLabel }}
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ stMenuOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:36px;inset-inline-start:0;z-index:5;width:210px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:8px;box-shadow:var(--shadow-3);padding:4px;animation:pop-in var(--dur-fast) var(--ease-out)">
+                  <sc-for list="{{ changeable }}" as="s" hint-placeholder-count="5">
+                    <button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:start;padding:7px 10px;border-radius:5px;border:none;background:transparent;font:inherit;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.dotVar }}"></span>{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <sc-if value="{{ confirmSt }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;padding:10px 12px;border-radius:6px;background:var(--bg-muted);border:1px solid var(--border-1);animation:pop-in var(--dur-fast) var(--ease-out)">
+                <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">تغيير الحالة إلى «{{ confirmStLabel }}»؟ سيُسجَّل في سجل التدقيق.</div>
+                <div style="display:flex;gap:6px">
+                  <button onClick="{{ applySt }}" style="height:28px;padding:0 14px;border-radius:5px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer">تأكيد</button>
+                  <button onClick="{{ cancelSt }}" style="height:28px;padding:0 12px;border-radius:5px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer">رجوع</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border-1)">
+          <button style="height:34px;padding:0 16px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none">فتح الملف الكامل</button>
+          <button style="height:34px;padding:0 14px;border-radius:6px;border:none;background-color:#0B6B45;background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:#fff;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:#0D7A4F;box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(6,78,59,.35);transform:translateY(-1px)" style-active="background-color:#095A3A;box-shadow:inset 0 2px 4px rgba(2,6,23,.3);transform:none">طباعة الموقف</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePalette }}" style="position:fixed;inset:0;z-index:95;background:rgba(2,6,23,.5);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:flex-start;padding-top:14vh;animation:fade-in var(--dur-fast) var(--ease-out)">
+      <div onClick="{{ stop }}" role="dialog" aria-label="لوحة الأوامر" style="width:560px;max-width:calc(100vw - 48px);background:var(--bg-card);border:1px solid var(--border-2);border-radius:12px;box-shadow:var(--shadow-pop);overflow:hidden;animation:pop-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border-1)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+          <input value="{{ paletteQ }}" onChange="{{ onPaletteQ }}" data-pal-input="1" placeholder="ابحث عن شاشة أو طلبية أو إجراء…" style="flex:1;border:none;outline:none;background:transparent;color:var(--text-1);font:inherit;font-size:13.5px" />
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);border:1px solid var(--border-2);border-radius:4px;padding:1px 6px">Esc</span>
+        </div>
+        <div style="padding:6px;max-height:320px;overflow-y:auto">
+          <sc-for list="{{ paletteResults }}" as="r" hint-placeholder-count="5">
+            <div onClick="{{ r.go }}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;background:{{ r.bg }}">
+              <span style="font-size:9.5px;font-weight:700;color:var(--text-muted);border:1px solid var(--border-1);border-radius:4px;padding:1px 6px;background:var(--bg-muted);flex:none">{{ r.kind }}</span>
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.label }}</span>
+              <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);direction:ltr;flex:none">{{ r.kbd }}</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ paletteEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:20px;text-align:center;font-size:12.5px;color:var(--text-muted)">لا نتائج مطابقة.</div></sc-if>
+        </div>
+        <div style="display:flex;gap:14px;padding:8px 16px;border-top:1px solid var(--border-1);font-size:10.5px;color:var(--text-muted)"><span>↑↓ تنقّل</span><span>Enter فتح</span><span>N طلبية جديدة</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid {{ t.bar }};border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px;min-width:260px;animation:toast-in var(--dur-base) var(--ease-out)">
+        <span style="color:{{ t.bar }};display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.icon }}"></path></svg></span>
+        <span style="font-size:12.5px;color:var(--text-1)">{{ t.msg }}</span>
+        <button onClick="{{ t.close }}" aria-label="إغلاق" style="margin-inline-start:auto;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;padding:2px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'light', calMode: 'greg',
+    modalOpen: false, drawerOpen: false, paletteOpen: false, stMenuOpen: false,
+    drawerSt: 'pending', confirmKey: null, paletteQ: '', palIdx: 0, toasts: [],
+  };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    t = this.props.theme && !this._touched ? (localStorage.getItem('masaar2-theme') ? t : this.props.theme) : t;
+    this.setTheme(t, false);
+    this._onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); this.setState({ paletteOpen: true, paletteQ: '', palIdx: 0 }, () => this.focusPal()); return; }
+      if (e.key === 'Escape') { this.setState({ paletteOpen: false, modalOpen: false, drawerOpen: false, stMenuOpen: false, confirmKey: null }); return; }
+      if (this.state.paletteOpen) {
+        const list = this.palResults();
+        if (e.key === 'ArrowDown') { e.preventDefault(); this.setState(s => ({ palIdx: Math.min(s.palIdx + 1, list.length - 1) })); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState(s => ({ palIdx: Math.max(s.palIdx - 1, 0) })); }
+        else if (e.key === 'Enter') { e.preventDefault(); const it = list[this.state.palIdx]; if (it) this.palGo(it); }
+      }
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); clearTimeout(this._tt); }
+
+  focusPal() { setTimeout(() => { const el = document.querySelector('[data-pal-input]'); if (el) el.focus(); }, 30); }
+  setTheme(t, persist) {
+    this._touched = true;
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+  toast(msg, kind) {
+    const id = Date.now() + Math.random();
+    const item = { id, msg, kind };
+    this.setState(s => ({ toasts: [...s.toasts, item] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 4000);
+  }
+
+  STATUSES = [
+    { k: 'pending', label: 'معلق', desc: 'قُدِّمت وبانتظار الاعتماد', base: '#D97706' },
+    { k: 'approved', label: 'معتمد', desc: 'تمت المصادقة — يبدأ التنفيذ', base: '#16A34A' },
+    { k: 'preparing', label: 'قيد التجهيز', desc: 'جارٍ تجهيز المواد / تنفيذ المراحل', base: '#7C3AED' },
+    { k: 'delivered', label: 'مُسلَّم', desc: 'أُنجزت وسُلِّمت — حالة ختامية ممتلئة', base: '#166534' },
+    { k: 'cancelled', label: 'ملغي', desc: 'أُوقفت نهائياً بقرار موثَّق', base: '#DC2626' },
+    { k: 'late', label: 'متأخر', desc: 'حيود زمني — يُركَّب فوق الحالة ولا يلغيها', base: '#BE123C' },
+  ];
+
+  STAGES = [
+    { n: 1, name: 'البداية', st: 'done', planned: 2, actual: 2 },
+    { n: 2, name: 'المصادقة على الكلفة', st: 'done', planned: 5, actual: 6 },
+    { n: 3, name: 'الصلاحية المالية', st: 'done', planned: 3, actual: 3 },
+    { n: 4, name: 'اعتماد الأسلوب', st: 'done', planned: 4, actual: 4 },
+    { n: 5, name: 'الإعلان', st: 'current', planned: 21, actual: 24 },
+    { n: 6, name: 'الفتح الفني', st: 'next', planned: 1 },
+    { n: 7, name: 'التحليل الفني', st: 'next', planned: 10 },
+    { n: 8, name: 'الفتح التجاري', st: 'next', planned: 1 },
+    { n: 9, name: 'التحليل التجاري', st: 'next', planned: 7 },
+    { n: 10, name: 'المصادقة على الإحالة', st: 'next', planned: 5 },
+    { n: 11, name: 'توقيع العقد', st: 'next', planned: 7 },
+    { n: 12, name: 'النهاية', st: 'next', planned: 1 },
+  ];
+
+  stageBox(g, i, arr) {
+    const cur = g.st === 'current', done = g.st === 'done';
+    return {
+      n: String(g.n), name: g.name, isCur: cur, notLast: i < arr.length - 1,
+      planned: String(g.planned),
+      bw: cur ? '2px' : '1.5px',
+      bd: cur ? '#991B1B' : done ? '#15803D' : 'var(--surface-500)',
+      bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--surface-500)',
+      sh: cur ? 'inset 0 1px 0 rgba(255,255,255,.34), 0 0 0 4px var(--st-late-bg), 0 4px 10px rgba(15,23,42,.2)' : 'inset 0 1px 0 rgba(255,255,255,.3), 0 1px 3px rgba(15,23,42,.14)',
+      numBg: 'rgba(255,255,255,.24)', numFg: '#fff',
+      nameFg: '#fff', metaFg: 'rgba(255,255,255,.82)',
+      line2label: done ? 'الفعلية: ' : cur ? 'مضى: ' : 'من–إلى: ',
+      line2: done ? g.actual + ' يوم' : cur ? g.actual + ' يوم' : '—',
+      line2color: cur && g.actual > g.planned ? '#FFE08A' : '#fff',
+      chipBg: cur ? '#fff' : 'rgba(255,255,255,.2)',
+      chipFg: cur ? 'var(--st-cancelled-base)' : '#fff',
+      chipBd: cur ? '#fff' : 'rgba(255,255,255,.42)',
+      stateLabel: cur ? 'جارية' : done ? 'منجزة' : 'لم تبدأ',
+    };
+  }
+  mini(st, name) {
+    const cur = st === 'current', done = st === 'done';
+    return {
+      name,
+      size: cur ? '12px' : '9px',
+      bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--bg-inset)',
+      bd: cur ? '1px solid var(--st-cancelled-base)' : done ? '1px solid var(--st-approved-base)' : '1px solid var(--border-2)',
+      ring: cur ? '0 0 0 2px var(--st-cancelled-bg)' : 'none',
+    };
+  }
+
+  palItems() {
+    return [
+      { kind: 'شاشة', label: 'لوحة التحكم', kbd: 'Alt 1', act: () => { window.location.href = 'لوحة التحكم.dc.html'; } },
+      { kind: 'شاشة', label: 'نظام التصميم — الألوان', kbd: '', act: () => { window.location.hash = 'sec-colors'; } },
+      { kind: 'شاشة', label: 'مسار الطلبية — صناديق المراحل', kbd: '', act: () => { window.location.hash = 'sec-path'; } },
+      { kind: 'شاشة', label: 'قائمة الطلبيات', kbd: '', act: () => this.toast('شاشة قائمة الطلبيات — ضمن المرحلة التالية.', 'ok') },
+      { kind: 'طلبية', label: 'PO-2026-0148 — توريد مضخات غاطسة', kbd: '', act: () => this.setState({ drawerOpen: true, paletteOpen: false }) },
+      { kind: 'طلبية', label: 'PO-2026-0141 — صيانة محطة الضخ المركزية', kbd: '', act: () => this.setState({ drawerOpen: true, paletteOpen: false }) },
+      { kind: 'إجراء', label: 'طلبية جديدة', kbd: 'N', act: () => this.toast('نموذج الطلبية الجديدة — ضمن المرحلة التالية.', 'ok') },
+      { kind: 'إجراء', label: 'تبديل الوضع فاتح/داكن', kbd: '', act: () => this.setTheme(this.state.theme === 'dark' ? 'light' : 'dark') },
+    ];
+  }
+  palResults() {
+    const q = this.state.paletteQ.trim();
+    return this.palItems().filter(i => !q || i.label.includes(q) || i.kind.includes(q));
+  }
+  palGo(it) { this.setState({ paletteOpen: false }); it.act(); }
+
+  renderVals() {
+    const s = this.state;
+    const seg = (on) => ({
+      bg: on ? 'var(--bg-card)' : 'transparent',
+      fg: on ? 'var(--text-1)' : 'var(--text-3)',
+      sh: on ? 'var(--shadow-1)' : 'none',
+    });
+    const L = seg(s.theme === 'light'), D = seg(s.theme === 'dark');
+    const G = seg(s.calMode === 'greg'), H = seg(s.calMode === 'hijri');
+
+    const ink = (i) => (i >= 5 ? '#fff' : '#1E3A8A');
+    const primaryRamp = [['50', '#EFF6FF'], ['100', '#DBEAFE'], ['200', '#BFDBFE'], ['300', '#93C5FD'], ['400', '#60A5FA'], ['500', '#3B82F6'], ['600', '#2563EB'], ['700', '#1D4ED8'], ['800', '#1E40AF'], ['900', '#1E3A8A'], ['950', '#172554']].map((c, i) => ({ n: c[0], hex: c[1], ink: ink(i) }));
+    const secondaryRamp = [['50', '#F0F9FF'], ['100', '#E0F2FE'], ['200', '#BAE6FD'], ['300', '#7DD3FC'], ['400', '#38BDF8'], ['500', '#0EA5E9'], ['600', '#0284C7'], ['700', '#0369A1']].map((c, i) => ({ n: c[0], hex: c[1], ink: i >= 5 ? '#fff' : '#0C4A6E' }));
+    const surfaceRamp = [['50', '#F8FAFC'], ['100', '#F1F5F9'], ['200', '#E2E8F0'], ['300', '#CBD5E1'], ['400', '#94A3B8'], ['500', '#64748B'], ['600', '#475569'], ['700', '#334155'], ['800', '#1E293B'], ['900', '#0F172A'], ['950', '#020617']].map((c, i) => ({ n: c[0], hex: c[1], ink: i >= 5 ? '#F8FAFC' : '#334155' }));
+
+    const statuses = this.STATUSES.map(x => ({ ...x, dotVar: 'var(--st-' + x.k + '-base)' }));
+    const tiers = [
+      { n: 'ط1', label: 'ضمن صلاحية المشغّل', cap: '≤ FA', bg: 'var(--primary-50)', fg: 'var(--primary-700)', bd: 'var(--primary-200)' },
+      { n: 'ط2', label: 'اللجنة المشتركة JMC', cap: '≤ $10M', bg: 'var(--primary-100)', fg: 'var(--primary-800)', bd: 'var(--primary-300)' },
+      { n: 'ط3', label: 'نفط الوسط MDOC', cap: '> $10M', bg: 'var(--primary-900)', fg: '#EFF6FF', bd: 'var(--primary-900)' },
+    ];
+    if (s.theme === 'dark') {
+      tiers[0] = { ...tiers[0], bg: 'rgba(59,130,246,.14)', fg: '#93C5FD', bd: 'rgba(96,165,250,.3)' };
+      tiers[1] = { ...tiers[1], bg: 'rgba(59,130,246,.24)', fg: '#BFDBFE', bd: 'rgba(96,165,250,.4)' };
+      tiers[2] = { ...tiers[2], bg: '#1E40AF', fg: '#EFF6FF', bd: '#1E40AF' };
+    }
+
+    const stages = this.STAGES.map((g, i, arr) => this.stageBox(g, i, arr));
+    const miniRail = this.STAGES.map(g => this.mini(g.st, g.name));
+
+    const typeScale = [
+      { name: 'Display 1', spec: '44/1.15/600', size: '44px', w: 600, lh: 1.15, ls: '-0.02em', sample: 'غرفة المتابعة' },
+      { name: 'Display 2', spec: '32/1.15/600', size: '32px', w: 600, lh: 1.15, ls: '-0.015em', sample: 'سلسلة الموافقات' },
+      { name: 'H1', spec: '24/1.3/600', size: '24px', w: 600, lh: 1.3, ls: '-0.01em', sample: 'قائمة الطلبيات المفتوحة' },
+      { name: 'H2', spec: '20/1.3/600', size: '20px', w: 600, lh: 1.3, ls: '0', sample: 'المصادقة على الكلفة التخمينية' },
+      { name: 'H3', spec: '17/1.3/600', size: '17px', w: 600, lh: 1.3, ls: '0', sample: 'تفاصيل المرحلة الحالية' },
+      { name: 'Body', spec: '14/1.5/400', size: '14px', w: 400, lh: 1.5, ls: '0', sample: 'تُقدَّم العطاءات في موعد أقصاه نهاية الدوام الرسمي ليوم الغلق.' },
+      { name: 'Body sm', spec: '13/1.5/400', size: '13px', w: 400, lh: 1.5, ls: '0', sample: 'مرتبة بالموعد النظامي — كل قرار يفتح ملفه بالسياق الكامل.' },
+      { name: 'Caption', spec: '12/1.3/400', size: '12px', w: 400, lh: 1.3, ls: '0', sample: 'آخر تحديث قبل دقيقتين' },
+      { name: 'Micro', spec: '11/1.3/500', size: '11px', w: 500, lh: 1.3, ls: '.02em', sample: 'SCPP REV 1.0' },
+    ];
+
+    const spacing = [4, 8, 12, 16, 20, 24, 32, 40, 48, 64].map((v, i) => ({ t: '--space-' + (i + 1), v: v + 'px', w: v * 3 + 'px' }));
+    const gridCols = Array.from({ length: 12 }, (_, i) => ({ i }));
+    const radii = [
+      { t: '--r-sm', v: '6px', use: 'أزرار وحقول' }, { t: '--r-md', v: '8px', use: 'بطاقات' },
+      { t: '--r-lg', v: '12px', use: 'نوافذ وأدراج' }, { t: '--r-pill', v: '999px', use: 'شارات' },
+    ];
+    const shadows = [
+      { t: '--shadow-1', v: 'var(--shadow-1)', use: 'بطاقة مستقرة' }, { t: '--shadow-2', v: 'var(--shadow-2)', use: 'تحويم' },
+      { t: '--shadow-3', v: 'var(--shadow-3)', use: 'قوائم' }, { t: '--shadow-pop', v: 'var(--shadow-pop)', use: 'نوافذ' },
+    ];
+
+    const menuStatuses = ['pending', 'approved', 'preparing', 'delivered', 'cancelled'].map(k => {
+      const x = this.STATUSES.find(y => y.k === k);
+      return { ...x, dotVar: 'var(--st-' + k + '-base)', on: k === 'pending', rowBg: k === 'approved' ? 'var(--bg-muted)' : 'transparent' };
+    });
+
+    const presets = ['اليوم', 'آخر 7 أيام', 'آخر 30 يوماً', 'هذا الشهر', 'الربع الثالث'].map((label, i) => ({
+      label, bg: i === 3 ? 'var(--btn-secondary-bg)' : 'transparent', fg: i === 3 ? 'var(--btn-secondary-fg)' : 'var(--text-2)', fw: i === 3 ? 600 : 500,
+    }));
+    const weekdays = ['أحد', 'اثن', 'ثلا', 'أرب', 'خمي', 'جمع', 'سبت'].map(d => ({ d }));
+
+    const hijri = s.calMode === 'hijri';
+    let hFmt = null, hMonFmt = null;
+    try {
+      hFmt = new Intl.DateTimeFormat('ar-u-ca-islamic-umalqura-nu-latn', { day: 'numeric' });
+      hMonFmt = new Intl.DateTimeFormat('ar-u-ca-islamic-umalqura-nu-latn', { month: 'long', year: 'numeric' });
+    } catch (e) {}
+    const start = new Date(2026, 8, 27);
+    const selA = new Date(2026, 9, 6).getTime(), selB = new Date(2026, 9, 19).getTime();
+    const calDays = Array.from({ length: 35 }, (_, i) => {
+      const d = new Date(2026, 8, 27 + i);
+      const t = d.getTime(), inCur = d.getMonth() === 9;
+      const isA = t === selA, isB = t === selB, inR = t > selA && t < selB;
+      let label = String(d.getDate());
+      if (hijri && hFmt) { try { label = hFmt.format(d); } catch (e) {} }
+      return {
+        label,
+        bg: isA || isB ? 'var(--btn-primary-bg)' : inR ? (s.theme === 'dark' ? 'rgba(59,130,246,.18)' : 'var(--primary-100)') : 'transparent',
+        fg: isA || isB ? 'var(--btn-primary-fg)' : inR ? 'var(--link)' : inCur ? 'var(--text-2)' : 'var(--text-disabled)',
+        fw: isA || isB ? 700 : 400,
+        rad: isA ? '6px 2px 2px 6px' : isB ? '2px 6px 6px 2px' : inR ? '2px' : '6px',
+        bd: t === new Date(2026, 9, 12).getTime() ? '1px solid var(--border-control)' : '1px solid transparent',
+      };
+    });
+    let calTitle = 'تشرين الأول 2026', calSub = 'ربيع الآخر — جمادى الأولى 1448هـ';
+    if (hijri && hMonFmt) { try { calTitle = hMonFmt.format(new Date(2026, 9, 12)); calSub = 'تشرين الأول 2026م'; } catch (e) {} }
+    const rangeLabel = hijri ? '1448-04-24 → 1448-05-08' : '2026-10-06 → 2026-10-19';
+
+    const railFor = (idx) => this.STAGES.slice(0, 8).map((g, i) => this.mini(i < idx ? 'done' : i === idx ? 'current' : 'next', g.name));
+    const orders = [
+      { code: 'PO-2026-0148', title: 'توريد مضخات غاطسة — حقل الأحدب', op: 'شركة نفط الواحة الصينية', value: '$482,900', st: 'pending', idx: 4, rowBg: 'transparent', actionsOp: 0 },
+      { code: 'PO-2026-0141', title: 'صيانة محطة الضخ المركزية — حقل بدرة', op: 'مشروع بدرة', value: '$1,284,000', st: 'preparing', idx: 6, rowBg: 'var(--bg-muted)', actionsOp: 1 },
+      { code: 'PO-2026-0139', title: 'قطع غيار منظومة الفصل — المنصورية', op: 'FZE', value: '$96,400', st: 'approved', idx: 5, rowBg: 'transparent', actionsOp: 0 },
+      { code: 'PO-2026-0127', title: 'أعمال مدنية لساحة الحفر — زرباطية', op: 'جيو-جاد الصينية', value: '$233,750', st: 'delivered', idx: 8, rowBg: 'transparent', actionsOp: 0 },
+      { code: 'PO-2026-0118', title: 'مواد كيمياوية للمعالجة — نفط خانة', op: 'جيو-جاد الصينية', value: '$58,200', st: 'cancelled', idx: 3, rowBg: 'transparent', actionsOp: 0 },
+    ].map(o => ({ ...o, stLabel: this.STATUSES.find(x => x.k === o.st).label, rail: o.st === 'delivered' ? this.STAGES.slice(0, 8).map(g => this.mini('done', g.name)) : railFor(o.idx) }));
+
+    const kCard = (code, title, value, idx, extra) => ({ code, title, value, op: 1, tr: 'none', bs: 'solid', rail: this.STAGES.slice(0, 6).map((g, i) => this.mini(i < idx ? 'done' : i === idx ? 'current' : 'next', g.name)), ...(extra || {}) });
+    const kanban = [
+      { label: 'معلق', dot: 'var(--st-pending-base)', n: '2', bd: '1px solid transparent', cards: [kCard('PO-0148', 'توريد مضخات غاطسة', '$482.9K', 2), kCard('PO-0152', 'فحص خطوط الجريان', '$61.0K', 1)] },
+      { label: 'قيد التجهيز', dot: 'var(--st-preparing-base)', n: '2', bd: '2px dashed var(--secondary-500)', cards: [kCard('PO-0141', 'صيانة محطة الضخ', '$1.28M', 4), kCard('PO-0141', 'صيانة محطة الضخ', '$1.28M', 4, { op: 0.4, tr: 'rotate(2deg)', bs: 'dashed' })] },
+      { label: 'مُسلَّم', dot: 'var(--st-delivered-base)', n: '1', bd: '1px solid transparent', cards: [kCard('PO-0127', 'أعمال مدنية لساحة الحفر', '$233.7K', 6)] },
+    ];
+    const skels = [{ w: '100%' }, { w: '82%' }, { w: '64%' }];
+
+    const drawerStages = this.STAGES.slice(2, 9).map((g) => {
+      const cur = g.st === 'current', done = g.st === 'done';
+      return {
+        n: String(g.n), name: g.name, isCur: cur,
+        bw: cur ? '2px' : '1px',
+        bd: cur ? '#991B1B' : done ? '#15803D' : 'var(--surface-500)',
+        bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--surface-500)',
+        numBg: 'rgba(255,255,255,.24)', numFg: '#fff',
+        nameFg: '#fff', metaFg: 'rgba(255,255,255,.82)',
+        mini: done ? g.actual + '/' + g.planned + ' يوم' : cur ? g.actual + '/' + g.planned + ' يوم' : g.planned + ' يوم مخطط',
+      };
+    });
+
+    const curSt = this.STATUSES.find(x => x.k === s.drawerSt);
+    const changeable = this.STATUSES.filter(x => x.k !== 'late' && x.k !== s.drawerSt).map(x => ({
+      ...x, dotVar: 'var(--st-' + x.k + '-base)',
+      pick: () => this.setState({ stMenuOpen: false, confirmKey: x.k }),
+    }));
+    const confirmObj = s.confirmKey ? this.STATUSES.find(x => x.k === s.confirmKey) : null;
+
+    const palRes = this.palResults().map((r, i) => ({
+      kind: r.kind, label: r.label, kbd: r.kbd, bg: i === s.palIdx ? 'var(--bg-muted)' : 'transparent',
+      go: () => this.palGo(r),
+    }));
+
+    const toasts = s.toasts.map(t => ({
+      msg: t.msg,
+      bar: t.kind === 'err' ? 'var(--st-cancelled-base)' : 'var(--st-approved-base)',
+      icon: t.kind === 'err' ? 'M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01' : 'M20 6L9 17l-5-5',
+      close: () => this.setState(st => ({ toasts: st.toasts.filter(x => x.id !== t.id) })),
+    }));
+
+    return {
+      anchors: [
+        { href: '#sec-colors', label: 'الألوان' }, { href: '#sec-path', label: 'مسار الطلبية ★' },
+        { href: '#sec-type', label: 'الخطوط' }, { href: '#sec-grid', label: 'الشبكة' },
+        { href: '#sec-buttons', label: 'الأزرار' }, { href: '#sec-badges', label: 'الشارات' },
+        { href: '#sec-inputs', label: 'الحقول' }, { href: '#sec-menus', label: 'القوائم والتقويم' },
+        { href: '#sec-overlays', label: 'الطبقات' }, { href: '#sec-palette', label: 'لوحة الأوامر' },
+        { href: '#sec-data', label: 'الجداول وكانبان' }, { href: '#sec-motion', label: 'الحركة' }, { href: '#sec-dev', label: 'للتطوير' },
+      ],
+      setLight: () => this.setTheme('light'), setDark: () => this.setTheme('dark'),
+      lightBtnBg: L.bg, lightBtnFg: L.fg, lightBtnSh: L.sh, darkBtnBg: D.bg, darkBtnFg: D.fg, darkBtnSh: D.sh,
+      calGreg: () => this.setState({ calMode: 'greg' }), calHijri: () => this.setState({ calMode: 'hijri' }),
+      gregBg: G.bg, gregFg: G.fg, gregSh: G.sh, hijriBg: H.bg, hijriFg: H.fg, hijriSh: H.sh,
+      primaryRamp, secondaryRamp, surfaceRamp, statuses, tiers, stages, miniRail,
+      typeScale, spacing, gridCols, radii, shadows, menuStatuses, presets, weekdays, calDays, calTitle, calSub, rangeLabel,
+      orders, kanban, skels, drawerStages,
+      modalOpen: s.modalOpen, drawerOpen: s.drawerOpen, paletteOpen: s.paletteOpen, stMenuOpen: s.stMenuOpen,
+      openModal: () => this.setState({ modalOpen: true }),
+      closeModal: () => this.setState({ modalOpen: false }),
+      confirmModal: () => { this.setState({ modalOpen: false }); this.toast('تمت المصادقة على الإحالة.', 'ok'); },
+      openDrawer: () => this.setState({ drawerOpen: true }),
+      closeDrawer: () => this.setState({ drawerOpen: false, stMenuOpen: false, confirmKey: null }),
+      openPalette: () => { this.setState({ paletteOpen: true, paletteQ: '', palIdx: 0 }); this.focusPal(); },
+      closePalette: () => this.setState({ paletteOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      toggleStMenu: () => this.setState(st => ({ stMenuOpen: !st.stMenuOpen, confirmKey: null })),
+      drawerSt: s.drawerSt, drawerStLabel: curSt ? curSt.label : '',
+      changeable,
+      confirmSt: !!confirmObj, confirmStLabel: confirmObj ? confirmObj.label : '',
+      applySt: () => { const k = s.confirmKey; this.setState({ drawerSt: k, confirmKey: null }); this.toast('تم تحديث حالة الطلبية PO-2026-0148.', 'ok'); },
+      cancelSt: () => this.setState({ confirmKey: null }),
+      demoToastOk: () => this.toast('تم حفظ التغييرات.', 'ok'),
+      demoToastErr: () => this.toast('تعذّر تحميل بيانات المناقصة. حاول مجدداً.', 'err'),
+      paletteQ: s.paletteQ,
+      onPaletteQ: (e) => this.setState({ paletteQ: e.target.value, palIdx: 0 }),
+      paletteResults: palRes, paletteEmpty: palRes.length === 0,
+      toasts,
+    };
+  }
+}
+</script>
+</body>
+</html>

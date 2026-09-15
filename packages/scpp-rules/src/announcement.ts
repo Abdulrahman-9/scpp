@@ -61,11 +61,13 @@ export function checkAnnouncement(input: AnnouncementInput): RuleResult {
         'Published on the Lead Contractor website.',
       ),
       check(
+        // check id stays 'roc-website' — it is a stable engine key that persisted results and
+        // tests address by name; the sentences beside it are what a human reads.
         'roc-website',
         '11.1',
         input.publishedOnRocWebsite === true,
-        'النشر على موقع شركة النفط الإقليمية.',
-        'Published on the ROC website.',
+        'النشر على موقع الشركة الأم (نفط الوسط).',
+        'Published on the parent company (MDOC) website.',
       ),
       check(
         'no-preq',

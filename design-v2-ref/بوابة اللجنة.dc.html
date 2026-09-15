@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+</helmet>
+
+<div dir="rtl" style="min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <header style="position:sticky;top:0;z-index:20;height:54px;background:var(--bg-card);border-bottom:1px solid var(--border-1);display:flex;align-items:center;gap:12px;padding:0 20px">
+    <a href="تسجيل الدخول.dc.html" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:13.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)">م</span>
+      <span style="font-size:13.5px;font-weight:700">مسار</span>
+    </a>
+    <span style="font-size:10.5px;font-weight:700;color:var(--st-preparing-fg);background:var(--st-preparing-bg);border:1px solid var(--st-preparing-bd);border-radius:999px;padding:3px 10px">بوابة اللجنة المشتركة JMC</span>
+    <span style="flex:1"></span>
+    <button onClick="{{ toggleTheme }}" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:var(--bg-card);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)">
+      <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+      <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+    </button>
+    <div style="display:flex;align-items:center;gap:9px;border-inline-start:1px solid var(--border-1);padding-inline-start:14px">
+      <span style="width:30px;height:30px;border-radius:999px;background:var(--bg-inset);color:var(--text-2);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">{{ memberInitial }}</span>
+      <span style="display:flex;flex-direction:column;line-height:1.3">
+        <span style="font-size:12px;font-weight:700">{{ memberName }}</span>
+        <span style="font-size:10.5px;color:var(--text-3)">عضو اللجنة المشتركة</span>
+      </span>
+    </div>
+  </header>
+
+  <main style="max-width:960px;margin:0 auto;padding:26px 20px 60px;display:flex;flex-direction:column;gap:18px">
+    <div>
+      <h1 style="margin:0;font-size:21px;font-weight:700">قرارات اللجنة المشتركة</h1>
+      <div style="font-size:12.5px;color:var(--text-3);margin-top:3px">تُعرض الطلبيات المحالة إلى اللجنة (الطبقة ط2) فقط. الرفض يستلزم سبباً موثقاً، والانتظار فوق 45 يوماً يُؤشَّر تلقائياً.</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="3">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow-1)">
+          <div style="font-size:11.5px;font-weight:600;color:var(--text-3)">{{ k.label }}</div>
+          <div style="font-family:var(--font-mono);direction:ltr;text-align:right;font-size:20px;font-weight:700;margin-top:6px;color:{{ k.color }}">{{ k.val }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <h2 style="margin:0;font-size:14px;font-weight:700;color:var(--text-2)">بانتظار قرار اللجنة</h2>
+      <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--bg-card);border:1px dashed var(--border-2);border-radius:10px;padding:26px;text-align:center;font-size:12.5px;color:var(--text-3)">لا توجد طلبيات بانتظار قرار اللجنة.</div>
+      </sc-if>
+      <sc-for list="{{ pending }}" as="p" hint-placeholder-count="1">
+        <article style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow-1);display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px;font-weight:600;color:var(--text-2)">{{ p.code }}</span>
+            <span style="font-size:10.5px;font-weight:700;border-radius:999px;padding:2.5px 10px;color:var(--st-preparing-fg);background:var(--st-preparing-bg);border:1px solid var(--st-preparing-bd)">{{ p.gate }}</span>
+            <sc-if value="{{ p.flag }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:10.5px;font-weight:700;border-radius:999px;padding:2.5px 10px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd)">منتظرة {{ p.wait }} يوماً — تجاوز 45</span>
+            </sc-if>
+            <sc-if value="{{ p.noFlag }}" hint-placeholder-val="{{ true }}">
+              <span style="font-size:10.5px;color:var(--text-3)">منتظرة منذ {{ p.wait }} يوماً</span>
+            </sc-if>
+            <span style="margin-inline-start:auto;font-family:var(--font-mono);direction:ltr;font-size:13px;font-weight:700">{{ p.value }}</span>
+          </div>
+          <div>
+            <div style="font-size:14.5px;font-weight:700">{{ p.title }}</div>
+            <div style="font-size:11.5px;color:var(--text-3);margin-top:3px">{{ p.op }} · {{ p.path }} · المرحلة {{ p.cur }}/12</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;border-top:1px solid var(--border-1);padding-top:11px;flex-wrap:wrap">
+            <button onClick="{{ p.approve }}" style="height:32px;padding:0 16px;border-radius:6px;border:none;background:var(--st-approved-base);color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px" style-hover="filter:brightness(.94)">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+              موافقة
+            </button>
+            <button onClick="{{ p.reject }}" style="height:32px;padding:0 16px;border-radius:6px;border:1px solid var(--st-cancelled-bd);background:var(--st-cancelled-bg);color:var(--st-cancelled-fg);font:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px" style-hover="filter:brightness(.97)">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+              رفض — مع بيان السبب
+            </button>
+            <a href="{{ p.href }}" style="margin-inline-start:auto;font-size:12px;font-weight:600">عرض التفاصيل</a>
+          </div>
+        </article>
+      </sc-for>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <h2 style="margin:0;font-size:14px;font-weight:700;color:var(--text-2)">سجل قراراتي</h2>
+      <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:10px;box-shadow:var(--shadow-1);overflow:hidden">
+        <sc-for list="{{ history }}" as="h" hint-placeholder-count="3">
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-1);flex-wrap:wrap">
+            <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px;color:var(--text-3);width:82px;flex:none;padding-top:2px">{{ h.date }}</span>
+            <span style="font-size:10.5px;font-weight:700;border-radius:999px;padding:2.5px 10px;flex:none;color:{{ h.fg }};background:{{ h.bg }};border:1px solid {{ h.bd }}">{{ h.verdict }}</span>
+            <span style="flex:1;min-width:200px">
+              <span style="display:block;font-size:12.5px;font-weight:600">{{ h.title }}</span>
+              <span style="display:block;font-size:11px;color:var(--text-3);margin-top:2px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ h.code }}</span> · {{ h.action }}</span>
+              <sc-if value="{{ h.hasReason }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:11px;color:var(--st-cancelled-fg);margin-top:3px">السبب: {{ h.reason }}</span></sc-if>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+
+  <!-- الرفض — سبب إلزامي -->
+  <sc-if value="{{ rejOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeBg }}" style="position:fixed;inset:0;z-index:50;background:rgba(11,19,32,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px">
+      <form onSubmit="{{ submitRej }}" onClick="{{ stop }}" style="width:440px;max-width:100%;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-pop);padding:22px;display:flex;flex-direction:column;gap:13px;animation:pop-in var(--dur-slow) var(--ease-out)">
+        <div>
+          <div style="font-family:var(--font-mono);direction:ltr;text-align:right;font-size:11.5px;color:var(--text-3)">{{ rejCode }}</div>
+          <h2 style="margin:3px 0 0;font-size:16.5px;font-weight:700">رفض الطلبية</h2>
+          <div style="font-size:11.5px;color:var(--text-3);margin-top:3px">يُثبَّت السبب في سجل القرارات ويُبلَّغ به المشغّل. لا يُقبل الرفض دون سبب.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label for="rj-reason" style="font-size:12px;font-weight:600;color:var(--text-2)">سبب الرفض <span style="color:var(--st-cancelled-fg)">*</span></label>
+          <textarea id="rj-reason" value="{{ rejReason }}" onChange="{{ onRejReason }}" rows="3" placeholder="مثال: الكلفة التخمينية تجاوزت +20% من تقدير فريق الكلفة — يُعاد الطرح وفق المسار السريع (13.3)." style="width:100%;padding:9px 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;outline:none;resize:vertical"></textarea>
+        </div>
+        <sc-if value="{{ rejErr }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);border-radius:6px;padding:8px 11px">سبب الرفض إلزامي.</div>
+        </sc-if>
+        <div style="display:flex;gap:9px;justify-content:flex-end;border-top:1px solid var(--border-1);padding-top:13px">
+          <button type="button" onClick="{{ closeModal }}" style="height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--bg-muted)">تراجع</button>
+          <button type="submit" style="height:36px;padding:0 16px;border-radius:6px;border:none;background:var(--st-cancelled-base);color:#fff;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="filter:brightness(.94)">تثبيت الرفض</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;background:var(--side-bg);color:#fff;border-radius:8px;padding:11px 16px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-3);animation:pop-in var(--dur-fast) var(--ease-out)">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;member&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;د. باسم النعيمي&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;الحساب&quot;}}">
+class Component extends DCLogic {
+  state = { theme: 'light', orders: [], decided: [], rej: null, rejReason: '', rejErr: false, toast: '' };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+    this.setState({ theme: t });
+    import('./orders-data.js').then(m => { this.M = m; this.setState({ orders: m.ORDERS.map(o => Object.assign({}, o)) }); });
+    try { const raw = localStorage.getItem('masaar2-jmc'); if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) this.setState({ decided: p }); } } catch (e) {}
+    this.onKey = (e) => { if (e.key === 'Escape') this.setState({ rej: null }); };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); }
+
+  gate(o) { return o.cur <= 2 ? 'المصادقة على الكلفة' : o.cur === 3 ? 'الصلاحية المالية' : o.cur === 4 ? 'اعتماد الأسلوب' : o.cur === 10 ? 'المصادقة على الإحالة' : 'إقرار المرحلة ' + o.cur; }
+  wait(o) { return Math.max(1, Math.round((new Date('2026-08-25') - new Date(o.submitted)) / 86400000)); }
+  showToast(msg) { this.setState({ toast: msg }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 2800); }
+  persist(decided) { try { localStorage.setItem('masaar2-jmc', JSON.stringify(decided)); } catch (e) {} }
+
+  renderVals() {
+    const s = this.state, fmt = this.M ? this.M.fmtUSD : (v) => '$' + v;
+    const name = this.props.member || 'د. باسم النعيمي';
+    const decidedCodes = s.decided.map(d => d.code);
+    const pendingList = s.orders.filter(o => o.tier === 't2' && o.st === 'pending' && !decidedCodes.includes(o.code));
+    const approved = s.decided.filter(d => d.ok), rejected = s.decided.filter(d => !d.ok);
+    const baseline = [];
+    s.orders.forEach(o => (o.log || []).forEach(l => { if (l.role === 'JMC') baseline.push({ date: l.date, code: o.code, title: o.title, action: l.action, ok: true, reason: '' }); }));
+    const history = s.decided.map(d => ({ date: d.date, code: d.code, title: d.title, action: d.action, ok: d.ok, reason: d.reason }))
+      .concat(baseline.sort((a, b) => b.date.localeCompare(a.date)))
+      .map(h => ({
+        date: h.date, code: h.code, title: h.title, action: h.action,
+        verdict: h.ok ? 'موافقة' : 'رفض',
+        fg: h.ok ? 'var(--st-approved-fg)' : 'var(--st-cancelled-fg)', bg: h.ok ? 'var(--st-approved-bg)' : 'var(--st-cancelled-bg)', bd: h.ok ? 'var(--st-approved-bd)' : 'var(--st-cancelled-bd)',
+        hasReason: !!h.reason, reason: h.reason,
+      }));
+    const rejO = s.orders.find(o => o.code === s.rej) || {};
+    return {
+      memberName: name, memberInitial: name.replace('د. ', '').replace('م. ', '').slice(0, 1),
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => {
+        const t = s.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        try { localStorage.setItem('masaar2-theme', t); } catch (e) {}
+        this.setState({ theme: t });
+      },
+      kpis: [
+        { label: 'بانتظار قراري', val: String(pendingList.length), color: pendingList.length ? 'var(--st-pending-fg)' : 'var(--text-1)' },
+        { label: 'موافقات (الجلسة + السجل)', val: String(approved.length + baseline.length), color: 'var(--st-approved-fg)' },
+        { label: 'رفض موثَّق بسبب', val: String(rejected.length), color: rejected.length ? 'var(--st-cancelled-fg)' : 'var(--text-1)' },
+      ],
+      noPending: !pendingList.length,
+      pending: pendingList.map(o => {
+        const w = this.wait(o);
+        return {
+          code: o.code, title: o.title, op: o.op, path: o.path, value: fmt(o.value), cur: String(o.cur),
+          gate: this.gate(o), wait: String(w), flag: w > 45, noFlag: w <= 45,
+          href: 'تفاصيل الطلبية.dc.html?po=' + o.code,
+          approve: () => {
+            const next = [{ code: o.code, title: o.title, action: this.gate(o), ok: true, reason: '', date: '2026-08-25' }].concat(s.decided);
+            this.persist(next);
+            this.setState({ decided: next });
+            this.showToast('تمت الموافقة على ' + o.code + ' — ' + this.gate(o) + '.');
+          },
+          reject: () => this.setState({ rej: o.code, rejReason: '', rejErr: false }),
+        };
+      }),
+      history,
+      rejOpen: !!s.rej, rejCode: rejO.code || '',
+      rejReason: s.rejReason, onRejReason: (e) => this.setState({ rejReason: e.target.value, rejErr: false }),
+      rejErr: s.rejErr,
+      closeBg: () => this.setState({ rej: null }),
+      closeModal: () => this.setState({ rej: null }),
+      stop: (e) => e.stopPropagation(),
+      submitRej: (e) => {
+        e.preventDefault();
+        if (!s.rejReason.trim()) { this.setState({ rejErr: true }); return; }
+        const next = [{ code: rejO.code, title: rejO.title, action: this.gate(rejO), ok: false, reason: s.rejReason.trim(), date: '2026-08-25' }].concat(s.decided);
+        this.persist(next);
+        this.setState({ decided: next, rej: null });
+        this.showToast('تم تثبيت رفض ' + rejO.code + ' مع السبب.');
+      },
+      toastOn: !!s.toast, toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

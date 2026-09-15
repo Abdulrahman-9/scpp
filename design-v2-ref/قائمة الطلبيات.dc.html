@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+  <style>
+    @media print { [data-noprint] { display: none !important; } body { background: #fff !important; } }
+  </style>
+</helmet>
+
+<div dir="rtl" style="display:flex;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <aside data-noprint="1" style="width:{{ sideW }};flex:none;background:var(--side-bg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width var(--dur-base) var(--ease-out);overflow:hidden;--focus-color:var(--focus-color-on-dark)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--side-border);min-height:58px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:14px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="line-height:1.2;white-space:nowrap">
+          <div style="font-size:14.5px;font-weight:700;color:#fff">مسار</div>
+          <div style="font-size:10px;color:var(--side-fg-2)">الإدارة العليا · نفط الوسط</div>
+        </div>
+        <span style="margin-inline-start:auto;font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--side-fg);background:var(--side-count);border-radius:4px;padding:2px 6px">v2</span>
+      </sc-if>
+    </div>
+    <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:10px 10px 2px">
+        <div style="display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid var(--side-border);border-radius:8px;padding:9px 11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)">
+          <span style="position:relative;width:32px;height:32px;flex:none">
+            <span style="width:32px;height:32px;border-radius:50%;background:var(--grad-brand);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px rgba(255,255,255,.22)">مص</span>
+            <span title="متصل" style="position:absolute;bottom:-1px;inset-inline-end:-1px;width:9px;height:9px;border-radius:50%;background:var(--st-approved-base);border:2px solid rgba(2,6,23,.45)"></span>
+          </span>
+          <span style="min-width:0;line-height:1.35">
+            <span style="display:block;font-size:12px;font-weight:700;color:var(--side-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">م. مصطفى الكرخي</span>
+            <span style="display:block;font-size:10px;color:var(--side-fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">مدير النظام · SUPER_ADMIN</span>
+          </span>
+        </div>
+      </div>
+    </sc-if>
+    <nav aria-label="التنقل الرئيسي" style="flex:1;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden">
+      <sc-for list="{{ navPrimary }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ n.go }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:13px;font-weight:{{ n.fw }};text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-active);text-decoration:none">
+          <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span>
+            <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;font-weight:600;background:{{ n.countBg }};color:{{ n.countFg }};border-radius:999px;padding:1px 8px">{{ n.count }}</span></sc-if>
+          </sc-if>
+        </a>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 14px;border-top:1px solid var(--side-border)">
+      <button onClick="{{ toggleSide }}" title="طي / بسط الشريط" style="display:flex;align-items:center;gap:9px;width:100%;padding:8px 6px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ collapseCaret }};transition:transform var(--dur-base) var(--ease-out)"><path d="M9 18l6-6-6-6"></path></svg>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>طي الشريط</span></sc-if>
+      </button>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header data-noprint="1" style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:58px;padding:0 22px;background:color-mix(in srgb, var(--bg-card) 80%, transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border-bottom:1px solid var(--border-1)">
+      <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap">
+        <a href="لوحة التحكم.dc.html" style="color:var(--text-muted);font-weight:400">لوحة الإدارة</a>
+        <span style="color:var(--text-disabled)">/</span>
+        <span style="font-weight:600">المناقصات — قائمة الطلبيات</span>
+      </div>
+      <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px">
+        <button onClick="{{ toggleTheme }}" title="تبديل الوضع" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+          <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+        </button>
+        <a href="لوحة التحكم.dc.html" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:6px;border:1px solid var(--border-1);color:var(--text-3);font-size:12px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">غرفة المتابعة</a>
+        <button onClick="{{ logout }}" title="م. مصطفى الكرخي — تسجيل الخروج" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--grad-brand);color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer">مص</button>
+      </div>
+    </header>
+
+    <div style="flex:1;padding:26px 26px 60px">
+      <div style="max-width:1280px;margin:0 auto">
+
+        <div data-noprint="1" style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <div>
+            <h1 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-0.01em">قائمة الطلبيات</h1>
+            <div style="font-size:12.5px;color:var(--text-3);margin-top:4px">سجل المناقصات والطلبيات — <span style="font-family:var(--font-mono)">{{ totalN }}</span> طلبية · النقر على الصف يفتح الملف الكامل ومساره</div>
+          </div>
+          <div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
+            <div style="display:flex;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:2px">
+              <button onClick="{{ viewTable }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ vtBg }};color:{{ vtFg }};box-shadow:{{ vtSh }};transition:background var(--dur-fast) var(--ease-out)">جدول</button>
+              <button onClick="{{ viewKanban }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ vkBg }};color:{{ vkFg }};box-shadow:{{ vkSh }};transition:background var(--dur-fast) var(--ease-out)">كانبان</button>
+            </div>
+            <button onClick="{{ printPage }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
+              طباعة
+            </button>
+            <button onClick="{{ newOrder }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 15px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              طلبية جديدة
+            </button>
+          </div>
+        </div>
+
+        <!-- بطاقات العدّ — تعمل كفلاتر -->
+        <div data-noprint="1" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+          <sc-for list="{{ statTiles }}" as="k" hint-placeholder-count="4">
+            <button onClick="{{ k.go }}" title="{{ k.hint }}" style="text-align:start;background-color:{{ k.fill }};background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 52%,rgba(2,6,23,.08));border:{{ k.bd }};border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 1px 3px rgba(15,23,42,.12);padding:12px 14px;cursor:pointer;font:inherit;display:flex;align-items:center;gap:12px;min-width:0;transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out)" style-hover="box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 12px 26px rgba(15,23,42,.22);transform:translateY(-2px);filter:brightness(1.07)" style-active="transform:translateY(0);filter:brightness(.97)">
+              <span style="font-family:var(--font-mono);direction:ltr;font-size:26px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums">{{ k.n }}</span>
+              <span style="min-width:0;line-height:1.4">
+                <span style="display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.label }}</span>
+                <span style="display:block;font-size:9.5px;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+
+        <!-- التصفية -->
+        <div data-noprint="1" style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <div style="position:relative;flex:2;min-width:220px">
+            <span style="position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></span>
+            <input data-q="1" value="{{ q }}" onChange="{{ onQ }}" placeholder="بحث بالرقم أو العنوان أو المشغّل…  ( / )" style="width:100%;height:34px;padding:0 32px 0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;outline:none" />
+          </div>
+          <select value="{{ stF }}" onChange="{{ onStF }}" aria-label="الحالة" style="flex:1;min-width:120px;height:34px;padding:0 10px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;cursor:pointer">
+            <option value="">كل الحالات</option><option value="pending">معلق</option><option value="approved">معتمد</option><option value="preparing">قيد التجهيز</option><option value="delivered">مُسلَّم</option><option value="cancelled">ملغي</option>
+          </select>
+          <select value="{{ opF }}" onChange="{{ onOpF }}" aria-label="المشغّل" style="flex:1.3;min-width:150px;height:34px;padding:0 10px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;cursor:pointer">
+            <option value="">كل المشغّلين</option>
+            <sc-for list="{{ opOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.v }}</option></sc-for>
+          </select>
+          <select value="{{ tierF }}" onChange="{{ onTierF }}" aria-label="الصلاحية" style="flex:1;min-width:130px;height:34px;padding:0 10px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;cursor:pointer">
+            <option value="">كل الصلاحيات</option><option value="t1">ط1 · ضمن الصلاحية</option><option value="t2">ط2 · اللجنة المشتركة</option><option value="t3">ط3 · نفط الوسط</option>
+          </select>
+          <input type="date" value="{{ fromF }}" onChange="{{ onFromF }}" aria-label="من تاريخ" style="height:34px;padding:0 8px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-2);font-family:var(--font-mono);font-size:11.5px" />
+          <input type="date" value="{{ toF }}" onChange="{{ onToF }}" aria-label="إلى تاريخ" style="height:34px;padding:0 8px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-2);font-family:var(--font-mono);font-size:11.5px" />
+          <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ clearFilters }}" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:6px;border:1px solid var(--st-cancelled-bd);background:var(--st-cancelled-bg);color:var(--st-cancelled-fg);font:inherit;font-size:12px;font-weight:600;cursor:pointer;animation:pop-in var(--dur-fast) var(--ease-out)">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+              مسح ({{ filteredN }})
+            </button>
+          </sc-if>
+        </div>
+
+        <!-- الجدول -->
+        <sc-if value="{{ isTable }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow-x:auto">
+            <div style="display:grid;grid-template-columns:112px 1.8fr 1.1fr 118px 96px 130px 100px 74px;gap:10px;min-width:980px;padding:9px 16px;background:var(--bg-muted);border-bottom:1px solid var(--border-1);font-size:11px;font-weight:600;color:var(--text-muted)">
+              <span>رقم الطلبية</span><span>العنوان</span><span>المشغّل</span><span>الصلاحية</span><span>القيمة</span><span>المسار — المرحلة الحالية بالأحمر</span><span>الحالة</span><span></span>
+            </div>
+            <sc-for list="{{ rows }}" as="o" hint-placeholder-count="8">
+              <a href="{{ o.href }}" style="display:grid;grid-template-columns:112px 1.8fr 1.1fr 118px 96px 130px 100px 74px;gap:10px;min-width:980px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-1);cursor:pointer;text-decoration:none;color:inherit;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">
+                <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;font-weight:600;color:var(--link)">{{ o.code }}</span>
+                <span style="min-width:0"><span style="display:block;font-size:12.5px;font-weight:500;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.title }}</span><span style="display:block;font-size:10px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.path }} · قُدِّمت <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ o.submitted }}</span></span></span>
+                <span style="font-size:12px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.op }}</span>
+                <span><span style="display:inline-flex;align-items:center;gap:4px;padding:1.5px 8px;border-radius:5px;background:{{ o.tierBg }};color:{{ o.tierFg }};border:1px solid {{ o.tierBd }};font-size:9.5px;font-weight:700;white-space:nowrap"><span style="font-family:var(--font-mono)">{{ o.tierN }}</span>{{ o.tierLabel }}</span></span>
+                <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2);text-align:left;font-variant-numeric:tabular-nums">{{ o.value }}</span>
+                <span style="display:inline-flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;gap:2.5px;direction:rtl">
+                  <sc-for list="{{ o.rail }}" as="m" hint-placeholder-count="12"><span title="{{ m.name }}" style="width:{{ m.size }};height:{{ m.size }};border-radius:2.5px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }};flex:none"></span></sc-for>
+                </span><span style="font-size:9.5px;color:var(--text-muted);font-family:var(--font-mono)">{{ o.curTxt }}</span></span>
+                <span style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;border:1px solid var(--st-{{ o.st }}-bd);background:var(--st-{{ o.st }}-bg);color:var(--st-{{ o.st }}-fg);font-size:10.5px;font-weight:600;white-space:nowrap"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-{{ o.st }}-base)"></span>{{ o.stLabel }}</span>
+                  <sc-if value="{{ o.isLate }}" hint-placeholder-val="{{ false }}"><span style="font-size:9px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--st-late-bg);color:var(--st-late-fg);border:1px solid var(--st-late-bd);direction:ltr;unicode-bidi:isolate;animation:pulse-soft 2.2s var(--ease-out) infinite">حيود {{ o.devTxt }}</span></sc-if>
+                </span>
+                <span style="display:flex;justify-content:flex-end"><span title="فتح الملف والمسار" style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border-2);display:inline-flex;align-items:center;justify-content:center;color:var(--text-3);background:var(--bg-card)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 6-9 6-9-6 9-6z"></path><path d="M3 14l9 6 9-6"></path></svg></span></span>
+              </a>
+            </sc-for>
+            <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 20px">
+                <span style="width:52px;height:52px;border-radius:50%;background:var(--st-approved-bg);border:1px solid var(--st-approved-bd);display:inline-flex;align-items:center;justify-content:center;color:var(--st-approved-fg)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+                <span style="font-size:12.5px;color:var(--text-muted)">لا توجد طلبيات مطابقة للتصفية الحالية.</span>
+              </div>
+            </sc-if>
+            <div data-noprint="1" style="display:flex;align-items:center;gap:6px;padding:10px 16px;border-top:1px solid var(--border-1)">
+              <span style="font-size:11.5px;color:var(--text-muted)">عرض <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ pageRange }}</span> من <span style="font-family:var(--font-mono)">{{ filteredN }}</span></span>
+              <span style="margin-inline-start:auto;display:flex;gap:4px;align-items:center">
+                <button onClick="{{ prevPage }}" disabled="{{ prevDis }}" aria-label="السابق" style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:{{ prevOp }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+                <sc-for list="{{ pages }}" as="p" hint-placeholder-count="2">
+                  <button onClick="{{ p.go }}" style="min-width:28px;height:28px;padding:0 8px;border-radius:5px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};font-family:var(--font-mono);font-size:11.5px;font-weight:600;cursor:pointer">{{ p.n }}</button>
+                </sc-for>
+                <button onClick="{{ nextPage }}" disabled="{{ nextDis }}" aria-label="التالي" style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:{{ nextOp }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+              </span>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- كانبان -->
+        <sc-if value="{{ isKanban }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start">
+            <sc-for list="{{ kanban }}" as="col" hint-placeholder-count="5">
+              <div style="background:var(--bg-muted);border:1px solid var(--border-1);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:180px">
+                <div style="display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;background-color:{{ col.fill }};background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 55%,rgba(2,6,23,.08));box-shadow:inset 0 1px 0 rgba(255,255,255,.28)">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#fff;opacity:.9"></span>
+                  <span style="font-size:11.5px;font-weight:700;color:#fff">{{ col.label }}</span>
+                  <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);border-radius:999px;padding:0 7px">{{ col.n }}</span>
+                </div>
+                <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                  <a href="{{ c.href }}" style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:6px;padding:9px 11px;box-shadow:var(--shadow-1);text-decoration:none;color:inherit;display:block;transition:box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="box-shadow:var(--shadow-2);transform:translateY(-1px);text-decoration:none">
+                    <div style="display:flex;align-items:center;gap:6px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:10px;color:var(--link);font-weight:600">{{ c.code }}</span>
+                    <sc-if value="{{ c.isLate }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-size:8.5px;font-weight:700;padding:0.5px 6px;border-radius:999px;background:var(--st-late-bg);color:var(--st-late-fg);border:1px solid var(--st-late-bd);direction:ltr">{{ c.devTxt }}</span></sc-if></div>
+                    <div style="font-size:11.5px;font-weight:500;margin:4px 0 7px;line-height:1.45">{{ c.title }}</div>
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="font-family:var(--font-mono);direction:ltr;font-size:10px;color:var(--text-3)">{{ c.value }}</span>
+                      <span style="margin-inline-start:auto;display:inline-flex;gap:2px;direction:rtl">
+                        <sc-for list="{{ c.rail }}" as="m" hint-placeholder-count="12"><span style="width:{{ m.size }};height:{{ m.size }};border-radius:2px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }}"></span></sc-for>
+                      </span>
+                    </div>
+                  </a>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </main>
+
+  <div style="position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid {{ t.bar }};border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px;min-width:260px;animation:toast-in var(--dur-base) var(--ease-out)">
+        <span style="color:{{ t.bar }};display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+        <span style="font-size:12.5px;color:var(--text-1)">{{ t.msg }}</span>
+        <button onClick="{{ t.close }}" aria-label="إغلاق" style="margin-inline-start:auto;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;padding:2px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;collapsed&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'light', collapsed: false, data: null,
+    q: '', stF: '', opF: '', tierF: '', fromF: '', toF: '', lateOnly: false,
+    view: 'table', page: 1, toasts: [],
+  };
+  PAGE = 8;
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+    if (this.props.collapsed) this.setState({ collapsed: true });
+    import('./orders-data.js').then((m) => this.setState({ data: m }));
+    try {
+      const usp = new URLSearchParams(location.search);
+      const st = usp.get('st'), op = usp.get('op');
+      if (st) this.setState({ stF: st });
+      if (op) this.setState({ opF: op });
+    } catch (e) {}
+    this._onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || '';
+      const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+      if (e.key === '/' && !typing) { e.preventDefault(); const el = document.querySelector('[data-q]'); if (el) el.focus(); }
+      if ((e.key === 'n' || e.key === 'N') && !typing) this.toast('نموذج الطلبية الجديدة — ضمن المرحلة التالية.');
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+  toast(msg) {
+    const id = Date.now() + Math.random();
+    this.setState(s => ({ toasts: [...s.toasts, { id, msg }] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 4000);
+  }
+  mini(st, name) {
+    const cur = st === 'current', done = st === 'done';
+    return {
+      name, size: cur ? '11px' : '8px',
+      bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--bg-inset)',
+      bd: cur ? '1px solid var(--st-cancelled-base)' : done ? '1px solid var(--st-approved-base)' : '1px solid var(--border-2)',
+      ring: cur ? '0 0 0 2px var(--st-cancelled-bg)' : 'none',
+    };
+  }
+  tierChip(t) {
+    const dark = this.state.theme === 'dark';
+    if (t === 't3') return dark ? { bg: '#1E40AF', fg: '#EFF6FF', bd: '#1E40AF' } : { bg: 'var(--primary-900)', fg: '#EFF6FF', bd: 'var(--primary-900)' };
+    if (t === 't2') return dark ? { bg: 'rgba(59,130,246,.24)', fg: '#BFDBFE', bd: 'rgba(96,165,250,.4)' } : { bg: 'var(--primary-100)', fg: 'var(--primary-800)', bd: 'var(--primary-300)' };
+    return dark ? { bg: 'rgba(59,130,246,.14)', fg: '#93C5FD', bd: 'rgba(96,165,250,.3)' } : { bg: 'var(--primary-50)', fg: 'var(--primary-700)', bd: 'var(--primary-200)' };
+  }
+  isLate(o) { return o.dev > 0 && (o.st === 'pending' || o.st === 'approved' || o.st === 'preparing'); }
+  filtered() {
+    const s = this.state, d = s.data;
+    if (!d) return [];
+    return d.ORDERS.filter(o =>
+      (!s.q || o.code.includes(s.q) || o.title.includes(s.q) || o.op.includes(s.q)) &&
+      (!s.stF || o.st === s.stF) && (!s.opF || o.op === s.opF) && (!s.tierF || o.tier === s.tierF) &&
+      (!s.lateOnly || this.isLate(o)) &&
+      (!s.fromF || o.submitted >= s.fromF) && (!s.toF || o.submitted <= s.toF)
+    );
+  }
+
+  renderVals() {
+    const s = this.state, d = s.data;
+    const seg = (on) => ({ bg: on ? 'var(--bg-card)' : 'transparent', fg: on ? 'var(--text-1)' : 'var(--text-3)', sh: on ? 'var(--shadow-1)' : 'none' });
+    const VT = seg(s.view === 'table'), VK = seg(s.view === 'kanban');
+    const expanded = !s.collapsed;
+
+    const navPrimary = [
+      { label: 'المتابعة', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6', href: 'لوحة التحكم.dc.html', count: 7 },
+      { label: 'المناقصات', icon: 'M3 6h18 M7 12h14 M3 18h12', href: 'قائمة الطلبيات.dc.html', count: d ? d.ORDERS.length : 12, on: true },
+      { label: 'سلسلة الموافقات', icon: 'M20 6L9 17l-5-5', count: 8, href: 'سلسلة الموافقات.dc.html' },
+      { label: 'العقود', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', count: 6, href: 'العقود.dc.html' },
+      { label: 'الجهات', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3 M8 15h3', count: 9, href: 'الجهات.dc.html' },
+    ].map(n => ({
+      ...n,
+      href: n.href || '#',
+      go: n.href ? undefined : (e) => { e.preventDefault(); this.toast('شاشة «' + n.t + '» — ضمن المرحلة التالية.'); },
+      bg: n.on ? 'var(--side-active)' : 'transparent', fg: n.on ? '#FFFFFF' : 'var(--side-fg)', fw: n.on ? 700 : 500,
+      cur: n.on ? 'page' : undefined, hasCount: !!n.count, count: String(n.count),
+      countBg: n.on ? 'rgba(255,255,255,.2)' : 'var(--side-count)', countFg: n.on ? '#fff' : 'var(--side-fg)',
+    }));
+
+    const all = d ? d.ORDERS : [];
+    const cnt = (k) => all.filter(o => o.st === k).length;
+    const lateN = all.filter(o => this.isLate(o)).length;
+    const tileGo = (patch, hint) => () => this.setState({ stF: '', lateOnly: false, page: 1, ...patch });
+    const statTiles = [
+      { label: 'إجمالي الطلبيات', sub: 'كل السجل — انقر لمسح التصفية', n: String(all.length), fill: 'var(--primary-700)', go: tileGo({}), active: !s.stF && !s.lateOnly },
+      { label: 'معلق', sub: 'بانتظار الاعتماد', n: String(cnt('pending')), fill: 'var(--st-pending-base)', go: tileGo({ stF: 'pending' }), active: s.stF === 'pending' },
+      { label: 'قيد التجهيز', sub: 'مراحل جارية', n: String(cnt('preparing')), fill: 'var(--st-preparing-base)', go: tileGo({ stF: 'preparing' }), active: s.stF === 'preparing' },
+      { label: 'متأخرة', sub: 'حيود زمني موجب', n: String(lateN), fill: 'var(--st-late-base)', go: tileGo({ lateOnly: true }), active: s.lateOnly },
+    ].map(k => ({ ...k, hint: k.label, bd: k.active ? '2px solid rgba(255,255,255,.75)' : '1px solid rgba(255,255,255,.24)' }));
+
+    const fl = this.filtered();
+    const totalPages = Math.max(1, Math.ceil(fl.length / this.PAGE));
+    const page = Math.min(s.page, totalPages);
+    const paged = fl.slice((page - 1) * this.PAGE, page * this.PAGE);
+
+    const row = (o) => {
+      const tc = this.tierChip(o.tier), tm = d.TIERS[o.tier];
+      const late = this.isLate(o);
+      return {
+        code: o.code, title: o.title, op: o.op, path: o.path, submitted: o.submitted,
+        value: d.fmtUSD(o.value), st: o.st, stLabel: d.stLabel(o.st),
+        tierN: tm.n, tierLabel: tm.label, tierBg: tc.bg, tierFg: tc.fg, tierBd: tc.bd,
+        isLate: late, devTxt: '+' + o.dev, curTxt: o.cur + '/12',
+        href: 'تفاصيل الطلبية.dc.html?po=' + o.code,
+        rail: d.STAGES.map((g, i) => this.mini(o.st === 'delivered' ? 'done' : i + 1 < o.cur ? 'done' : i + 1 === o.cur ? 'current' : 'next', g.name)),
+      };
+    };
+    const rows = d ? paged.map(row) : [];
+
+    const kanban = d ? ['pending', 'approved', 'preparing', 'delivered', 'cancelled'].map(k => {
+      const cards = fl.filter(o => o.st === k).map(row);
+      return { label: d.stLabel(k), n: String(cards.length), fill: 'var(--st-' + k + '-base)', cards };
+    }) : [];
+
+    const pages = Array.from({ length: totalPages }, (_, i) => ({
+      n: String(i + 1),
+      bg: i + 1 === page ? 'var(--btn-primary-bg)' : 'var(--bg-card)',
+      fg: i + 1 === page ? 'var(--btn-primary-fg)' : 'var(--text-3)',
+      bd: i + 1 === page ? 'var(--btn-primary-bg)' : 'var(--border-2)',
+      go: () => this.setState({ page: i + 1 }),
+    }));
+    const from = fl.length ? (page - 1) * this.PAGE + 1 : 0;
+    const to = Math.min(page * this.PAGE, fl.length);
+
+    const hasFilters = !!(s.q || s.stF || s.opF || s.tierF || s.fromF || s.toF || s.lateOnly);
+    const setF = (patch) => this.setState({ page: 1, ...patch });
+
+    return {
+      sideW: s.collapsed ? '72px' : '260px', expanded,
+      collapseCaret: s.collapsed ? 'rotate(180deg)' : 'none',
+      toggleSide: () => this.setState(st => ({ collapsed: !st.collapsed })),
+      navPrimary,
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      logout: () => { window.location.href = 'تسجيل الدخول.dc.html'; },
+      totalN: String(all.length), filteredN: String(fl.length),
+      viewTable: () => this.setState({ view: 'table' }), viewKanban: () => this.setState({ view: 'kanban' }),
+      vtBg: VT.bg, vtFg: VT.fg, vtSh: VT.sh, vkBg: VK.bg, vkFg: VK.fg, vkSh: VK.sh,
+      isTable: s.view === 'table', isKanban: s.view === 'kanban',
+      printPage: () => window.print(),
+      newOrder: () => this.toast('نموذج الطلبية الجديدة — ضمن المرحلة التالية.'),
+      statTiles,
+      q: s.q, onQ: (e) => setF({ q: e.target.value }),
+      stF: s.stF, onStF: (e) => setF({ stF: e.target.value }),
+      opF: s.opF, onOpF: (e) => setF({ opF: e.target.value }),
+      tierF: s.tierF, onTierF: (e) => setF({ tierF: e.target.value }),
+      fromF: s.fromF, onFromF: (e) => setF({ fromF: e.target.value }),
+      toF: s.toF, onToF: (e) => setF({ toF: e.target.value }),
+      opOptions: d ? [...new Set(d.ORDERS.map(o => o.op))].map(v => ({ v })) : [],
+      hasFilters, clearFilters: () => this.setState({ q: '', stF: '', opF: '', tierF: '', fromF: '', toF: '', lateOnly: false, page: 1 }),
+      rows, empty: d && fl.length === 0, kanban,
+      pages, pageRange: from + '–' + to,
+      prevPage: () => this.setState(st => ({ page: Math.max(1, st.page - 1) })),
+      nextPage: () => this.setState(st => ({ page: Math.min(totalPages, st.page + 1) })),
+      prevDis: page <= 1, nextDis: page >= totalPages,
+      prevOp: page <= 1 ? 0.4 : 1, nextOp: page >= totalPages ? 0.4 : 1,
+      toasts: s.toasts.map(t => ({
+        msg: t.msg, bar: 'var(--st-approved-base)',
+        close: () => this.setState(st => ({ toasts: st.toasts.filter(x => x.id !== t.id) })),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

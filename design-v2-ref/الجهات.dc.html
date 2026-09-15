@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+  <style>
+    @media print { [data-noprint] { display: none !important; } body { background: #fff !important; } }
+  </style>
+</helmet>
+
+<div dir="rtl" data-screen-label="الجهات" style="display:flex;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <aside data-noprint="1" style="width:{{ sideW }};flex:none;background:var(--side-bg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width var(--dur-base) var(--ease-out);overflow:hidden;--focus-color:var(--focus-color-on-dark)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--side-border);min-height:58px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:14px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="line-height:1.2;white-space:nowrap">
+          <div style="font-size:14.5px;font-weight:700;color:#fff">مسار</div>
+          <div style="font-size:10px;color:var(--side-fg-2)">الإدارة العليا · نفط الوسط</div>
+        </div>
+        <span style="margin-inline-start:auto;font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--side-fg);background:var(--side-count);border-radius:4px;padding:2px 6px">v2</span>
+      </sc-if>
+    </div>
+    <nav aria-label="التنقل الرئيسي" style="flex:1;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden">
+      <sc-for list="{{ navPrimary }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:13px;font-weight:{{ n.fw }};text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-active);text-decoration:none">
+          <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span>
+            <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;font-weight:600;background:{{ n.countBg }};color:{{ n.countFg }};border-radius:999px;padding:1px 8px">{{ n.count }}</span></sc-if>
+          </sc-if>
+        </a>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 14px;border-top:1px solid var(--side-border)">
+      <button onClick="{{ toggleSide }}" title="طي / بسط الشريط" style="display:flex;align-items:center;gap:9px;width:100%;padding:8px 6px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ collapseCaret }};transition:transform var(--dur-base) var(--ease-out)"><path d="M9 18l6-6-6-6"></path></svg>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>طي الشريط</span></sc-if>
+      </button>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header data-noprint="1" style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:58px;padding:0 22px;background:color-mix(in srgb, var(--bg-card) 80%, transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border-bottom:1px solid var(--border-1)">
+      <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap">
+        <a href="لوحة التحكم.dc.html" style="color:var(--text-muted);font-weight:400">لوحة الإدارة</a>
+        <span style="color:var(--text-disabled)">/</span>
+        <span style="font-weight:600">الجهات — سجل المشغّلين</span>
+      </div>
+      <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px">
+        <button onClick="{{ toggleTheme }}" title="تبديل الوضع" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+          <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+        </button>
+        <a href="قائمة الطلبيات.dc.html" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:6px;border:1px solid var(--border-1);color:var(--text-3);font-size:12px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">قائمة الطلبيات</a>
+        <button onClick="{{ logout }}" title="م. مصطفى الكرخي — تسجيل الخروج" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--grad-brand);color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer">مص</button>
+      </div>
+    </header>
+
+    <div style="flex:1;padding:26px 26px 60px">
+      <div style="max-width:1280px;margin:0 auto">
+
+        <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <div>
+            <h1 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-0.01em">الجهات — سجل المشغّلين</h1>
+            <div style="font-size:12.5px;color:var(--text-3);margin-top:4px">المقاولون الرئيسيون المتعاقدون على الحقول — الأرقام مشتقة من سجل الطلبيات والعقود</div>
+          </div>
+          <div style="margin-inline-start:auto;position:relative;min-width:240px">
+            <span style="position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></span>
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="بحث بالاسم أو الحقل أو جهة الاتصال…" style="width:100%;height:34px;padding:0 32px 0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;outline:none" />
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:11px 14px;min-width:0">
+              <div style="font-size:10.5px;font-weight:600;color:var(--text-muted);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.label }}</div>
+              <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap">{{ k.v }}</span><span style="font-size:10px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="9">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)" style-hover="box-shadow:var(--shadow-2);transform:translateY(-1px)">
+              <div style="display:flex;align-items:center;gap:11px">
+                <span style="width:40px;height:40px;flex:none;border-radius:9px;background:var(--grad-brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">{{ c.init }}</span>
+                <span style="min-width:0;line-height:1.4">
+                  <span style="display:block;font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.name }}</span>
+                  <span style="display:block;font-size:10.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.country }} · {{ c.fields }}</span>
+                </span>
+                <sc-if value="{{ c.hasLate }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;flex:none;font-size:9px;font-weight:700;padding:1.5px 8px;border-radius:999px;background:var(--st-late-bg);color:var(--st-late-fg);border:1px solid var(--st-late-bd);white-space:nowrap"><span style="font-family:var(--font-mono)">{{ c.lateN }}</span> متأخرة</span></sc-if>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+                <sc-for list="{{ c.stats }}" as="st" hint-placeholder-count="4">
+                  <div style="background:var(--bg-muted);border-radius:6px;padding:7px 4px;text-align:center;min-width:0">
+                    <div style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:13.5px;font-weight:700;color:{{ st.fg }};font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden">{{ st.v }}</div>
+                    <div style="font-size:9px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ st.k }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;border-top:1px dashed var(--border-1);padding-top:10px">
+                <span style="min-width:0;flex:1;line-height:1.4">
+                  <span style="display:block;font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.contact }}</span>
+                  <span style="display:block;font-size:9.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.role }}</span>
+                </span>
+                <a href="{{ c.href }}" style="flex:none;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:5px;border:1px solid var(--border-2);color:var(--text-3);font-size:11px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">
+                  طلبيات المشغّل
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+                </a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 20px">
+            <span style="font-size:12.5px;color:var(--text-muted)">لا توجد جهات مطابقة للبحث.</span>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;collapsed&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = { theme: 'light', collapsed: false, data: null, q: '' };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+    if (this.props.collapsed) this.setState({ collapsed: true });
+    import('./orders-data.js').then((m) => this.setState({ data: m }));
+  }
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+
+  renderVals() {
+    const s = this.state, d = s.data;
+    const expanded = !s.collapsed;
+    const ops = d ? Object.keys(d.OPERATORS) : [];
+    const ordersOf = (op) => d.ORDERS.filter(o => o.op === op);
+    const isLate = (o) => o.dev > 0 && (o.st === 'pending' || o.st === 'approved' || o.st === 'preparing');
+    const isActive = (o) => o.st === 'pending' || o.st === 'approved' || o.st === 'preparing';
+
+    const navPrimary = [
+      { label: 'المتابعة', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6', href: 'لوحة التحكم.dc.html', count: 7 },
+      { label: 'المناقصات', icon: 'M3 6h18 M7 12h14 M3 18h12', href: 'قائمة الطلبيات.dc.html', count: d ? d.ORDERS.length : 12 },
+      { label: 'سلسلة الموافقات', icon: 'M20 6L9 17l-5-5', href: 'سلسلة الموافقات.dc.html', count: 2 },
+      { label: 'العقود', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', href: 'العقود.dc.html', count: d ? d.CONTRACTS.length : 6 },
+      { label: 'الجهات', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3 M8 15h3', href: 'الجهات.dc.html', count: ops.length || 9, on: true },
+    ].map(n => ({
+      ...n,
+      bg: n.on ? 'var(--side-active)' : 'transparent', fg: n.on ? '#FFFFFF' : 'var(--side-fg)', fw: n.on ? 700 : 500,
+      cur: n.on ? 'page' : undefined, hasCount: !!n.count, count: String(n.count),
+      countBg: n.on ? 'rgba(255,255,255,.2)' : 'var(--side-count)', countFg: n.on ? '#fff' : 'var(--side-fg)',
+    }));
+
+    const fields = d ? [...new Set(d.ORDERS.map(o => o.field))] : [];
+    const activeN = d ? d.ORDERS.filter(isActive).length : 0;
+    const totalV = d ? d.ORDERS.reduce((a, o) => a + o.value, 0) : 0;
+    const kpis = [
+      { label: 'المشغّلون المسجلون', v: String(ops.length), sub: 'مقاول رئيسي' },
+      { label: 'الحقول والرقع', v: String(fields.length), sub: 'موقع عمليات' },
+      { label: 'طلبيات نشطة', v: String(activeN), sub: 'قيد المسار حالياً' },
+      { label: 'قيمة المحفظة', v: '$' + (totalV / 1e6).toFixed(1) + 'M', sub: 'إجمالي الطلبيات المسجلة' },
+    ];
+
+    const cards = d ? ops.filter(op => {
+      const m = d.OPERATORS[op];
+      const flds = [...new Set(ordersOf(op).map(o => o.field))].join('، ');
+      return !s.q || op.includes(s.q) || flds.includes(s.q) || m.contact.includes(s.q);
+    }).map(op => {
+      const m = d.OPERATORS[op], list = ordersOf(op);
+      const flds = [...new Set(list.map(o => o.field))];
+      const lateN = list.filter(isLate).length;
+      const v = list.reduce((a, o) => a + o.value, 0);
+      const cn = d.CONTRACTS.filter(c => c.op === op).length;
+      return {
+        name: op, init: op.trim().slice(0, 2), country: m.country,
+        fields: flds.join('، ') || '—',
+        contact: m.contact, role: m.role,
+        hasLate: lateN > 0, lateN: String(lateN),
+        href: 'قائمة الطلبيات.dc.html?op=' + encodeURIComponent(op),
+        stats: [
+          { k: 'طلبيات', v: String(list.length), fg: 'var(--text-1)' },
+          { k: 'نشطة', v: String(list.filter(isActive).length), fg: 'var(--text-1)' },
+          { k: 'عقود', v: String(cn), fg: 'var(--text-1)' },
+          { k: 'القيمة', v: v >= 1e6 ? '$' + (v / 1e6).toFixed(1) + 'M' : '$' + Math.round(v / 1e3) + 'K', fg: 'var(--text-1)' },
+        ],
+      };
+    }).sort((a, b) => Number(b.stats[0].v) - Number(a.stats[0].v)) : [];
+
+    return {
+      sideW: s.collapsed ? '72px' : '260px', expanded,
+      collapseCaret: s.collapsed ? 'rotate(180deg)' : 'none',
+      toggleSide: () => this.setState(st => ({ collapsed: !st.collapsed })),
+      navPrimary,
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      logout: () => { window.location.href = 'تسجيل الدخول.dc.html'; },
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      kpis, cards, empty: d && cards.length === 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

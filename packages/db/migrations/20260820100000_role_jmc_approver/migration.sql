@@ -1,0 +1,17 @@
+-- Client request 19ب (2026-08-20): the tier model made اللجنة المشتركة (JMC) a first-class
+-- approving body for the ط2 band, but no role could hold that seat. `JMC_APPROVER` is that seat.
+--
+-- ADD VALUE, not a rename: nothing is being re-spelled here (that was ق2's ROC_ADMIN→MDOC_ADMIN).
+-- A new authority is being constituted, so every existing User row keeps the role it already has
+-- and no row is touched by this migration at all.
+--
+-- AFTER 'MDOC_ADMIN' places the value where the ladder places the body — above the operating
+-- company's own band, below the parent company's — so `ORDER BY role` reads as the governance
+-- hierarchy rather than as insertion order.
+--
+-- IF NOT EXISTS makes the statement idempotent, which matters because ALTER TYPE ... ADD VALUE is
+-- not transactional on PostgreSQL < 12: a partially applied migration must be re-runnable.
+-- Requires PostgreSQL >= 12 (ADD VALUE inside a transaction block); provider is postgresql. The
+-- value is not USED in this transaction — the seed writes JMC accounts in a separate session,
+-- which is the restriction PG 12 still enforces.
+ALTER TYPE "Role" ADD VALUE IF NOT EXISTS 'JMC_APPROVER' AFTER 'MDOC_ADMIN';

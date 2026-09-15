@@ -10,7 +10,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit -p packages/working-days && tsc --noEmit -p packages/scpp-rules && tsc --noEmit -p packages/ui && tsc --noEmit -p apps/web && tsc --noEmit -p apps/api",
+    "typecheck": "tsc --noEmit -p packages/working-days && tsc --noEmit -p packages/scpp-rules && tsc --noEmit -p packages/ui && tsc --noEmit -p packages/db && tsc --noEmit -p apps/web && tsc --noEmit -p apps/api",
     "build": "npm run build -w @masaar/web",
     "dev": "npm run dev -w @masaar/web",
     "dev:api": "npm run dev -w @masaar/api",

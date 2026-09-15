@@ -1,4 +1,4 @@
-import { calendarDaysBetween, type DateInput } from '@masaar/working-days';
+import { calendarDaysBetween, workingDaysBetween, type DateInput, type WorkingCalendar } from '@masaar/working-days';
 
 /**
  * Deviation engine: actual vs planned per stage.
@@ -8,6 +8,23 @@ import { calendarDaysBetween, type DateInput } from '@masaar/working-days';
 /** actual − planned, in calendar days. Positive = late. */
 export function stageDeviationDays(plannedEnd: DateInput, actualEnd: DateInput): number {
   return calendarDaysBetween(plannedEnd, actualEnd);
+}
+
+/**
+ * actual − planned in WORKING days (Fri/Sat weekend excluded), signed.
+ * Positive = late, negative = early, 0 = on time. This is the deviation the
+ * UI shows: SCPP durations and slippage are measured in working days, never
+ * raw calendar days (redesign rule 6 — deviation is computed, not entered).
+ */
+export function stageDeviationWorkingDays(
+  plannedEnd: DateInput,
+  actualEnd: DateInput,
+  cal?: WorkingCalendar,
+): number {
+  const late = workingDaysBetween(plannedEnd, actualEnd, cal);
+  if (late > 0) return late;
+  const early = workingDaysBetween(actualEnd, plannedEnd, cal);
+  return early > 0 ? -early : 0;
 }
 
 export interface StageRecord {

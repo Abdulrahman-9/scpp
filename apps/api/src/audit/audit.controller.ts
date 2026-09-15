@@ -8,7 +8,7 @@ export class AuditController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  @Roles('SUPER_ADMIN', 'ROC_ADMIN', 'AUDITOR')
+  @Roles('SUPER_ADMIN', 'MDOC_ADMIN', 'AUDITOR')
   list(@Query('take') take?: string) {
     return this.prisma.auditLog.findMany({
       orderBy: { ts: 'desc' },

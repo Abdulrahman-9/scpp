@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+  <style>
+    @media print { [data-noprint] { display: none !important; } body { background: #fff !important; } }
+  </style>
+</helmet>
+
+<div dir="rtl" data-screen-label="سلسلة الموافقات" style="display:flex;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <aside data-noprint="1" style="width:{{ sideW }};flex:none;background:var(--side-bg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width var(--dur-base) var(--ease-out);overflow:hidden;--focus-color:var(--focus-color-on-dark)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--side-border);min-height:58px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:14px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="line-height:1.2;white-space:nowrap">
+          <div style="font-size:14.5px;font-weight:700;color:#fff">مسار</div>
+          <div style="font-size:10px;color:var(--side-fg-2)">الإدارة العليا · نفط الوسط</div>
+        </div>
+        <span style="margin-inline-start:auto;font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--side-fg);background:var(--side-count);border-radius:4px;padding:2px 6px">v2</span>
+      </sc-if>
+    </div>
+    <nav aria-label="التنقل الرئيسي" style="flex:1;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden">
+      <sc-for list="{{ navPrimary }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ n.go }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:13px;font-weight:{{ n.fw }};text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-active);text-decoration:none">
+          <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span>
+            <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;font-weight:600;background:{{ n.countBg }};color:{{ n.countFg }};border-radius:999px;padding:1px 8px">{{ n.count }}</span></sc-if>
+          </sc-if>
+        </a>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 14px;border-top:1px solid var(--side-border)">
+      <button onClick="{{ toggleSide }}" title="طي / بسط الشريط" style="display:flex;align-items:center;gap:9px;width:100%;padding:8px 6px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ collapseCaret }};transition:transform var(--dur-base) var(--ease-out)"><path d="M9 18l6-6-6-6"></path></svg>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>طي الشريط</span></sc-if>
+      </button>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header data-noprint="1" style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:58px;padding:0 22px;background:color-mix(in srgb, var(--bg-card) 80%, transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border-bottom:1px solid var(--border-1)">
+      <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap">
+        <a href="لوحة التحكم.dc.html" style="color:var(--text-muted);font-weight:400">لوحة الإدارة</a>
+        <span style="color:var(--text-disabled)">/</span>
+        <span style="font-weight:600">سلسلة الموافقات</span>
+      </div>
+      <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px">
+        <button onClick="{{ toggleTheme }}" title="تبديل الوضع" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+          <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+        </button>
+        <a href="قائمة الطلبيات.dc.html" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:6px;border:1px solid var(--border-1);color:var(--text-3);font-size:12px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">قائمة الطلبيات</a>
+        <button onClick="{{ logout }}" title="م. مصطفى الكرخي — تسجيل الخروج" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--grad-brand);color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer">مص</button>
+      </div>
+    </header>
+
+    <div style="flex:1;padding:26px 26px 60px">
+      <div style="max-width:1280px;margin:0 auto">
+
+        <div style="margin-bottom:18px">
+          <h1 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-0.01em">سلسلة الموافقات</h1>
+          <div style="font-size:12.5px;color:var(--text-3);margin-top:4px">سجل مشتق تلقائياً — الطلبيات التي تحتاج توقيعاً خارج صلاحية المشغّل. طلبيات <span style="font-weight:600">ط1</span> لا تظهر هنا لأنها لا تفتح أي بوابة.</div>
+        </div>
+
+        <div data-noprint="1" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+          <sc-for list="{{ statTiles }}" as="k" hint-placeholder-count="4">
+            <button onClick="{{ k.go }}" title="{{ k.label }}" style="text-align:start;background-color:{{ k.fill }};background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 52%,rgba(2,6,23,.08));border:{{ k.bd }};border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 1px 3px rgba(15,23,42,.12);padding:12px 14px;cursor:pointer;font:inherit;display:flex;align-items:center;gap:12px;min-width:0;transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out)" style-hover="box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 12px 26px rgba(15,23,42,.22);transform:translateY(-2px);filter:brightness(1.07)" style-active="transform:translateY(0);filter:brightness(.97)">
+              <span style="font-family:var(--font-mono);direction:ltr;font-size:26px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums">{{ k.n }}</span>
+              <span style="min-width:0;line-height:1.4">
+                <span style="display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.label }}</span>
+                <span style="display:block;font-size:9.5px;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div data-noprint="1" style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <div style="position:relative;flex:2;min-width:200px">
+            <span style="position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></span>
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="بحث بالرقم أو العنوان أو المشغّل…" style="width:100%;height:34px;padding:0 32px 0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;outline:none" />
+          </div>
+          <div style="display:flex;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:2px">
+            <sc-for list="{{ gateSeg }}" as="g" hint-placeholder-count="3">
+              <button onClick="{{ g.go }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ g.bg }};color:{{ g.fg }};box-shadow:{{ g.sh }};transition:background var(--dur-fast) var(--ease-out);white-space:nowrap">{{ g.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:2px">
+            <sc-for list="{{ decSeg }}" as="g" hint-placeholder-count="4">
+              <button onClick="{{ g.go }}" style="border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:5px;background:{{ g.bg }};color:{{ g.fg }};box-shadow:{{ g.sh }};transition:background var(--dur-fast) var(--ease-out);white-space:nowrap">{{ g.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start">
+          <div style="min-width:0;background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow-x:auto">
+            <div style="display:grid;grid-template-columns:110px 1.9fr 100px 118px 108px 112px 168px;gap:10px;min-width:920px;padding:9px 16px;background:var(--bg-muted);border-bottom:1px solid var(--border-1);font-size:11px;font-weight:600;color:var(--text-muted)">
+              <span>رقم الطلبية</span><span>العنوان والمشغّل</span><span style="text-align:left">القيمة</span><span>البوابة المنتظرة</span><span>مُقدَّمة منذ</span><span>القرار</span><span>الإجراء</span>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:110px 1.9fr 100px 118px 108px 112px 168px;gap:10px;min-width:920px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-1);transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                <a href="{{ r.href }}" style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;font-weight:600;color:var(--link)">{{ r.code }}</a>
+                <span style="min-width:0"><span style="display:block;font-size:12.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span><span style="display:block;font-size:10px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.op }}</span></span>
+                <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2);text-align:left;font-variant-numeric:tabular-nums">{{ r.value }}</span>
+                <span><span style="display:inline-flex;align-items:center;gap:4px;padding:1.5px 8px;border-radius:5px;background:{{ r.tierBg }};color:{{ r.tierFg }};border:1px solid {{ r.tierBd }};font-size:9.5px;font-weight:700;white-space:nowrap"><span style="font-family:var(--font-mono)">{{ r.tierN }}</span>{{ r.tierLabel }}</span></span>
+                <span style="font-size:11px;color:{{ r.waitFg }}"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600">{{ r.waitN }}</span> {{ r.waitUnit }}</span>
+                <span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;border:1px solid {{ r.decBd }};background:{{ r.decBg }};color:{{ r.decFg }};font-size:10px;font-weight:600;white-space:nowrap"><span style="width:5px;height:5px;border-radius:50%;background:{{ r.decDot }}"></span>{{ r.decLabel }}</span></span>
+                <span style="display:flex;gap:6px;align-items:center;min-width:0">
+                  <sc-if value="{{ r.isPending }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ r.ratify }}" style="display:inline-flex;align-items:center;gap:5px;height:27px;padding:0 11px;border-radius:5px;border:none;background-color:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:11px;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28)" style-hover="background-color:var(--btn-primary-hover)">
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                      مصادقة
+                    </button>
+                    <button onClick="{{ r.ret }}" style="display:inline-flex;align-items:center;gap:5px;height:27px;padding:0 11px;border-radius:5px;border:1px solid var(--st-cancelled-bd);background:var(--st-cancelled-bg);color:var(--st-cancelled-fg);font:inherit;font-size:11px;font-weight:700;cursor:pointer" style-hover="filter:brightness(.97)">إعادة</button>
+                  </sc-if>
+                  <sc-if value="{{ r.decided }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:10px;color:var(--text-muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.by }} · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ r.on }}</span></span>
+                  </sc-if>
+                </span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 20px">
+                <span style="width:52px;height:52px;border-radius:50%;background:var(--st-approved-bg);border:1px solid var(--st-approved-bd);display:inline-flex;align-items:center;justify-content:center;color:var(--st-approved-fg)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+                <span style="font-size:12.5px;color:var(--text-muted)">لا توجد طلبيات مطابقة للتصفية الحالية.</span>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:10px">سلّم الصلاحية المالية</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="3">
+                  <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:6px;background:var(--bg-muted);border-inline-start:3px solid {{ l.bar }}">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:700;color:{{ l.barFg }};flex:none;margin-top:1px">{{ l.n }}</span>
+                    <span style="line-height:1.5;min-width:0">
+                      <span style="display:block;font-size:11.5px;font-weight:700">{{ l.name }}</span>
+                      <span style="display:block;font-size:10.5px;color:var(--text-3);text-wrap:pretty">{{ l.desc }}</span>
+                    </span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:10px;line-height:1.6;border-top:1px dashed var(--border-1);padding-top:8px">قيم السقوف تُحدَّد في عقد الخدمة لكل مشغّل (SCPP §7) — تحريك السقف يعيد اشتقاق هذا السجل دون تعديل أي طلبية.</div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:10px">قرارات هذه الجلسة</div>
+              <sc-if value="{{ noSession }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.6">لا قرارات مسجلة بعد. كل مصادقة أو إعادة تُدرَج هنا وفي سجل الطلبية.</div>
+              </sc-if>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ sessionRows }}" as="sd" hint-placeholder-count="0">
+                  <div style="display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:6px;background:var(--bg-muted);animation:pop-in var(--dur-base) var(--ease-out)">
+                    <span style="width:7px;height:7px;border-radius:50%;background:{{ sd.dot }};flex:none;margin-top:5px"></span>
+                    <span style="min-width:0;line-height:1.5">
+                      <span style="display:block;font-size:11.5px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600;color:var(--link)">{{ sd.code }}</span> — <span style="font-weight:700;color:{{ sd.fg }}">{{ sd.kind }}</span></span>
+                      <sc-if value="{{ sd.hasNote }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:10.5px;color:var(--text-2)">{{ sd.note }}</span></sc-if>
+                      <span style="display:block;font-size:9.5px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ sd.on }}</span>
+                    </span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- مودال المصادقة -->
+  <sc-if value="{{ ratifyOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-noprint="1" style="position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div onClick="{{ closeModals }}" style="position:absolute;inset:0;background:rgba(2,6,23,.45);backdrop-filter:blur(4px);animation:fade-in 120ms var(--ease-out)"></div>
+      <div role="dialog" aria-label="تسجيل المصادقة" style="position:relative;width:460px;max-width:100%;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-pop);animation:pop-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-1)">
+          <span style="width:34px;height:34px;border-radius:8px;background:var(--st-approved-bg);border:1px solid var(--st-approved-bd);color:var(--st-approved-fg);display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+          <div style="line-height:1.35"><div style="font-size:14px;font-weight:700">تسجيل المصادقة</div><div style="font-size:11px;color:var(--text-muted)">بوابة {{ mTierLabel }}</div></div>
+          <button onClick="{{ closeModals }}" aria-label="إغلاق" style="margin-inline-start:auto;width:30px;height:30px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:13px;line-height:1.7">هل تريد تسجيل مصادقة <span style="font-weight:700">{{ mTierLabel }}</span> على الطلبية <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600;color:var(--link)">{{ mCode }}</span>؟</div>
+          <div style="background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:10px 12px;font-size:11.5px;line-height:1.7">
+            <div style="font-weight:600;margin-bottom:2px">{{ mTitle }}</div>
+            <div style="color:var(--text-3)">{{ mOp }} · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ mValue }}</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.7">بعد التأكيد: يُسجَّل القرار باسم <span style="font-weight:600;color:var(--text-2)">م. مصطفى الكرخي — نفط الوسط</span> بتاريخ <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ today }}</span>، وتخرج الطلبية من قائمة الانتظار.</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border-1)">
+          <button onClick="{{ confirmRatify }}" style="flex:1;height:36px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15)" style-hover="background-color:var(--btn-primary-hover)">تأكيد المصادقة</button>
+          <button onClick="{{ closeModals }}" style="height:36px;padding:0 16px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--btn-ghost-hover)">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- مودال الإعادة -->
+  <sc-if value="{{ returnOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-noprint="1" style="position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div onClick="{{ closeModals }}" style="position:absolute;inset:0;background:rgba(2,6,23,.45);backdrop-filter:blur(4px);animation:fade-in 120ms var(--ease-out)"></div>
+      <div role="dialog" aria-label="إعادة الطلبية" style="position:relative;width:460px;max-width:100%;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-pop);animation:pop-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-1)">
+          <span style="width:34px;height:34px;border-radius:8px;background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);color:var(--st-cancelled-fg);display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></span>
+          <div style="line-height:1.35"><div style="font-size:14px;font-weight:700">إعادة الطلبية للمشغّل</div><div style="font-size:11px;color:var(--text-muted)">قرار بوابة {{ mTierLabel }}</div></div>
+          <button onClick="{{ closeModals }}" aria-label="إغلاق" style="margin-inline-start:auto;width:30px;height:30px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:13px;line-height:1.7">إعادة الطلبية <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600;color:var(--link)">{{ mCode }}</span> إلى <span style="font-weight:700">{{ mOp }}</span> دون مصادقة.</div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;margin-bottom:6px">سبب الإعادة <span style="color:var(--st-cancelled-fg)">*</span> <span style="font-weight:400;color:var(--text-muted)">(إلزامي — يُبلَّغ للمشغّل ويُدرَج في السجل)</span></div>
+            <textarea value="{{ retNotes }}" onChange="{{ onRetNotes }}" rows="3" placeholder="نقص في وثائق الكلفة التخمينية، مخالفة لاشتراطات المسار…" style="width:100%;padding:9px 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;resize:vertical;outline:none"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border-1)">
+          <button onClick="{{ confirmReturn }}" disabled="{{ retDis }}" style="flex:1;height:36px;border-radius:6px;border:none;background:var(--btn-danger-bg);color:var(--btn-danger-fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;opacity:{{ retOp }}" style-hover="background:var(--btn-danger-hover)">تأكيد الإعادة</button>
+          <button onClick="{{ closeModals }}" style="height:36px;padding:0 16px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--btn-ghost-hover)">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid {{ t.bar }};border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px;min-width:260px;animation:toast-in var(--dur-base) var(--ease-out)">
+        <span style="color:{{ t.bar }};display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+        <span style="font-size:12.5px;color:var(--text-1)">{{ t.msg }}</span>
+        <button onClick="{{ t.close }}" aria-label="إغلاق" style="margin-inline-start:auto;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;padding:2px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;collapsed&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'light', collapsed: false, data: null,
+    q: '', gateF: '', decF: '',
+    ratifyTarget: null, returnTarget: null, retNotes: '',
+    decisions: {}, session: [], toasts: [],
+  };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+    if (this.props.collapsed) this.setState({ collapsed: true });
+    import('./orders-data.js').then((m) => this.setState({ data: m }));
+    this._onKey = (e) => { if (e.key === 'Escape') this.setState({ ratifyTarget: null, returnTarget: null }); };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+  toast(msg) {
+    const id = Date.now() + Math.random();
+    this.setState(s => ({ toasts: [...s.toasts, { id, msg }] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 4000);
+  }
+  today() { return new Date().toISOString().slice(0, 10); }
+  tierChip(t) {
+    const dark = this.state.theme === 'dark';
+    if (t === 't3') return dark ? { bg: '#1E40AF', fg: '#EFF6FF', bd: '#1E40AF' } : { bg: 'var(--primary-900)', fg: '#EFF6FF', bd: 'var(--primary-900)' };
+    return dark ? { bg: 'rgba(59,130,246,.24)', fg: '#BFDBFE', bd: 'rgba(96,165,250,.4)' } : { bg: 'var(--primary-100)', fg: 'var(--primary-800)', bd: 'var(--primary-300)' };
+  }
+  gateBody(t) { return t === 't3' ? 'نفط الوسط MDOC' : 'اللجنة المشتركة JMC'; }
+  chain() {
+    const d = this.state.data;
+    if (!d) return [];
+    return d.ORDERS.filter(o => o.tier !== 't1' && o.st !== 'cancelled');
+  }
+  // القرار المشتق: قرار الجلسة أولاً، ثم حالة الطلبية
+  decisionOf(o) {
+    const local = this.state.decisions[o.code];
+    if (local) return local;
+    if (o.st === 'pending') return { kind: 'pending' };
+    const logOk = (o.log || []).filter(l => l.action.includes('اعتماد') || l.action.includes('مصادقة'));
+    const on = logOk.length ? logOk[logOk.length - 1].date : this.state.data.addDays(o.submitted, 12);
+    return { kind: 'ratified', by: this.gateBody(o.tier), on };
+  }
+
+  renderVals() {
+    const s = this.state, d = s.data;
+    const expanded = !s.collapsed;
+    const chain = this.chain();
+    const seg = (on) => ({ bg: on ? 'var(--bg-card)' : 'transparent', fg: on ? 'var(--text-1)' : 'var(--text-3)', sh: on ? 'var(--shadow-1)' : 'none' });
+
+    const decOf = (o) => this.decisionOf(o);
+    const pendJmc = chain.filter(o => o.tier === 't2' && decOf(o).kind === 'pending');
+    const pendMdoc = chain.filter(o => o.tier === 't3' && decOf(o).kind === 'pending');
+    const month = this.today().slice(0, 7);
+    const ratMonth = chain.filter(o => { const x = decOf(o); return x.kind === 'ratified' && String(x.on).slice(0, 7) === month; });
+    const returned = chain.filter(o => decOf(o).kind === 'returned');
+    const pendingN = pendJmc.length + pendMdoc.length;
+
+    const navPrimary = [
+      { label: 'المتابعة', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6', href: 'لوحة التحكم.dc.html', count: 7 },
+      { label: 'المناقصات', icon: 'M3 6h18 M7 12h14 M3 18h12', href: 'قائمة الطلبيات.dc.html', count: d ? d.ORDERS.length : 12 },
+      { label: 'سلسلة الموافقات', icon: 'M20 6L9 17l-5-5', href: 'سلسلة الموافقات.dc.html', count: pendingN, on: true },
+      { label: 'العقود', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', count: 6, href: 'العقود.dc.html' },
+      { label: 'الجهات', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3 M8 15h3', count: 9, href: 'الجهات.dc.html' },
+    ].map(n => ({
+      ...n, href: n.href || '#',
+      go: n.href !== '#' ? undefined : (e) => { e.preventDefault(); this.toast('شاشة «' + n.t + '» — ضمن المرحلة التالية.'); },
+      bg: n.on ? 'var(--side-active)' : 'transparent', fg: n.on ? '#FFFFFF' : 'var(--side-fg)', fw: n.on ? 700 : 500,
+      cur: n.on ? 'page' : undefined, hasCount: !!n.count, count: String(n.count),
+      countBg: n.on ? 'rgba(255,255,255,.2)' : 'var(--side-count)', countFg: n.on ? '#fff' : 'var(--side-fg)',
+    }));
+
+    const mdocFill = s.theme === 'dark' ? '#1E40AF' : '#172554';
+    const tileGo = (patch) => () => this.setState({ gateF: '', decF: '', ...patch });
+    const statTiles = [
+      { label: 'بانتظار اللجنة المشتركة', sub: 'بوابة ط2 — قرارات معلقة', n: String(pendJmc.length), fill: 'var(--primary-700)', go: tileGo({ gateF: 't2', decF: 'pending' }), active: s.gateF === 't2' && s.decF === 'pending' },
+      { label: 'بانتظار نفط الوسط', sub: 'بوابة ط3 — قرارات معلقة', n: String(pendMdoc.length), fill: mdocFill, go: tileGo({ gateF: 't3', decF: 'pending' }), active: s.gateF === 't3' && s.decF === 'pending' },
+      { label: 'صودق هذا الشهر', sub: 'قرارات الشهر الجاري', n: String(ratMonth.length), fill: 'var(--st-approved-base)', go: tileGo({ decF: 'ratified' }), active: !s.gateF && s.decF === 'ratified' },
+      { label: 'أعيدت للمشغّل', sub: 'دون مصادقة — مع السبب', n: String(returned.length), fill: 'var(--st-late-base)', go: tileGo({ decF: 'returned' }), active: !s.gateF && s.decF === 'returned' },
+    ].map(k => ({ ...k, bd: k.active ? '2px solid rgba(255,255,255,.75)' : '1px solid rgba(255,255,255,.24)' }));
+
+    const gateSeg = [
+      { k: '', label: 'كل البوابات' }, { k: 't2', label: 'ط2 اللجنة المشتركة' }, { k: 't3', label: 'ط3 نفط الوسط' },
+    ].map(g => ({ label: g.label, ...seg(s.gateF === g.k), go: () => this.setState({ gateF: g.k }) }));
+    const decSeg = [
+      { k: '', label: 'كل القرارات' }, { k: 'pending', label: 'بانتظار القرار' }, { k: 'ratified', label: 'صودق' }, { k: 'returned', label: 'أعيدت' },
+    ].map(g => ({ label: g.label, ...seg(s.decF === g.k), go: () => this.setState({ decF: g.k }) }));
+
+    const decMeta = {
+      pending: { label: 'بانتظار القرار', bg: 'var(--st-pending-bg)', fg: 'var(--st-pending-fg)', bd: 'var(--st-pending-bd)', dot: 'var(--st-pending-base)' },
+      ratified: { label: 'صودق', bg: 'var(--st-approved-bg)', fg: 'var(--st-approved-fg)', bd: 'var(--st-approved-bd)', dot: 'var(--st-approved-base)' },
+      returned: { label: 'أعيدت للمشغّل', bg: 'var(--st-late-bg)', fg: 'var(--st-late-fg)', bd: 'var(--st-late-bd)', dot: 'var(--st-late-base)' },
+    };
+    const days = (from) => Math.max(0, Math.round((Date.now() - new Date(from + 'T00:00:00')) / 864e5));
+
+    const fl = chain.filter(o => {
+      const x = decOf(o);
+      return (!s.q || o.code.includes(s.q) || o.title.includes(s.q) || o.op.includes(s.q)) &&
+        (!s.gateF || o.tier === s.gateF) && (!s.decF || x.kind === s.decF);
+    }).sort((a, b) => (decOf(a).kind === 'pending' ? 0 : 1) - (decOf(b).kind === 'pending' ? 0 : 1) || b.value - a.value);
+
+    const rows = d ? fl.map(o => {
+      const x = decOf(o), m = decMeta[x.kind], tc = this.tierChip(o.tier), tm = d.TIERS[o.tier];
+      const w = days(o.submitted);
+      return {
+        code: o.code, title: o.title, op: o.op, value: d.fmtUSD(o.value),
+        href: 'تفاصيل الطلبية.dc.html?po=' + o.code,
+        tierN: tm.n, tierLabel: tm.label, tierBg: tc.bg, tierFg: tc.fg, tierBd: tc.bd,
+        waitN: String(w), waitUnit: 'يوم', waitFg: x.kind === 'pending' && w > 45 ? 'var(--st-late-fg)' : 'var(--text-3)',
+        decLabel: m.label, decBg: m.bg, decFg: m.fg, decBd: m.bd, decDot: m.dot,
+        isPending: x.kind === 'pending', decided: x.kind !== 'pending',
+        by: x.by || '', on: x.on || '',
+        ratify: () => this.setState({ ratifyTarget: o }),
+        ret: () => this.setState({ returnTarget: o, retNotes: '' }),
+      };
+    }) : [];
+
+    const ladder = [
+      { n: 'ط1', name: 'ضمن صلاحية المشغّل', desc: 'لا بوابة خارجية — لا تظهر في هذا السجل، إبلاغ نفط الوسط للعلم فقط.', bar: 'var(--tier-operator)', barFg: 'var(--tier-operator)' },
+      { n: 'ط2', name: 'بوابة اللجنة المشتركة JMC', desc: 'فوق صلاحية المشغّل — تنتظر مصادقة اللجنة المشتركة قبل المضي بالإحالة.', bar: 'var(--tier-jmc)', barFg: 'var(--tier-jmc)' },
+      { n: 'ط3', name: 'مصادقة نفط الوسط MDOC', desc: 'فوق صلاحية اللجنة — شهود على التقييم ومصادقة النتائج قبل التوقيع.', bar: 'var(--tier-mdoc)', barFg: 'var(--text-1)' },
+    ];
+
+    const sessionRows = s.session.slice().reverse().map(x => ({
+      code: x.code, kind: x.kind === 'ratified' ? 'صودق' : 'أعيدت',
+      fg: x.kind === 'ratified' ? 'var(--st-approved-fg)' : 'var(--st-late-fg)',
+      dot: x.kind === 'ratified' ? 'var(--st-approved-base)' : 'var(--st-late-base)',
+      note: x.note || '', hasNote: !!x.note, on: x.on,
+    }));
+
+    const rt = s.ratifyTarget, rr = s.returnTarget, mo = rt || rr;
+    const canReturn = !!s.retNotes.trim();
+    const record = (o, kind, note) => {
+      const entry = { kind, by: 'م. مصطفى الكرخي — نفط الوسط', on: this.today(), note: note || '' };
+      this.setState(x => ({
+        decisions: { ...x.decisions, [o.code]: entry },
+        session: [...x.session, { code: o.code, ...entry }],
+        ratifyTarget: null, returnTarget: null, retNotes: '',
+      }));
+      this.toast(kind === 'ratified' ? 'تمت المصادقة على ' + o.code + '.' : 'أُعيدت ' + o.code + ' إلى المشغّل.');
+    };
+
+    return {
+      sideW: s.collapsed ? '72px' : '260px', expanded,
+      collapseCaret: s.collapsed ? 'rotate(180deg)' : 'none',
+      toggleSide: () => this.setState(st => ({ collapsed: !st.collapsed })),
+      navPrimary,
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      logout: () => { window.location.href = 'تسجيل الدخول.dc.html'; },
+      statTiles, gateSeg, decSeg,
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      rows, empty: d && fl.length === 0,
+      ladder, sessionRows, noSession: s.session.length === 0,
+      ratifyOpen: !!rt, returnOpen: !!rr,
+      mCode: mo ? mo.code : '', mTitle: mo ? mo.title : '', mOp: mo ? mo.op : '',
+      mValue: mo && d ? d.fmtUSD(mo.value) : '',
+      mTierLabel: mo ? this.gateBody(mo.tier) : '',
+      today: this.today(),
+      closeModals: () => this.setState({ ratifyTarget: null, returnTarget: null }),
+      confirmRatify: () => rt && record(rt, 'ratified'),
+      retNotes: s.retNotes, onRetNotes: (e) => this.setState({ retNotes: e.target.value }),
+      retDis: !canReturn, retOp: canReturn ? 1 : 0.45,
+      confirmReturn: () => rr && canReturn && record(rr, 'returned', s.retNotes.trim()),
+      toasts: s.toasts.map(t => ({
+        msg: t.msg, bar: 'var(--st-approved-base)',
+        close: () => this.setState(st => ({ toasts: st.toasts.filter(x => x.id !== t.id) })),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

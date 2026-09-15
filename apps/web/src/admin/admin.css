@@ -1,0 +1,673 @@
+/* ========================================================================
+   Admin panel — swept to DESIGN-V2-SPEC §4 (BUILD-2 step 3).
+   Reuses the operator shell primitives (op-shell/op-main/op-topbar/op-page)
+   AND, from this wave on, the sidebar itself: `.op-side, .ad-side` is one rule
+   in operator.css. What is left here is what is genuinely admin — the badge,
+   the disclosure, the support block — plus the follow-up room and governance.
+   Tokens only; logical properties only; no colour literal anywhere.
+   ======================================================================== */
+
+/* the environment badge on the navy gradient: sky reads on both stops (4.84 / 6.86 light,
+   7.89 / 8.33 dark) where the light-theme --mark-accent would sink into the panel */
+.ad-side__badge {
+  margin-inline-start: auto;
+  font-size: var(--t-micro);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  color: var(--secondary-400);
+  border: 1px solid var(--side-border);
+  padding: 2px var(--space-2);
+  border-radius: var(--r-pill);
+}
+/* the nav absorbs the free space, so the support and credit blocks — and the collapse button
+   under them — stay bottom-anchored even on the 72px shelf, where the prose blocks are folded
+   away and `margin-block-start: auto` on `.ad-side__sup` has nothing left to push (د3) */
+.ad-nav { display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; }
+
+/* ---- «أدوات ومراجع» — the secondary disclosure (§4-د) ---- */
+.ad-nav__disc {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding-block: 9px;
+  padding-inline: 10px;
+  margin-block-start: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-micro);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  text-align: start;
+  color: var(--side-fg-2);
+  border-radius: var(--r-sm);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.ad-nav__disc:hover { background: var(--side-hover); color: var(--side-fg); }
+/* the current page lives inside the group, so it cannot be folded away — the pointer is told the
+   same thing the accessibility tree is told by aria-disabled, and the hover affordance is dropped */
+.ad-nav__disc[aria-disabled='true'] { cursor: default; }
+.ad-nav__disc[aria-disabled='true']:hover { background: transparent; }
+.ad-nav__caret { flex: none; transition: transform var(--dur-fast) var(--ease-out); }
+/* collapsed the caret points along the reading direction; open it points DOWN. The base glyph
+   (chevronStart) already points inline-start, so RTL needs no rotation and LTR gets the mirror. */
+.ad-nav__disc[aria-expanded='true'] .ad-nav__caret { transform: rotate(-90deg); }
+html[dir='ltr'] .ad-nav__caret { transform: scaleX(-1); }
+html[dir='ltr'] .ad-nav__disc[aria-expanded='true'] .ad-nav__caret { transform: rotate(90deg); }
+
+.ad-nav__sec { display: flex; flex-direction: column; gap: 2px; }
+/* MANDATORY: `display: flex` beats the UA's [hidden] { display: none }, so without this the
+   attribute would be set and nothing would actually hide. */
+.ad-nav__sec[hidden] { display: none; }
+.ad-side__sup { margin-block-start: auto; padding: var(--space-3) 10px; background: var(--side-hover); border-radius: var(--r-sm); }
+.ad-side__sup-l { font-size: var(--t-micro); color: var(--side-fg-2); }
+.ad-side__sup-n { font-size: var(--t-body-sm); font-weight: var(--fw-semibold); color: var(--side-fg); margin-block-start: 2px; }
+/* `.ad-side__sup-r` retired in د3 (س2): the release read «SCPP Rev 1.0» here in a literal while
+   `app.subtitle` said the same thing in i18n — one value in two places, and only one of them
+   translated. The mark now lives in the brand block off `app.rev`, and the older copy is gone
+   rather than left shadowing it. */
+/* the identity mark on the topbar wears the brand gradient in both shells (§1-ج) */
+.ad-avatar { background: var(--grad-brand); color: var(--side-fg); }
+
+/* ---- Follow-up room ----
+   The statistic-tile family (`.ad-kpis` / `.ad-kpi` / the §2-ط filled surface) MOVED to
+   `operator.css` in د15: the operator's own register became its seventh consumer (م2), and
+   `operator.css` is the sheet both shells load — it already owns `.op-side, .ad-side` and the
+   `.ad-modal` family for exactly this reason. The rules travelled verbatim, in order, so the
+   cascade the §2-ط gate resolves (`a.ad-kpi--link` before `a.ad-fill`) is untouched; only their
+   address changed, and the gate now reads them at it. Nothing here re-declares any of them. */
+
+/* ============================================================
+   ق1 — كانبان قراءة-فقط لسجلّ المناقصات
+   ------------------------------------------------------------
+   عرض ثانٍ لنفس الصفوف المصفّاة، لا مصدر ثانٍ لها: الأعمدة هي حالاتنا الأربع
+   المشتقة + «ملغاة» من `lifecycle`، والبطاقة رابط `<a>` حقيقي إلى ملف المراجعة
+   — لا سحب، ولا تغيير حالة من بطاقة (محكوم: القرار مقعده ملف المناقصة).
+   ============================================================ */
+.kb { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-3); align-items: start; }
+@media (max-width: 1100px) { .kb { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .kb { grid-template-columns: minmax(0, 1fr); } }
+.kb__col {
+  background: var(--bg-muted);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-md);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-block-size: 180px;
+  min-inline-size: 0;
+}
+.kb__head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px var(--space-2);
+  /* longhands, not the `border` shorthand: the colour is `.ad-fill`'s to decide, and a shorthand
+     here would silently reset it back to currentColor */
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--r-sm);
+  font-size: var(--t-caption);
+  font-weight: var(--fw-bold);
+}
+.kb__n {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-size: var(--t-micro);
+  font-weight: var(--fw-semibold);
+  padding-inline: 7px;
+  border-radius: var(--r-pill);
+  /* الرقعة **هي** الحبر بشفافية: لا لون رابع على رأس مقيس */
+  background: color-mix(in srgb, var(--status-on-fill) 22%, transparent);
+}
+.kb__card {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-sm);
+  padding: 9px 11px;
+  box-shadow: var(--elev-rest);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.kb__card:hover, .kb__card:focus-visible { box-shadow: var(--elev-hover); transform: translateY(var(--lift)); }
+.kb__top { display: flex; align-items: center; gap: 6px; }
+.kb__code { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-micro); font-weight: var(--fw-semibold); color: var(--link); }
+.kb__t { display: block; font-size: var(--t-body-sm); font-weight: var(--fw-medium); line-height: var(--lh-snug); margin-block: 4px 7px; color: var(--text-1); }
+.kb__foot { display: flex; align-items: center; gap: 6px; }
+.kb__v { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-micro); color: var(--text-3); }
+.kb__dev { margin-inline-start: auto; }
+.kb__empty { font-size: var(--t-caption); color: var(--text-muted); text-align: center; padding-block: var(--space-4); }
+
+/* ---- مبدّل جدول/كانبان — زرّان مضغوطان بعقد `aria-pressed` نفسه الذي تحمله
+        البلاطات-المرشِّحات، فحالة «مختار» تُقرأ بنفس الطريقة في الشاشة كلها ---- */
+/* NOT `overflow: hidden` to round the ends: an outline is drawn OUTSIDE its box, so clipping the
+   group would clip the focus ring of the very buttons it contains. The two ends carry their own
+   logical radii instead, which mirror themselves under LTR for free. */
+.kb-switch { display: inline-flex; border: 1px solid var(--border-control); border-radius: var(--r-sm); }
+.kb-switch > button:first-child { border-start-start-radius: var(--r-sm); border-end-start-radius: var(--r-sm); }
+.kb-switch > button:last-child { border-start-end-radius: var(--r-sm); border-end-end-radius: var(--r-sm); }
+.kb-switch > button {
+  font: inherit;
+  font-size: var(--t-body-sm);
+  block-size: 34px;
+  padding-inline: var(--space-3);
+  border: none;
+  background: var(--bg-card);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.kb-switch > button + button { border-inline-start: 1px solid var(--border-control); }
+.kb-switch > button:hover { background: var(--bg-muted); }
+.kb-switch > button[aria-pressed='true'] { background: var(--btn-secondary-bg); color: var(--btn-secondary-fg); font-weight: var(--fw-semibold); }
+
+.ad-cols { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; margin-block-start: 14px; align-items: start; }
+.ad-panel { background: var(--bg-card); border: 1px solid var(--border-1); border-radius: var(--r-md); box-shadow: var(--elev-rest); overflow: hidden; }
+.ad-panel__head { padding: 14px var(--space-5); border-bottom: 1px solid var(--border-1); display: flex; align-items: center; gap: 10px; }
+.ad-panel__t { font-size: var(--t-body); font-weight: var(--fw-semibold); }
+.ad-panel__s { font-size: var(--t-caption); color: var(--text-3); margin-block-start: 2px; }
+.ad-panel__count { margin-inline-start: auto; font-family: var(--font-mono); direction: ltr; font-size: var(--t-micro); font-weight: var(--fw-semibold); padding: 2px 9px; border-radius: var(--r-pill); }
+/* one modifier, one caller (`FollowUpRoom` — the decisions panel). The `--red` twin was never
+   emitted by any screen: a rule nothing selects is the rule a later edit changes by mistake. */
+.ad-panel__count--amber { background: var(--status-risk-bg); color: var(--status-risk); }
+
+/* A panel whose whole content is one <figure>: the chart lives DIRECTLY in the panel — never in
+   a card inside a card (a standing ban) — so the panel only has to supply the padding the
+   figure's own caption then owns. */
+.ad-panel--fig { padding: var(--space-4) var(--space-5); }
+
+/* د5 — the five inline `style={{…}}` objects `FollowUpRoom` used to carry, named.
+   They were CSS wearing a JSX costume: unthemeable, unmediaqueryable, invisible to the stylesheet
+   audits this suite runs, and each one a physical property (`maxWidth`, `overflowX`, `textAlign`)
+   in a sheet that is otherwise entirely logical. Nothing about the room's appearance moves. */
+
+/* the follow-up room's own measure — wider than the registries (`.op-page--tenders`, 1180px)
+   because the company table carries one column per scope, narrower than full bleed because the
+   KPI row above it stops being scannable past ~1240px */
+.ad-room { max-inline-size: 1240px; }
+
+/* a panel that FOLLOWS another block in the same single column — the compliance strip under the
+   KPI row. `.ad-cols` already opens the same 14px between stacked rows; this is that rhythm for a
+   panel that stands alone instead of in a pair. */
+.ad-panel--stacked { margin-block-start: 14px; }
+
+/* a table too wide for its panel scrolls inside its own box — the page never scrolls sideways.
+   `overflow-x` and not `overflow-inline`: the logical longhand is still too young to ship here,
+   and the axis it names is the same one either way (the table's own direction does not flip it). */
+.ad-tblwrap { overflow-x: auto; }
+
+/* a figure in a table cell that has crossed into the alarm vocabulary */
+.ad-num--late { color: var(--status-delayed); }
+
+/* A footnote under a panel's content: the quiet voice of `.ad-empty-inline` without its claim.
+   An empty state is centred because it stands where rows would have been; a footnote is prose
+   about the rows that ARE there, so it aligns to the reading edge and wraps at a readable rhythm. */
+.ad-note { padding: var(--space-5); text-align: start; color: var(--text-3); font-size: var(--t-body-sm); line-height: var(--lh-loose); }
+
+/* ---- a panel that is itself a disclosure (the per-company detail, request 2) ---- */
+.ad-disc { margin-block-start: 14px; }
+.ad-disc > .ad-disc__sum { cursor: pointer; list-style: none; border-block-end: none; }
+.ad-disc > .ad-disc__sum::-webkit-details-marker { display: none; }
+.ad-disc > .ad-disc__sum:hover { background: var(--bg-muted); }
+.ad-disc[open] > .ad-disc__sum { border-block-end: 1px solid var(--border-1); }
+.ad-disc__caret { flex: none; color: var(--text-3); transition: transform var(--dur-fast) var(--ease-out); }
+/* the same caret grammar as `.reg-explain__caret`: closed it points along the reading direction
+   (mirrored under RTL), open it points DOWN — and a rotation needs no mirror of its own */
+html[dir='rtl'] .ad-disc__caret { transform: scaleX(-1); }
+.ad-disc[open] .ad-disc__caret,
+html[dir='rtl'] .ad-disc[open] .ad-disc__caret { transform: rotate(90deg); }
+
+.ad-decision { padding: 14px var(--space-5); border-bottom: 1px solid var(--border-1); display: flex; align-items: center; gap: 14px; text-align: start; inline-size: 100%; background: transparent; border-inline: none; border-top: none; font-family: inherit; cursor: pointer; }
+.ad-decision:last-child { border-bottom: none; }
+.ad-decision:hover { background: var(--bg-muted); }
+.ad-decision__icon { inline-size: 34px; block-size: 34px; border-radius: var(--r-sm); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--btn-secondary-bg); color: var(--link); }
+.ad-decision__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ad-decision__t { font-size: var(--t-body); font-weight: var(--fw-semibold); color: var(--text-1); }
+.ad-decision__meta { display: flex; align-items: center; gap: var(--space-2); font-size: var(--t-caption); color: var(--text-3); flex-wrap: wrap; }
+.ad-decision__due { font-size: var(--t-caption); font-weight: var(--fw-semibold); white-space: nowrap; padding: 3px 10px; border-radius: var(--r-pill); background: var(--status-risk-bg); color: var(--status-risk); }
+.ad-empty-inline { padding: var(--space-5); text-align: center; color: var(--text-3); font-size: var(--t-body-sm); }
+
+.ad-late { padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--border-1); display: flex; align-items: center; gap: var(--space-3); }
+.ad-late:last-child { border-bottom: none; }
+.ad-late__body { flex: 1; min-width: 0; }
+.ad-late__t { font-size: var(--t-body-sm); font-weight: var(--fw-medium); color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ad-late__s { font-size: var(--t-caption); color: var(--text-3); margin-block-start: 2px; }
+
+.ad-searchchip { font-size: var(--t-micro); font-weight: var(--fw-bold); padding: 2px 7px; border-radius: var(--r-sm); flex-shrink: 0; }
+.ad-searchchip--tender { background: var(--status-progress-bg); color: var(--status-progress); }
+.ad-searchchip--contract { background: var(--status-done-bg); color: var(--status-done); }
+/* an entity result is SCOPED, not a lifecycle state — the same «restricted / pay attention»
+   vocabulary the scoped capability cell wears (§1-و) */
+.ad-searchchip--entity { background: var(--st-pending-bg); color: var(--st-pending-fg); }
+
+/* ---- Governance modal ----
+   The base `.ad-modal` family lives in operator.css and is defined ONCE. Only the wide
+   variant is admin's, and it is qualified by the backdrop so it beats the base whatever
+   order the bundler picks: a checklist form is a single act in numbered sections, not
+   several decisions, so it keeps the Modal contract and only gains room. */
+.ad-modal .ad-modal__card--wide { inline-size: 720px; }
+
+/* ---- Tender lifecycle banner ---- */
+.ad-lifebanner { margin: 14px 0 4px; padding: 14px 18px; border-radius: var(--r-md); background: var(--bg-card); border: 1px solid var(--border-1); box-shadow: var(--elev-rest); }
+
+/* ---- Contract lifecycle stage rail ---- */
+.ctr-stage { display: flex; align-items: center; gap: var(--space-3); padding-block: 9px; border-bottom: 1px solid var(--border-1); }
+.ctr-stage:last-child { border-bottom: none; }
+.ctr-stage__dot { inline-size: 24px; block-size: 24px; border-radius: var(--r-pill); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: var(--t-micro); font-weight: var(--fw-bold); font-family: var(--font-mono); }
+.ctr-stage__dot--done { background: var(--status-done); color: var(--status-on-fill); }
+/* DEVIATION from §1-ج, computed: the spec routes this dot to --st-pending-BASE, but the dot
+   prints the STAGE NUMBER — text, at 4.5:1 — and the spec's own §5-هـ measures white on
+   #D97706 at 3.186. The foreground step of the same family carries it: white on #A84D08 is
+   5.43 in light, and near-black on #FBBF24 is far above AA in dark. */
+.ctr-stage__dot--now { background: var(--st-pending-fg); color: var(--status-on-fill); box-shadow: 0 0 0 3px var(--status-risk-bg); }
+/* the same reasoning one step quieter: a number a reader counts with, in an ENABLED tracker,
+   so 1.4.3's inactive-component exemption does not reach it and --text-disabled may not be used */
+.ctr-stage__dot--todo { background: var(--bg-muted); color: var(--text-3); }
+.ctr-stage__body { flex: 1; min-width: 0; }
+.ctr-stage__t { font-size: var(--t-h4); font-weight: var(--fw-medium); color: var(--text-1); }
+.ctr-stage__d { font-size: var(--t-caption); color: var(--text-3); margin-block-start: 1px; display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.ctr-dev { font-family: var(--font-mono); direction: ltr; font-size: var(--t-micro); font-weight: var(--fw-bold); padding: 1px 6px; border-radius: var(--r-pill); }
+.ctr-dev--late { background: var(--status-delayed-bg); color: var(--status-delayed); }
+.ctr-dev--early { background: var(--status-done-bg); color: var(--status-done); }
+
+/* ---- Contract schedule & progress ---- */
+.ctr-sched-dates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-block-end: var(--space-3); }
+.ctr-sched-dates > div { display: flex; flex-direction: column; gap: 3px; }
+.ctr-sched__l { font-size: var(--t-micro); color: var(--text-3); }
+.ctr-sched__pending { font-size: var(--t-caption); color: var(--status-progress); font-weight: var(--fw-medium); }
+.ctr-bar { display: grid; grid-template-columns: 96px 1fr 42px; align-items: center; gap: 10px; margin-block: 7px; }
+.ctr-bar__l { font-size: var(--t-caption); color: var(--text-2); }
+.ctr-bar__track { block-size: 8px; border-radius: var(--r-pill); background: var(--chart-track); overflow: hidden; }
+.ctr-bar__fill { display: block; block-size: 100%; border-radius: var(--r-pill); transition: width var(--dur-base) var(--ease-out); }
+.ctr-bar__v { font-family: var(--font-mono); direction: ltr; font-size: var(--t-caption); text-align: end; color: var(--text-1); }
+.ctr-variance { margin-block-start: var(--space-2); font-size: var(--t-body-sm); font-weight: var(--fw-semibold); }
+
+/* ---- ع2 — the registry row's bar: progress recorded, progress planned, on ONE track ----
+   The file draws the two as two stacked bars because it has the room to; a row does not, and two
+   thin bars in a table cell read as one smeared band. So the plan (`plannedProgressPct`) becomes a
+   NOTCH on the actual bar — the reference's shape over our own derivation — and the distance
+   between the fill edge and the notch is «متأخرة عن الخطة» said as a length. No hue is invented:
+   the fill is the same done/late pair the file uses, and the notch is `--chart-neutral`, the very
+   colour the file's planned bar is drawn in. */
+.ctr-rowbar { display: flex; align-items: center; gap: var(--space-2); margin-block: 5px; }
+.ctr-rowbar__track { position: relative; flex: 1; block-size: 6px; border-radius: var(--r-pill); background: var(--chart-track); }
+.ctr-rowbar__fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: var(--r-pill); background: var(--status-done); }
+.ctr-rowbar__fill--late { background: var(--status-delayed); }
+/* taller than the track and haloed in the card's own colour, so the notch stays legible whether it
+   falls on bare track or on top of the fill. `inset-inline-start` + a 1px negative margin centres
+   it on its percentage in BOTH directions — a physical translate would mirror the wrong way. */
+.ctr-rowbar__mark { position: absolute; inset-block: -3px; inline-size: 2px; margin-inline-start: -1px; border-radius: 1px; background: var(--chart-neutral); box-shadow: 0 0 0 1px var(--bg-card); }
+.ctr-rowbar__v { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-micro); color: var(--text-muted); inline-size: 34px; text-align: end; }
+/* Client request 12 — «كيف أتحكّم بهذه النسبة». The arithmetic behind the bar, stated in one
+   line right under it instead of left to be inferred from a number that moves on its own. */
+.ctr-formula { margin-block-start: 6px; font-size: var(--t-caption); line-height: var(--lh-loose); color: var(--text-3); }
+/* the before → after the advance-stage confirmation previews (Design Principle 2) */
+.ctr-prev { display: flex; align-items: center; gap: 10px; margin-block-start: var(--space-3); }
+.ctr-prev__v { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-h2); font-weight: var(--fw-semibold); color: var(--text-3); }
+.ctr-prev__v--after { color: var(--status-done); }
+.ctr-prev__arrow { color: var(--text-3); display: inline-flex; }
+.ctr-prev__l { font-size: var(--t-caption); color: var(--text-3); margin-inline-start: auto; }
+
+/* ---- Selects — the field shape of §4-هـ ----
+   `appearance` is left NATIVE on purpose: color-scheme is set per theme in tokens.css, so the
+   platform draws the arrow and the popup in the right theme for free. Replacing it with an
+   absolutely-positioned chevron would mean an icon element in every call site and a hand-drawn
+   popup we do not have. NAMED DEBT — the §4-هـ chevron waits for that markup wave. */
+.op-filter-select,
+.acc-scope-select {
+  font: inherit;
+  font-size: var(--t-body-sm);
+  block-size: 36px;
+  padding-inline: var(--space-3);
+  border-radius: var(--r-sm);
+  /* the edge IS the affordance on a control — 3:1 minimum (WCAG 1.4.11), not the card hairline */
+  border: 1px solid var(--border-control);
+  background: var(--bg-card);
+  color: var(--text-2);
+  cursor: pointer;
+}
+.op-filter-select { max-inline-size: 320px; }
+.acc-scope-select { max-inline-size: 260px; margin-inline-start: auto; }
+.op-filter-select:hover, .acc-scope-select:hover { background: var(--bg-muted); }
+
+/* ============================================================
+   Approval chain (ق1) — the ladder chip and the decision state (§4-د).
+   A tier is an AUTHORITY BAND, not a lifecycle state, so it reads as a rung of
+   the indigo ramp and leaves the closed --status-* set to things that have a
+   status. The chip is SQUARE-cornered on purpose — that is how the reference
+   tells a tier apart from the disc-shaped status badge.
+   ============================================================ */
+/* د11 — the ladder chip MOVED to styles.css (the global sheet) verbatim: the operator file's
+   «الأسلوب والصلاحية» card states the same band, and admin.css is a sheet the operator portal
+   never loads. One chip, one rule, one home — the copy that stood here is gone, not shadowed. */
+
+/* the decision the waiting body has (or has not) taken — here the semantics ARE lifecycle */
+/* .ad-dec* moved to styles.css (د9): the operator portal now prints the decision of an
+   approving body on its own ladder screen and never loads this sheet — the `.ad-tier` precedent. */
+
+/* د12 — سلسلة الموافقات صارت أحد عشر عموداً: «منتظرة منذ» و«من قرّر» و«متى» فوق
+   الثمانية القائمة. `.op-tablecard` يقصّ الفائض (overflow: hidden) حفاظاً على زواياه،
+   فالعمود الحادي عشر كان يُقتطع بلا سبيل إليه على شاشة ضيّقة. التمرير الأفقي محبوس
+   في البطاقة وحدها — جسم الصفحة لا يتمرّر — والصنف محلّي لهذا السجل كي لا تتبدّل
+   بقية السجلات التي تسع أعمدتها. مؤهَّل بصنفين (0,2,0) لا بترتيب المصدر: ملف
+   operator.css قد يسبق أو يلحق هذا في الحزمة، والسلوك لا يُترك للترتيب. */
+.op-tablecard.acc-chain { overflow-x: auto; overflow-y: hidden; }
+
+/* the ladder as a read-only three-row table (the add-operator form, request 4) */
+/* .ad-ladder* moved to styles.css (د9): the operator portal now renders the same ladder listing
+   and never loads this sheet — the `.ad-tier` precedent, applied to the block that sits with it. */
+
+/* ============================================================
+   Access governance — registry, 360° file, capability matrix.
+   Namespaced acc-*; tokens only; logical properties only.
+   Deliberately NOT StatusPill: a role is not a lifecycle state.
+   ============================================================ */
+
+/* ---- role / status / attribute pills ---- */
+.acc-role { display: inline-flex; align-items: center; block-size: 22px; padding-inline: 10px; border-radius: var(--r-pill); font-size: var(--t-caption); font-weight: var(--fw-semibold); white-space: nowrap; }
+.acc-role--super      { background: var(--btn-secondary-bg); color: var(--link); }
+.acc-role--mdoc       { background: var(--status-progress-bg); color: var(--status-progress); }
+/* one body, one colour: the joint committee wears the tier colour its band already carries
+   on `.ad-tier--jmc`, on the pill, on the card and in the matrix column */
+.acc-role--jmc        { background: var(--btn-secondary-bg); color: var(--tier-jmc); }
+.acc-role--evaluation { background: var(--status-blocked-bg); color: var(--status-blocked); }
+.acc-role--auditor    { background: var(--bg-muted); color: var(--text-2); }
+.acc-role--operator   { background: var(--status-done-bg); color: var(--status-done); }
+/* a role name no longer in the register (only reachable from a historical audit row) —
+   readable, but visibly not one of the five live roles */
+.acc-role--unknown    { background: var(--bg-muted); color: var(--text-3); box-shadow: inset 0 0 0 1px var(--border-1); }
+
+.acc-status { display: inline-flex; align-items: center; gap: 6px; block-size: 22px; padding-inline: 10px; border-radius: var(--r-pill); font-size: var(--t-caption); font-weight: var(--fw-semibold); white-space: nowrap; }
+.acc-status--active   { background: var(--status-done-bg); color: var(--status-done); }
+.acc-status--disabled { background: var(--bg-muted); color: var(--text-3); }
+
+.acc-attr { display: inline-flex; align-items: center; block-size: 20px; padding-inline: var(--space-2); border-radius: var(--r-pill); font-size: var(--t-micro); background: var(--bg-muted); color: var(--text-3); white-space: nowrap; }
+.acc-conflict { font-size: var(--t-caption); font-weight: var(--fw-semibold); color: var(--st-pending-fg); }
+.acc-refused { margin-inline-start: var(--space-2); font-size: var(--t-micro); font-weight: var(--fw-bold); color: var(--status-delayed); background: var(--status-delayed-bg); padding: 1px 7px; border-radius: var(--r-pill); }
+.acc-by { font-weight: var(--fw-medium); color: var(--text-2); }
+.acc-type--action { color: var(--status-progress); font-weight: var(--fw-semibold); }
+.acc-type--read   { color: var(--text-3); }
+
+/* mono values inside Arabic prose must stay LTR and isolated, or codes and arrows mis-order */
+.acc-mono { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-caption); }
+
+.acc-avatar { inline-size: 32px; block-size: 32px; border-radius: var(--r-pill); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--btn-secondary-bg); color: var(--link); font-size: var(--t-caption); font-weight: var(--fw-bold); }
+.acc-avatar--sm { inline-size: 24px; block-size: 24px; font-size: var(--t-micro); }
+
+/* ---- registry ---- */
+.acc-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-block: var(--space-4) var(--space-3); }
+.acc-row--off { opacity: 0.62; }
+
+/* rows are real buttons so a keyboard can open a file — a bare <tr onClick> cannot be reached.
+   DECLARED EXCEPTION to the 34px button shape: one per registry row, inside a dense table. */
+.acc-open { display: inline-flex; align-items: center; gap: 6px; block-size: 26px; padding-inline: 11px; border-radius: var(--r-sm); background: transparent; color: var(--btn-ghost-fg); border: 1px solid var(--border-control); font: inherit; font-size: var(--t-caption); cursor: pointer; white-space: nowrap; }
+.acc-open:hover:not(:disabled) { background: var(--btn-ghost-hover); }
+/* the class is worn by links AND by row-level action buttons (د9): a gated button has to LOOK
+   refused, or the authority gate is announced only in a tooltip nobody hovers */
+.acc-open:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- 360° file ---- */
+.acc-actionstack { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.acc-actionstack .wz-gate { text-align: end; max-inline-size: 280px; }
+.acc-actionstack__row { display: flex; gap: var(--space-2); flex-wrap: wrap; justify-content: flex-end; }
+
+/* ---- capability matrix ---- */
+.acc-matrix { overflow-x: auto; }
+.acc-matrix thead th { position: sticky; inset-block-start: 0; z-index: 1; background: var(--bg-card); }
+.acc-matrix th:first-child, .acc-matrix td:first-child { position: sticky; inset-inline-start: 0; background: var(--bg-card); z-index: 2; }
+.acc-matrix thead th:first-child { z-index: 3; }
+
+.acc-cell { display: inline-flex; align-items: center; justify-content: center; inline-size: 24px; block-size: 24px; border-radius: var(--r-sm); font-family: var(--font-mono); font-size: var(--t-caption); font-weight: var(--fw-bold); }
+.acc-cell--yes     { background: var(--status-done-bg); color: var(--status-done); }
+/* «granted, but only within a scope» — restriction, the same vocabulary the entity chip wears */
+.acc-cell--scoped  { background: var(--st-pending-bg); color: var(--st-pending-fg); }
+.acc-cell--open    { background: var(--bg-muted); color: var(--text-3); border: 1px dashed var(--border-2); }
+/* «—» and «⊘» are the ABSENCE of a permission — informational marks with an aria-label, inside a
+   fully enabled table. WCAG 1.4.3's exemption covers text in an INACTIVE COMPONENT and does not
+   reach them, so neither may take --text-disabled. Both take --text-3 on --bg-card. They stay
+   weaker than a granted cell by having NO fill and no hue at all, and the two states are told
+   apart by their glyphs — which is what the legend and the aria-label name, never the colour. */
+.acc-cell--no      { background: transparent; color: var(--text-3); }
+.acc-cell--session { background: transparent; color: var(--text-3); }
+/* not a permission — a disagreement between the spec document and the enforced guard */
+.acc-cell--conflict { background: var(--status-delayed-bg); color: var(--status-delayed); }
+
+.acc-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; font-size: var(--t-caption); color: var(--text-3); margin-block: var(--space-3); }
+.acc-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+
+.acc-domain td { background: var(--bg-muted); font-size: var(--t-micro); font-weight: var(--fw-bold); letter-spacing: 0.06em; color: var(--text-3); padding-block: 6px; }
+.acc-holders { font-family: var(--font-mono); direction: ltr; font-weight: var(--fw-bold); font-size: var(--t-caption); }
+.acc-holders--none { color: var(--status-delayed); }
+
+/* ============================================================
+   «الوصول والأدوار» — the ONE merged section (client requests 20 + 21).
+   ============================================================ */
+
+/* ---- the section head row each tab carries (sub-line + its own actions) ---- */
+.acc-tabhead { display: flex; align-items: flex-end; gap: var(--space-3); flex-wrap: wrap; margin-block: var(--space-4) var(--space-2); }
+.acc-tabhead__s { font-size: var(--t-body-sm); color: var(--text-3); line-height: var(--lh-normal); }
+.acc-tabhead__a { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
+
+/* ---- the three big switches. Deliberately not `.file-tab`: those are a hairline
+       underline for sub-views of one record; this is a section-level choice the client
+       asked to be able to SEE, so each is a full card with its own label and subtitle. ---- */
+.acc-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-2); margin-block-start: var(--space-4); }
+.acc-tab {
+  display: grid; grid-template-columns: auto 1fr; align-items: center;
+  gap: 2px var(--space-3); padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-2); border-radius: var(--r-md);
+  background: var(--bg-card); color: var(--text-2); font: inherit; text-align: start; cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.acc-tab > svg { grid-row: 1 / span 2; color: var(--text-3); }
+.acc-tab__l { font-size: var(--t-h4); font-weight: var(--fw-semibold); color: var(--text-1); }
+.acc-tab__s { font-size: var(--t-micro); color: var(--text-3); line-height: var(--lh-snug); }
+.acc-tab:hover { background: var(--bg-muted); border-color: var(--border-control); }
+.acc-tab--on { border-color: var(--btn-primary-bg); box-shadow: inset 0 0 0 1px var(--btn-primary-bg); background: var(--btn-secondary-bg); }
+.acc-tab--on > svg, .acc-tab--on .acc-tab__l { color: var(--link); }
+
+/* ---- «من يوافق على ماذا» — the triad, with the live ceilings and a worked example ---- */
+.acc-triad { margin-block-start: var(--space-4); }
+.acc-triad__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); padding: var(--space-4) var(--space-5) var(--space-2); }
+.acc-triad__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--r-sm); background: var(--bg-inset); }
+.acc-triad__body--jmc { background: var(--st-pending-bg); }
+.acc-triad__body--mdoc { background: var(--btn-secondary-bg); }
+.acc-triad__head { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.acc-triad__band { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-micro); color: var(--text-2); margin-inline-start: auto; white-space: nowrap; }
+.acc-triad__who { font-size: var(--t-h3); font-weight: var(--fw-bold); color: var(--text-1); line-height: var(--lh-snug); }
+.acc-triad__what { margin: 0; font-size: var(--t-body-sm); color: var(--text-2); line-height: var(--lh-loose); }
+.acc-triad__ex { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); font-size: var(--t-body-sm); font-weight: var(--fw-medium); color: var(--text-1); line-height: var(--lh-normal); }
+.acc-triad__ex > svg { flex-shrink: 0; color: var(--text-3); }
+/* a tender code and a money figure are single tokens — they wrap AROUND, never through */
+.acc-triad__ex .acc-mono { white-space: nowrap; flex-shrink: 0; }
+.acc-triad__ex--none { color: var(--text-3); font-weight: var(--fw-regular); }
+.acc-triad__foot { padding: 0 var(--space-5) var(--space-4); font-size: var(--t-micro); color: var(--text-3); line-height: var(--lh-loose); }
+
+/* ---- the role cards ---- */
+.acc-rc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-4); align-items: start; }
+.acc-rc {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: var(--bg-card); border: 1px solid var(--border-1); border-radius: var(--r-md); box-shadow: var(--elev-rest);
+}
+.acc-rc__head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-3); }
+.acc-rc__icon { display: inline-flex; align-items: center; justify-content: center; inline-size: 40px; block-size: 40px; border-radius: var(--r-sm); background: var(--bg-muted); color: var(--text-2); }
+.acc-rc--super .acc-rc__icon { background: var(--btn-secondary-bg); color: var(--link); }
+.acc-rc--mdoc  .acc-rc__icon { background: var(--status-progress-bg); color: var(--status-progress); }
+.acc-rc--jmc   .acc-rc__icon { background: var(--st-pending-bg); color: var(--st-pending-fg); }
+.acc-rc--evaluation .acc-rc__icon { background: var(--status-blocked-bg); color: var(--status-blocked); }
+.acc-rc--operator   .acc-rc__icon { background: var(--status-done-bg); color: var(--status-done); }
+.acc-rc__id { min-inline-size: 0; }
+.acc-rc__name { margin: 0; font-size: var(--t-h3); font-weight: var(--fw-bold); color: var(--text-1); line-height: var(--lh-snug); }
+.acc-rc__code { display: block; font-size: var(--t-micro); color: var(--text-muted); }
+.acc-rc__holders { font-family: var(--font-mono); direction: ltr; font-size: var(--t-h2); font-weight: var(--fw-bold); color: var(--text-1); }
+.acc-rc__who { margin: 0; font-size: var(--t-body-sm); color: var(--text-2); line-height: var(--lh-loose); }
+
+/* the three financial facts — large type is the whole point of request 21. The first column is
+   the widest because it is the one that carries a grouped money figure. */
+.acc-rc__facts { display: grid; grid-template-columns: 1.35fr 1fr 0.85fr; gap: var(--space-3) var(--space-2); margin: 0; padding: var(--space-3); border-radius: var(--r-sm); background: var(--bg-inset); }
+.acc-rc__fact { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }
+.acc-rc__fact dt { font-size: var(--t-micro); color: var(--text-3); }
+.acc-rc__fact dd { margin: 0; }
+.acc-rc__v { font-size: var(--t-body); font-weight: var(--fw-semibold); color: var(--text-1); line-height: var(--lh-snug); overflow-wrap: break-word; }
+/* money stays one unbroken LTR island: «$10,000,000», never «10,000,000$» or a mid-figure break */
+.acc-rc__money { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; white-space: nowrap; font-size: var(--t-body); }
+.acc-rc__v--strong { font-size: var(--t-h4); color: var(--link); }
+.acc-rc__v--none { color: var(--text-3); font-weight: var(--fw-regular); }
+.acc-rc__stats { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--t-caption); color: var(--text-2); }
+/* holders are LINKS to their files — a hairline ring and a hover tint make that legible, since
+   the shared avatar tint alone is nearly invisible on a white card */
+.acc-rc__people { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.acc-rc__people .acc-avatar { box-shadow: inset 0 0 0 1px var(--border-2); text-decoration: none; transition: background var(--dur-fast) var(--ease-out); }
+.acc-rc__people .acc-avatar:hover { background: var(--btn-secondary-hover); }
+.acc-rc__orphan { padding: var(--space-2) var(--space-3); border-radius: var(--r-sm); background: var(--status-delayed-bg); color: var(--status-delayed); font-size: var(--t-caption); }
+
+/* the card's two text links: colour says «link», the underline says «you are on it» — the
+   colour no longer shifts on hover, because --link is already the one link colour per theme */
+.acc-rc__more {
+  display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-start;
+  padding: 0; border: 0; background: none; color: var(--link);
+  font: inherit; font-size: var(--t-body-sm); font-weight: var(--fw-medium); cursor: pointer;
+}
+/* «حاملو الدور» — the card's way to the ACCOUNTS register, filtered to this role. A link, not a
+   button: it navigates, and grant/revoke/disable stay on the account file where the guards live. */
+.acc-rc__holderlink {
+  display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-start;
+  color: var(--link); font-size: var(--t-body-sm); font-weight: var(--fw-medium);
+  text-decoration: none;
+}
+.acc-rc__more:hover, .acc-rc__more:focus-visible,
+.acc-rc__holderlink:hover, .acc-rc__holderlink:focus-visible { text-decoration: underline; }
+/* same disclosure gesture as .reg-explain__caret — mirrored under RTL, 90° when open */
+.acc-rc__caret { flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out); }
+html[dir='rtl'] .acc-rc__caret { transform: scaleX(-1); }
+.acc-rc__more[aria-expanded='true'] .acc-rc__caret,
+html[dir='rtl'] .acc-rc__more[aria-expanded='true'] .acc-rc__caret { transform: rotate(90deg); }
+
+.acc-rc__caps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.acc-rc__caps li { display: flex; align-items: baseline; gap: var(--space-2); font-size: var(--t-caption); color: var(--text-2); padding-block-end: var(--space-2); border-block-end: 1px solid var(--border-1); }
+.acc-rc__caps li:last-child { border-block-end: none; padding-block-end: 0; }
+
+/* Tender-review award-decision ceremony (TenderReview.tsx). The "record to be written" preview
+   inside the ratify/return modals. Rows reuse the .wz-reviewrow label/value grid (operator.css). */
+.rv-ledger { margin-block-start: 14px; padding: 2px 14px 6px; border: 1px solid var(--border-1); border-radius: var(--r-sm); background: var(--bg-inset); }
+.rv-ledger__cap { padding-block: 10px 2px; font-size: var(--t-micro); font-weight: var(--fw-semibold); color: var(--text-3); }
+.rv-ledger .wz-reviewrow:last-child { border-block-end: none; }
+/* «من يملك هذا القرار» — the tier line standing above the ratify/return controls */
+.rv-tier { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-block-end: var(--space-3); }
+.rv-tier__s { font-size: var(--t-body-sm); color: var(--text-2); }
+
+/* ---- Batch 4 «مفاتيح الربط» — cross-record link affordances (contract ↔ entity ↔ tender) ---- */
+/* Status pill that is also a navigation link (contractor → its Vendor file). */
+a.ad-pill-link { text-decoration: none; cursor: pointer; transition: filter var(--dur-fast) var(--ease-out); }
+a.ad-pill-link:hover { filter: brightness(0.96); }
+/* Lineage chip link — «من المناقصة …» and «العقد الناتج …». */
+.ad-fromtender { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-caption); color: var(--text-2); background: var(--bg-inset); border: 1px solid var(--border-1); padding: 4px 11px; border-radius: var(--r-pill); text-decoration: none; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.ad-fromtender:hover { background: var(--bg-muted); color: var(--text-1); }
+
+/* «إجراءات أخرى» overflow menu (ContractProfile action row) — lightweight disclosure. */
+.ctr-actions { position: relative; display: inline-flex; }
+.ctr-menu { position: absolute; inset-inline-end: 0; top: calc(100% + 6px); min-inline-size: 210px; background: var(--bg-card); border: 1px solid var(--border-2); border-radius: var(--r-lg); box-shadow: var(--shadow-3); padding: 6px; z-index: 30; animation: pop-in var(--dur-fast) var(--ease-out); }
+.ctr-menuitem { display: flex; align-items: center; gap: var(--space-2); inline-size: 100%; padding: var(--space-2) 10px; border-radius: var(--r-sm); background: transparent; border: none; font: inherit; font-size: var(--t-body-sm); color: var(--text-1); cursor: pointer; text-align: start; }
+.ctr-menuitem:hover { background: var(--bg-muted); }
+.ctr-menuitem .op-devbadge { margin-inline-start: auto; }
+
+/* Entity-file contracts panel — each row is a real link to the contract file. */
+a.ent-crow { text-decoration: none; color: inherit; }
+a.ent-crow:hover { background: var(--bg-muted); }
+
+/* ============================================================
+   Client wave 1 · phase 2 — merged operator+fields checklist form
+   and the ق7 archive model. Namespaced cf-* / arch-*.
+   ============================================================ */
+
+/* ---- numbered gated section (SectionHeader: number → check) ---- */
+.cf-sec { border: 1px solid var(--border-1); border-radius: var(--r-md); padding: 14px var(--space-4); background: var(--bg-card); }
+.cf-sec + .cf-sec { margin-block-start: var(--space-3); }
+.cf-sec--locked { background: var(--bg-inset); }
+.cf-sec--locked .cf-sec__body { opacity: 0.55; }
+.cf-sec__head { display: flex; align-items: center; gap: 10px; }
+.cf-sec__n {
+  inline-size: 24px; block-size: 24px; flex-shrink: 0; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: var(--t-caption); font-weight: var(--fw-bold);
+  background: var(--bg-inset); color: var(--text-3);
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+.cf-sec--on .cf-sec__n { background: var(--btn-primary-bg); color: var(--btn-primary-fg); }
+.cf-sec--done .cf-sec__n { background: var(--status-done); color: var(--status-on-fill); }
+.cf-sec__t { font-size: var(--t-h4); font-weight: var(--fw-semibold); color: var(--text-1); }
+.cf-sec--locked .cf-sec__t { color: var(--text-3); }
+.cf-sec__s { font-size: var(--t-caption); color: var(--text-3); margin-inline-start: auto; text-align: end; }
+.cf-sec__body { margin-block-start: var(--space-3); display: flex; flex-direction: column; gap: var(--space-3); }
+
+/* ---- repeatable field rows ---- */
+.cf-row { border: 1px solid var(--border-1); border-radius: var(--r-sm); padding: var(--space-3); background: var(--bg-muted); }
+.cf-row__head { display: flex; align-items: center; gap: var(--space-2); margin-block-end: 10px; }
+.cf-row__n { font-family: var(--font-mono); font-size: var(--t-micro); color: var(--text-3); }
+.cf-row__rm { margin-inline-start: auto; background: transparent; border: none; font: inherit; font-size: var(--t-caption); color: var(--status-delayed); cursor: pointer; padding: 2px 6px; border-radius: var(--r-sm); }
+.cf-row__rm:hover { background: var(--status-delayed-bg); }
+.cf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cf-grid--3 { grid-template-columns: 2fr 1fr 1fr; }
+.cf-add { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1px dashed var(--border-2); border-radius: var(--r-sm); padding: var(--space-2) 14px; font: inherit; font-size: var(--t-body-sm); color: var(--text-2); cursor: pointer; }
+.cf-add:hover { background: var(--bg-muted); color: var(--text-1); }
+
+/* ---- the id slug preview + the created-records receipt ---- */
+.cf-slug { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; font-size: var(--t-caption); color: var(--text-2); background: var(--bg-inset); border: 1px solid var(--border-1); padding: 3px 9px; border-radius: var(--r-sm); align-self: flex-start; }
+.cf-made { display: flex; flex-direction: column; gap: 6px; margin-block-start: 10px; }
+.cf-made__row { display: flex; align-items: center; gap: 9px; font-size: var(--t-body-sm); color: var(--text-1); }
+.cf-made__row .op-code { font-size: var(--t-caption); }
+
+/* ---- archive model (ق7) ---- */
+/* An archived row stays legible — it is withdrawn, not deleted. So it recedes by a TOKEN COLOUR
+   swap, never by row opacity: opacity fades the action buttons and their focus rings along with
+   the text, and those are exactly the parts a keyboard user needs at full strength (the restore
+   action lives there). --text-2 clears AA on the card, on the row hover tint and on the inset
+   well the pill sits in; --text-3 failed on two of the three, which is why it is not used here.
+   Weight, not opacity, carries the rest of the "withdrawn" signal. */
+.arch-row td { color: var(--text-2); }
+.arch-row .op-tbl__name { color: var(--text-2); font-weight: var(--fw-regular); }
+.arch-pill { display: inline-flex; align-items: center; block-size: 22px; padding-inline: 10px; border-radius: var(--r-pill); font-size: var(--t-caption); font-weight: var(--fw-semibold); white-space: nowrap; background: var(--bg-inset); color: var(--text-2); border: 1px solid var(--border-2); }
+
+/* A hairline between two INDEPENDENT chip groups in one filter row — the classification set and
+   the archive set are not alternatives to each other, and a bare gap reads as if they were. */
+.acc-filters__sep {
+  inline-size: 1px;
+  block-size: 20px;
+  background: var(--border-2);
+  margin-inline: 4px;
+}
+
+/* ============================================================
+   Keyboard parity (spec ذ6). Every rule below already tinted under a pointer and did NOTHING
+   for a keyboard reader. Each target is a real <a>/<button>, so :focus-visible costs nothing.
+   ============================================================ */
+.ad-decision:focus-visible,
+.ad-disc > .ad-disc__sum:focus-visible,
+a.ent-crow:focus-visible { background: var(--bg-muted); }
+
+.acc-open:focus-visible,
+.op-filter-select:focus-visible,
+.acc-scope-select:focus-visible,
+.ctr-menuitem:focus-visible { background: var(--bg-muted); }
+
+.ad-fromtender:focus-visible,
+.cf-add:focus-visible { background: var(--bg-muted); color: var(--text-1); }
+.cf-row__rm:focus-visible { background: var(--status-delayed-bg); }
+.acc-tab:focus-visible { background: var(--bg-muted); border-color: var(--border-control); }
+
+/* A ring that gets cut off is not a ring. `.ad-panel` clips its children (`overflow: hidden` is
+   what keeps its rounded corners), so a FULL-BLEED row inside one loses the outer 2px of its
+   focus ring on three sides. Those rows draw the ring inward instead — same width, same colour,
+   negative offset. Rows that are inset from the panel edge keep the standard outward ring. */
+.ad-decision:focus-visible,
+.ad-disc > .ad-disc__sum:focus-visible { outline-offset: -2px; }
+

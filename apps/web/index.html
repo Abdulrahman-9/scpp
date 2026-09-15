@@ -7,6 +7,20 @@
     <title>مسار — منصة إدارة التعاقدات</title>
   </head>
   <body>
+    <!-- الوضع يُطبَّق قبل أول رسم: بلا هذا السكربت تُرسم الصفحة فاتحة ثم تقلب،
+         وهو وميض أبيض في وجه من اختار الداكن. متزامن وبلا وحدات عمداً.
+         try/catch إلزامي: localStorage يرمي في نافذة خاصة وفي متصفّح يمنع
+         بيانات المواقع، والصفحة يجب أن تُرسَم فاتحة لا أن تنكسر. -->
+    <script>
+      (function () {
+        try {
+          var s = localStorage.getItem('masaar.theme');
+          var t = (s === 'light' || s === 'dark') ? s
+            : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

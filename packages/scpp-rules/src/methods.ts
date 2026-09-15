@@ -107,8 +107,8 @@ export function suggestMethod(input: RoutingInput): RoutingSuggestion {
   }
   return {
     method: methodByKey('public'),
-    reasonAr: 'الأصل العام: مناقصة عامة — 3 صحف وموقعا المقاول وROC و21 يوماً في الأقل وبلا تأهيل مسبق (11.1).',
-    reasonEn: 'Default: public tender — 3 newspapers, LC & ROC websites, ≥ 21 days, no pre-qualification (11.1).',
+    reasonAr: 'الأصل العام: مناقصة عامة — 3 صحف وموقعا المقاول وMDOC و21 يوماً في الأقل وبلا تأهيل مسبق (11.1).',
+    reasonEn: 'Default: public tender — 3 newspapers, LC & MDOC websites, ≥ 21 days, no pre-qualification (11.1).',
   };
 }
 

@@ -14,6 +14,13 @@ import {
  *   above FA                           → ROC witnesses opening + validates results, nominate ≤ 14 d (12.2.2)
  * Missed nomination deadline → LC proceeds without them.
  * FA values come from each Service Contract (§7) — configurable per operator.
+ *
+ * NAMING — «ROC» here is the SCPP document's own term for the parent oil company that oversees
+ * the Lead Contractor. This engine is a transcription of that document, so its identifiers stay
+ * spelled the way the clauses they cite are (`rocParticipation`, `RocTier`, clause '12.2.2'):
+ * renaming them would make the code stop matching the law it is quoting. For THIS deployment the
+ * parent company is «شركة نفط الوسط» / MDOC, and that is the only name any user, screen, report
+ * or role ever sees — the whole app layer above this package speaks MDOC (client decision ق2).
  */
 
 export type RocTier = 'information-only' | 'observer' | 'witness-validate';

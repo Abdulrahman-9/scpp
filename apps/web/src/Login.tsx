@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiLogin } from './api/endpoints';
 import { isApiMode } from './config';
-import { saveSession, type Role } from './session';
+import { DEMO_IDENTITIES, isApiLoginable, saveSession, type ApiRole } from './session';
 
 /**
  * Login — two-step flow (SSO → 2FA). In api mode it authenticates against the
@@ -12,22 +12,28 @@ import { saveSession, type Role } from './session';
 export default function Login({ onLogin }: { onLogin: () => void }) {
   const { t } = useTranslation();
   const [step, setStep] = useState<'sso' | 'otp'>('sso');
-  const [role, setRole] = useState<Role>('operator-admin');
+  const [role, setRole] = useState<ApiRole>('OPERATOR_ADMIN');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
+  const identity = DEMO_IDENTITIES.find((i) => i.role === role) ?? DEMO_IDENTITIES[0]!;
+
   const persist = (name: string) =>
-    saveSession({ name, role, company: role === 'operator-admin' ? 'Basra Energy Company' : undefined });
+    saveSession({ name, role, oid: identity.oid, company: identity.company, companyId: identity.companyId });
 
   const finish = async () => {
     if (!/^\d{6}$/.test(code) || busy) return;
     setError('');
     if (isApiMode) {
+      // the server's LoginDto accepts only API_LOGINABLE_ROLES — this narrows `role` to them
+      if (!isApiLoginable(role)) {
+        setError(t('login.notApiLoginable'));
+        return;
+      }
       setBusy(true);
       try {
-        const apiRole = role === 'roc-admin' ? 'ROC_ADMIN' : 'OPERATOR_ADMIN';
-        const res = await apiLogin(apiRole, code);
+        const res = await apiLogin(role, code);
         persist(res.user.name);
         onLogin();
       } catch {
@@ -37,14 +43,14 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
       }
       return;
     }
-    persist(role === 'operator-admin' ? 'م. أحمد عبد الرحمن' : 'د. سارة الجبوري');
+    persist(identity.name);
     onLogin();
   };
 
   return (
     <div className="login-wrap">
       <div className="login-card">
-        <img src="/logo.svg" alt="Masaar" style={{ height: 36 }} />
+        <img className="logo-adaptive" src="/logo.svg" alt="Masaar" style={{ height: 36 }} />
         <h1>{t('login.title')}</h1>
         <p className="hint">{t('login.hint')}</p>
 
@@ -52,12 +58,16 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
           <>
             <div className="field" style={{ marginBottom: 16 }}>
               <label>{t('login.role')}</label>
-              <select value={role} onChange={(e) => setRole(e.target.value as Role)}>
-                <option value="operator-admin">{t('login.roleOperator')}</option>
-                <option value="roc-admin">{t('login.roleRoc')}</option>
+              {/* ل1 — the seats are DERIVED from the demo mandate, not re-typed beside it. The
+                  hand-written list held three while `DEMO_IDENTITIES` held four, which is exactly
+                  how the joint-committee seat came to exist everywhere except at its own door. */}
+              <select value={role} onChange={(e) => setRole(e.target.value as ApiRole)}>
+                {DEMO_IDENTITIES.map((i) => (
+                  <option key={i.role} value={i.role}>{t(i.labelKey)}</option>
+                ))}
               </select>
             </div>
-            <button className="btn btn--primary login-sso" onClick={() => setStep('otp')}>
+            <button className="op-btn-primary login-sso" onClick={() => setStep('otp')}>
               {t('login.sso')}
             </button>
             <p className="g-hint" style={{ marginTop: 12 }}>{t('login.ssoNote')}</p>
@@ -78,7 +88,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
               />
             </div>
             {error && <p className="g-hint late-num" style={{ marginBottom: 10 }}>{error}</p>}
-            <button className="btn btn--primary login-sso" disabled={!/^\d{6}$/.test(code) || busy} onClick={() => void finish()}>
+            <button className="op-btn-primary login-sso" aria-busy={busy} disabled={!/^\d{6}$/.test(code) || busy} onClick={() => void finish()}>
               {busy ? '…' : t('login.verify')}
             </button>
           </>

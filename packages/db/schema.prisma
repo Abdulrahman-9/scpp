@@ -18,18 +18,56 @@ datasource db {
 // ---------- org & access ----------
 
 model Operator {
-  id                    String   @id @default(cuid())
-  name                  String
-  nameEn                String?
-  /// Financial Authority from the Service Contract (§7) — per operator, never hardcoded
-  financialAuthorityUSD Decimal  @db.Decimal(18, 2)
-  users                 User[]
-  tenders               Tender[]
+  id      String   @id @default(cuid())
+  name    String
+  nameEn  String?
+  users   User[]
+  tenders Tender[]
+  fields  Field[]
+  // Financial Authority is NOT stored here — it is derived per field from the field's
+  // Service Contract (§7.1: "authority is determined by the Service Contract"). See model Field.
 }
 
+/// Oil field (spec §1 — 13 fields, 12 operators). Each field has one Lead Contractor
+/// (operator) and one fixed-term Service Contract — the source of its Financial Authority.
+model Field {
+  id              String           @id @default(cuid())
+  name            String
+  nameEn          String?
+  code            String           @unique
+  operator        Operator         @relation(fields: [operatorId], references: [id])
+  operatorId      String
+  serviceContract ServiceContract?
+  tenders         Tender[]
+}
+
+/// Service Contract (§7.1) — determines the field's Financial Authority. One per field;
+/// renewal is a governed audited PATCH, not a second row (history lives in the audit log).
+model ServiceContract {
+  id                    String    @id @default(cuid())
+  code                  String    @unique
+  field                 Field     @relation(fields: [fieldId], references: [id])
+  fieldId               String    @unique
+  /// the authority itself — a primitive input, stored once here (its only home, §7.1)
+  financialAuthorityUSD Decimal   @db.Decimal(18, 2)
+  signedOn              DateTime
+  expiresOn             DateTime
+  /// early termination; effectiveness is DERIVED: terminatedOn == null && now <= expiresOn.
+  /// termYears is likewise derived from signedOn/expiresOn — neither is stored (C2).
+  terminatedOn          DateTime?
+}
+
+/// MDOC_ADMIN was ROC_ADMIN until 2026-08-20 (client decision ق2): the parent company is
+/// «شركة نفط الوسط» / Midland Oil Company. Renamed in place — see the
+/// 20260820000000_role_roc_to_mdoc migration, which ALTERs the value rather than
+/// adding-and-backfilling, so no User row ever changes and no audit row is rewritten.
+// Ordered by the governance ladder, not alphabetically: JMC_APPROVER (client request 19ب) sits
+// between the parent company and the evaluation committees because that is exactly where its
+// authority sits — above the operator's own band, below نفط الوسط's (ق1 ladder).
 enum Role {
   SUPER_ADMIN
-  ROC_ADMIN
+  MDOC_ADMIN
+  JMC_APPROVER
   EVALUATION
   AUDITOR
   OPERATOR_ADMIN
@@ -62,6 +100,25 @@ enum Method {
   TWO_PHASED // 11.3
 }
 
+enum TenderScope {
+  DRILLING
+  ENGINEERING_CONSTRUCTION
+  HEAVY_MATERIALS
+  OTHER
+}
+
+enum StateResponseStatus {
+  ACCEPTED
+  PENDING
+  DECLINED
+}
+
+enum TenderStatus {
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+}
+
 model Tender {
   id                    String        @id @default(cuid())
   code                  String        @unique
@@ -72,8 +129,17 @@ model Tender {
   method                Method
   overrideJustification String?
   createdOn             DateTime      @default(now())
+  /// §9 work scope — drives the C8.1/C8.2 state-company requirement (with above-authority)
+  scope                 TenderScope   @default(OTHER)
+  /// C8.1 — whether the tender documents carry the 20% participation clause (a publish-gate input)
+  localContentClauseAffixed Boolean   @default(false)
+  stateResponses        StateCompanyResponse[]
   operator              Operator      @relation(fields: [operatorId], references: [id])
   operatorId            String
+  /// the field this tender belongs to (spec §1). Invariant: field.operatorId === operatorId,
+  /// enforced at creation. FA is derived from field.serviceContract (§7.1).
+  field                 Field         @relation(fields: [fieldId], references: [id])
+  fieldId               String
   stages                Stage[]
   announcement          Announcement?
   evaluationStep        Int           @default(0) // 0..3 (12.4)
@@ -81,6 +147,14 @@ model Tender {
   mct                   MctCase?
   contract              Contract?
   ratification          Ratification?
+  // governance — documented status transitions, never a row delete
+  status                TenderStatus  @default(ACTIVE)
+  statusReason          String?
+  statusChangedOn       DateTime?
+  /// mutable display name of the officer who changed the status (shown in the UI)
+  statusChangedBy       String?
+  /// immutable identity of that officer (User.id from the session JWT) — the audit anchor
+  statusChangedByUserId String?
 
   @@index([budgetCode]) // anti-splitting scan (7.2)
 }
@@ -90,13 +164,16 @@ enum RatificationStatus {
   RETURNED
 }
 
-/// ROC decision on the award (admin side) — only at the ratification stage.
+/// MDOC decision on the award (admin side) — only at the ratification stage.
 model Ratification {
   id        String             @id @default(cuid())
   tender    Tender             @relation(fields: [tenderId], references: [id])
   tenderId  String             @unique
   status    RatificationStatus
+  /// mutable display name of the deciding MDOC officer (shown in the UI)
   by        String
+  /// immutable identity of the decider (User.id from the session JWT) — the audit anchor
+  byUserId  String?
   on        DateTime           @default(now())
   notes     String?
 }
@@ -109,7 +186,13 @@ model Stage {
   order       Int
   plannedFrom DateTime?
   plannedTo   DateTime?
+  /// actual start recorded at closing (design-finish D1) — informational; deadlines read actualTo
+  actualFrom  DateTime?
   actualTo    DateTime? // set only after the docs gate passes
+  /// classified deviation reason recorded when the stage closed late (D1) — quoted by the
+  /// compliance report; category is one of the closed client vocabulary, note ≥ 15 chars
+  devReasonCat  String?
+  devReasonNote String?
   documents   Document[]
 
   @@unique([tenderId, key])
@@ -138,6 +221,9 @@ model Announcement {
   periodDays            Int
   newspapers            String[] // ≥ 3 distinct for PUBLIC
   lcWebsite             Boolean          @default(false)
+  /// the parent company's website (SCPP 11.1). The column keeps its spec-era name: it is
+  /// announcement DATA, not the role vocabulary the client renamed, and renaming it would
+  /// rewrite persisted announcements for a label change. Displayed as «موقع MDOC».
   rocWebsite            Boolean          @default(false)
   inviteeCount          Int              @default(0)
   inviteesPreQualified  Boolean          @default(false)
@@ -159,10 +245,47 @@ model Bidder {
   docsOk          Boolean          @default(false)
   bondOk          Boolean          @default(false)
   technicalResult TechnicalResult?
+  /// when the bid was submitted; drives the late-bid gate (10.6.1). Null = admin vouched on-time.
+  submittedAt     DateTime?
   /// writable only when isPriceVisible(step, bidder) — enforced in the API (12.4.2)
   priceUSD        Decimal?         @db.Decimal(18, 2)
+  /// §9 C8.6 — this bidder's per-material origin declarations; the origin gate reads them at
+  /// technical evaluation (a pass is refused if any imported critical material fails, 10.6.18)
+  materials       BidderMaterialDeclaration[]
 
   @@unique([tenderId, vendorId]) // one bid per bidder (10.4)
+}
+
+/// C8.2 — a state company's response on one tender. The `evidence` (a documented justification) is
+/// what turns a missing participation into a lawful exemption; append-only, attributed.
+model StateCompanyResponse {
+  id        String              @id @default(cuid())
+  tender    Tender              @relation(fields: [tenderId], references: [id])
+  tenderId  String
+  company   String
+  status    StateResponseStatus @default(PENDING)
+  evidence  String?
+  on        DateTime            @default(now())
+  by        String? // mutable display name of the officer who recorded it
+  byUserId  String? // immutable identity (User.id) — the audit anchor
+
+  @@unique([tenderId, company])
+}
+
+/// C8.6 — one bidder's declaration for one critical material in its offer. Origin is a property of
+/// the OFFER, never of the shared catalogue.
+model BidderMaterialDeclaration {
+  id                String  @id @default(cuid())
+  bidder            Bidder  @relation(fields: [bidderId], references: [id])
+  bidderId          String
+  materialId        String
+  imported          Boolean @default(false)
+  origin            String?
+  /// the origin of the OEM that authorized it — C8.6 requires it be an approved origin ("من تلك المناشئ")
+  oemAuthorizedFrom String?
+  onMooList         Boolean @default(false)
+
+  @@unique([bidderId, materialId])
 }
 
 // ---------- MCT cycle (6.9) ----------
@@ -187,6 +310,10 @@ model Contract {
   code          String      @unique
   tender        Tender      @relation(fields: [tenderId], references: [id])
   tenderId      String      @unique
+  /// the awarded contractor, linked to its Vendor file — nullable so a contract whose
+  /// vendor is unresolved stays honestly unlinked (the UI shows an inert fallback)
+  vendor        Vendor?     @relation(fields: [vendorId], references: [id])
+  vendorId      String?
   valueUSD      Decimal     @db.Decimal(18, 2)
   termDays      Int
   signedOn      DateTime
@@ -238,18 +365,42 @@ model Guarantee {
 // ---------- vendors & governance ----------
 
 model Vendor {
-  id             String    @id @default(cuid())
+  id             String        @id @default(cuid())
   name           String
-  mooListed      Boolean   @default(false) // MoO Vendor List
-  suspended      Boolean   @default(false)
-  blacklisted    Boolean   @default(false)
-  inDispute      Boolean   @default(false)
+  /// an Iraqi state company (Article 25) — competes under the SAME 10.4 gates as any bidder (C8.4)
+  isStateCompany Boolean       @default(false)
+  mooListed      Boolean       @default(false) // MoO Vendor List
+  suspended      Boolean       @default(false)
+  blacklisted    Boolean       @default(false)
+  inDispute      Boolean       @default(false)
   banUntil       DateTime? // refusal-to-sign ban ≤ 12 months (14.3)
   banReason      String?
   techScore      Int? // capability bars
   financialScore Int?
   hseScore       Int?
   bidders        Bidder[]
+  contracts      Contract[]
+  events         VendorEvent[]
+}
+
+enum VendorEventKind {
+  SUSPEND
+  LIFT_SUSPENSION
+  BAN
+  LIFT_BAN
+  SCORE_EDIT
+}
+
+/// Append-only vendor governance trail — the "documented, never deleted" history (14.3).
+model VendorEvent {
+  id       String          @id @default(cuid())
+  vendor   Vendor          @relation(fields: [vendorId], references: [id])
+  vendorId String
+  kind     VendorEventKind
+  reason   String // mandatory justification (≥ 20 chars, enforced in the DTO)
+  payload  Json? // e.g. { banUntil } or { techScore: { from, to } }
+  byUserId String
+  on       DateTime        @default(now())
 }
 
 /// Admin-managed holiday calendar feeding @masaar/working-days

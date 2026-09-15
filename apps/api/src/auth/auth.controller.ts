@@ -6,9 +6,15 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { CurrentUser, Public } from './decorators.js';
 import { SESSION_COOKIE, type AuthUser, type Role } from './auth.types.js';
 
+/**
+ * The roles the mock provider will mint a session for. `JMC_APPROVER` joined with the role itself
+ * (request 19ب) out of necessity, not convenience: the ط2 ratification gate is enforced against
+ * the SESSION's role, so without a way to hold that session the gate would be a decorator nothing
+ * could ever satisfy — a capability the register claims and no request can exercise.
+ */
 class LoginDto {
-  @IsIn(['OPERATOR_ADMIN', 'ROC_ADMIN'])
-  role!: Extract<Role, 'OPERATOR_ADMIN' | 'ROC_ADMIN'>;
+  @IsIn(['OPERATOR_ADMIN', 'MDOC_ADMIN', 'JMC_APPROVER'])
+  role!: Extract<Role, 'OPERATOR_ADMIN' | 'MDOC_ADMIN' | 'JMC_APPROVER'>;
 
   // mock 2FA — any 6 digits in dev; replaced by real MFA via Azure AD
   @IsString()

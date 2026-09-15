@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
 import { PUBLIC_KEY } from './decorators.js';
-import { SESSION_COOKIE, type AuthUser } from './auth.types.js';
+import { SESSION_COOKIE, normalizeRole, type AuthUser } from './auth.types.js';
 
 /**
  * Verifies the session JWT from the httpOnly cookie and attaches the user.
@@ -24,7 +24,11 @@ export class JwtAuthGuard implements CanActivate {
     const token = req.cookies?.[SESSION_COOKIE];
     if (!token) throw new UnauthorizedException('No session');
     try {
-      req.user = await this.jwt.verifyAsync<AuthUser>(token);
+      const claims = await this.jwt.verifyAsync<AuthUser>(token);
+      // The role claim is normalized ONCE, here at the edge, so every downstream reader
+      // (RolesGuard, auth/scope.ts, tender.presenter.ts) sees today's vocabulary and none of
+      // them has to know a name was retired. See RETIRED_ROLES — temporary, delete 2026-08-21.
+      req.user = { ...claims, role: normalizeRole(claims.role) ?? claims.role };
       return true;
     } catch {
       throw new UnauthorizedException('Invalid or expired session');

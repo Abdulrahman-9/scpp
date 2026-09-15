@@ -4,6 +4,7 @@ import {
   duplicateBidders,
   effectiveClosingDate,
   isLateBid,
+  isLateBidByDate,
   isPriceVisible,
   lowestQualified,
   refusalToSign,
@@ -55,6 +56,13 @@ describe('late bids auto-rejected (10.6.1)', () => {
   it('one minute past closing is late', () => {
     expect(isLateBid('2026-06-10T12:01:00Z', '2026-06-10T12:00:00Z')).toBe(true);
     expect(isLateBid('2026-06-10T11:59:00Z', '2026-06-10T12:00:00Z')).toBe(false);
+  });
+
+  it('isLateBidByDate compares by calendar day, slicing internally (timezone-immune)', () => {
+    expect(isLateBidByDate('2026-06-08', '2026-06-07')).toBe(true); // a day later → late
+    expect(isLateBidByDate('2026-06-07', '2026-06-07')).toBe(false); // same day → on time
+    // a full timestamp on the closing day is NOT late — the wrapper slices, so no midnight drift
+    expect(isLateBidByDate('2026-06-07T23:00:00+03:00', '2026-06-07')).toBe(false);
   });
 });
 

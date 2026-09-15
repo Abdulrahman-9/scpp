@@ -1,0 +1,88 @@
+/* ========================================================================
+   «الجديد في مسار» — the first-entry strip (CLIENT-SHOWCASE-SPEC §2)
+
+   One band on the quietest indigo wash the palette has that is still
+   distinguishable from a card. It sits ABOVE the page head on both landing
+   screens, so it never displaces the first thing a reader came for.
+   Swept to DESIGN-V2-SPEC §4 (BUILD-2 step 7): the wash and its hairline are
+   the SECONDARY-BUTTON pair, which is --primary-50/--primary-500 on paper and
+   a translucent indigo in the dark — so the band follows the theme instead of
+   printing navy-on-navy. Logical properties only.
+   ======================================================================== */
+.wn {
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-bd);
+  border-radius: var(--r-md);
+  padding-block: 10px;
+  padding-inline: 14px;
+  margin-block-end: 18px;
+}
+
+.wn__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wn__mark { display: inline-flex; color: var(--link); }
+.wn__t { font-size: var(--t-body-sm); font-weight: var(--fw-bold); color: var(--text-1); }
+.wn__s { font-size: var(--t-caption); color: var(--text-3); }
+
+/* the fold control carries its own label, so it needs no icon to be understood */
+.wn__fold {
+  font: inherit;
+  font-size: var(--t-caption);
+  font-weight: var(--fw-medium);
+  margin-inline-start: auto;
+  padding-block: 4px;
+  padding-inline: 10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--link);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.wn__fold:hover, .wn__fold:focus-visible { background: var(--btn-secondary-hover); }
+
+.wn__x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 26px;
+  block-size: 26px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.wn__x:hover, .wn__x:focus-visible { background: var(--btn-secondary-hover); color: var(--text-1); }
+
+.wn__body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-block-start: var(--space-2);
+  animation: fade-in var(--dur-fast) var(--ease-out);
+}
+
+.wn__facts { margin: 0; padding-inline-start: 18px; display: flex; flex-direction: column; gap: 4px; }
+.wn__fact { font-size: var(--t-body-sm); line-height: var(--lh-loose); color: var(--text-2); }
+
+.wn__links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.wn__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-body-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  color: var(--link);
+  background: var(--bg-card);
+  border: 1px solid var(--btn-secondary-bd);
+  border-radius: var(--r-sm);
+  padding-block: 6px;
+  padding-inline: 12px;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.wn__link:hover, .wn__link:focus-visible { background: var(--btn-secondary-bg); }
+

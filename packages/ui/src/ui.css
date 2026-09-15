@@ -1,95 +1,105 @@
 /* ========================================================================
-   @masaar/ui — component styles
+   @masaar/ui — component styles (DESIGN-V2-SPEC §4, BUILD-2 step 1)
    Tokens come from @masaar/tokens/css/tokens.css (must be loaded first).
-   Skins: one system, three skins — the same components re-dress via
-   CSS variables on a `.m-skin` wrapper. No physical left/right values.
+
+   Skins: one system, TWO skins. «The Operations Room» (.m-skin--control) is
+   RETIRED here (§4-ط): it was a navy inversion mixed by hand, and the product
+   now has a real dark theme — a second, unthemed inversion is a second source
+   of truth for «what does this look like in the dark».
+   No physical left/right values.
    ======================================================================== */
 
 /* ---------- Skins ---------- */
 .m-skin {
-  /* Direction 1 — "The Living Ledger" (default, ~90% of screens) */
-  --m-bg: var(--paper-50);
-  --m-card: #ffffff;
+  /* Direction 1 — "The Living Ledger" (default, ~90% of screens).
+     Every value is a THEMED token, so the skin follows the document theme
+     instead of pinning itself to paper. */
+  --m-bg: var(--bg-page);
+  --m-card: var(--bg-card);
   --m-bd: var(--border-2);
-  --m-bd-strong: var(--border-3);
-  --m-t1: var(--ink-1);
-  --m-t2: var(--ink-2);
-  --m-t3: var(--ink-3);
-  --m-acc: var(--brand-amber-600);
-  --m-accbar: var(--brand-amber-500);
-  --m-track: rgba(11, 19, 32, 0.12);
-  --m-radius: 10px;
+  /* a tick/marker on a track is a graphical object under WCAG 1.4.11 → the control edge */
+  --m-bd-strong: var(--border-control);
+  --m-t1: var(--text-1);
+  --m-t2: var(--text-2);
+  --m-t3: var(--text-3);
+  --m-track: var(--chart-track);
+  --m-radius: var(--r-md);
   color: var(--m-t1);
   background: var(--m-bg);
 }
 
-.m-skin--control {
-  /* Direction 2 — "The Operations Room" (critical monitoring surfaces) */
-  --m-bg: var(--brand-navy-900);
-  --m-card: var(--brand-navy-800);
-  --m-bd: rgba(244, 241, 234, 0.12);
-  --m-bd-strong: rgba(244, 241, 234, 0.22);
-  --m-t1: var(--ink-on-dark);
-  --m-t2: var(--ink-on-dark);
-  --m-t3: var(--ink-on-dark-2);
-  --m-acc: var(--brand-amber-400);
-  --m-accbar: var(--brand-amber-400);
-  --m-track: rgba(244, 241, 234, 0.18);
-  --m-radius: 8px;
-}
-
 .m-skin--blueprint {
-  /* Direction 3 — "The Engineering Blueprint" (explainer surfaces) */
+  /* Direction 3 — "The Engineering Blueprint" (explainer surfaces).
+     It re-dresses the SURFACE only: the ink stays on the themed scale above,
+     so the guide reads in the dark instead of printing navy on navy.
+     DEVIATION, written: --m-grid is a texture belonging to this one component
+     — not a system colour — so it is defined here, once per theme, rather than
+     promoted to a token no other sheet would ever read. */
+  --m-grid: rgba(30, 58, 138, 0.055);
   --m-bg: transparent;
-  --m-card: rgba(255, 255, 255, 0.78);
-  --m-bd: var(--brand-navy-700);
-  --m-bd-strong: var(--brand-navy-800);
-  --m-t1: var(--brand-navy-900);
-  --m-t2: var(--ink-2);
-  --m-t3: var(--ink-3);
-  --m-acc: var(--brand-amber-700);
-  --m-accbar: var(--brand-amber-500);
-  --m-track: rgba(11, 37, 64, 0.14);
-  --m-radius: 3px;
+  --m-card: color-mix(in srgb, var(--bg-card) 82%, transparent);
+  --m-bd: var(--primary-700);
+  --m-bd-strong: var(--primary-900);
+  --m-radius: var(--r-xs);
   background:
-    repeating-linear-gradient(0deg, rgba(11, 37, 64, 0.055) 0 1px, transparent 1px 26px),
-    repeating-linear-gradient(90deg, rgba(11, 37, 64, 0.055) 0 1px, transparent 1px 26px),
-    var(--paper-50);
+    repeating-linear-gradient(0deg, var(--m-grid) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, var(--m-grid) 0 1px, transparent 1px 26px),
+    var(--bg-page);
 }
+:root[data-theme='dark'] .m-skin--blueprint { --m-grid: rgba(147, 197, 253, 0.07); }
 
-/* ---------- StatusPill — the six system statuses ---------- */
+/* ---------- StatusPill — the six system statuses (§4-ج) ----------
+   Three size knobs, declared here and turned in exactly one other place (`--sm`). The gap and the
+   dot are in `em`, not px, so they follow the type instead of needing a second set of numbers: at
+   the default 12px they still resolve to the shipped 7px and 6px, and at 11px they shrink with it.
+   That is what makes the small pill a MODIFIER rather than a second component. */
 .m-pill {
+  --pill-fs: var(--t-caption);
+  --pill-pb: 4px;
+  --pill-pi: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  font-weight: var(--fw-medium);
-  padding: 4px 12px;
+  gap: 0.58em;
+  font-size: var(--pill-fs);
+  font-weight: var(--fw-semibold);
+  padding-block: var(--pill-pb);
+  padding-inline: var(--pill-pi);
   border-radius: var(--r-pill);
+  border: 1px solid transparent;   /* the colour arrives with the modifier */
+  /* «the colour moves, the box does not» — no size or border-width is animated */
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 .m-pill::before {
   content: '';
-  width: 7px;
-  height: 7px;
+  inline-size: 0.5em;
+  block-size: 0.5em;
   border-radius: var(--r-pill);
   background: currentColor;
 }
-.m-pill--planned { color: var(--status-planned); background: var(--status-planned-bg); }
-.m-pill--progress { color: var(--status-progress); background: var(--status-progress-bg); }
-.m-pill--done { color: var(--status-done); background: var(--status-done-bg); }
-.m-pill--risk { color: var(--status-risk); background: var(--status-risk-bg); }
-.m-pill--delayed { color: var(--status-delayed); background: var(--status-delayed-bg); }
-.m-pill--blocked { color: var(--status-blocked); background: var(--status-blocked-bg); }
+/* The compact pill for a dense registry column (§4-ج). It states NO colour — not a hue, not a
+   border, not a background: a size modifier that also recoloured would give the six statuses a
+   seventh reading, and the status language is closed. It only turns the three knobs above. */
+.m-pill--sm { --pill-fs: var(--t-micro); --pill-pb: 2px; --pill-pi: 8px; }
+.m-pill--planned { color: var(--status-planned); background: var(--status-planned-bg); border-color: var(--status-planned-bd); }
+.m-pill--progress { color: var(--status-progress); background: var(--status-progress-bg); border-color: var(--status-progress-bd); }
+.m-pill--done { color: var(--status-done); background: var(--status-done-bg); border-color: var(--status-done-bd); }
+.m-pill--risk { color: var(--status-risk); background: var(--status-risk-bg); border-color: var(--status-risk-bd); }
+.m-pill--delayed { color: var(--status-delayed); background: var(--status-delayed-bg); border-color: var(--status-delayed-bd); }
+.m-pill--blocked { color: var(--status-blocked); background: var(--status-blocked-bg); border-color: var(--status-blocked-bd); }
 
-/* ---------- KpiTile ---------- */
+/* ---------- KpiTile (§4-ط) ----------
+   The anatomy is unchanged — label, mono value, unit. Only the shape moves:
+   card radius 8, the resting elevation with its inner highlight. The FILLED
+   status KPI of dashboard.dc.html is deliberately not adopted (§4-ي / §5-هـ). */
 .m-kpi {
   background: var(--m-card);
   border: 1px solid var(--m-bd);
   border-radius: var(--m-radius);
-  padding: 16px 18px;
+  box-shadow: var(--elev-rest);
+  padding: var(--space-4) var(--space-5);
 }
 .m-kpi__l {
-  font-size: 11.5px;
+  font-size: var(--t-micro);
   color: var(--m-t3);
   letter-spacing: 0.02em;
 }
@@ -97,111 +107,111 @@
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 28px;
+  font-size: var(--t-display-2);
   font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
   color: var(--m-t1);
-  margin-top: 7px;
+  margin-block-start: 7px;
 }
 .m-kpi__v small {
-  font-size: 13px;
+  font-size: var(--t-body-sm);
   color: var(--m-t3);
   font-weight: var(--fw-regular);
 }
 
-/* ---------- Clause chip (SCPP ref) ---------- */
+/* ---------- Clause chip (SCPP ref) ----------
+   A legislative reference is neutral METADATA, not a warning: v2 spends amber
+   on «waiting for approval» alone, so the chip leaves the identity ramp it used
+   to borrow and reads as the quiet mono datum it is (§1-ج). */
 .m-clause {
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 10.5px;
-  color: var(--brand-amber-700);
-  background: var(--brand-amber-50);
-  border: 1px solid var(--brand-amber-100);
-  padding: 2px 8px;
+  font-size: var(--t-micro);
+  color: var(--text-3);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-1);
+  padding-block: 2px;
+  padding-inline: 8px;
   border-radius: var(--r-sm);
   white-space: nowrap;
 }
-.m-skin--control .m-clause {
-  color: var(--brand-amber-400);
-  background: rgba(224, 168, 72, 0.12);
-  border-color: rgba(224, 168, 72, 0.3);
-}
 
 /* ---------- CapMeter ---------- */
-.m-meter { padding: 16px 18px; background: var(--m-card); border: 1px solid var(--m-bd); border-radius: var(--m-radius); }
-.m-meter__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-.m-meter__label { font-size: 13px; font-weight: var(--fw-semibold); color: var(--m-t1); }
-.m-meter__track { position: relative; height: 10px; border-radius: var(--r-pill); background: var(--m-track); }
+.m-meter { padding: var(--space-4) var(--space-5); background: var(--m-card); border: 1px solid var(--m-bd); border-radius: var(--m-radius); box-shadow: var(--elev-rest); }
+.m-meter__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-block-end: 14px; }
+.m-meter__label { font-size: var(--t-body-sm); font-weight: var(--fw-semibold); color: var(--m-t1); }
+.m-meter__track { position: relative; block-size: 10px; border-radius: var(--r-pill); background: var(--m-track); }
 .m-meter__fill {
   position: absolute;
   inset-inline-start: 0;
-  top: 0;
-  bottom: 0;
+  inset-block: 0;
   border-radius: var(--r-pill);
   background: var(--status-done);
   transition: width var(--dur-fast) linear, background var(--dur-base) var(--ease-out);
 }
 .m-meter--risk .m-meter__fill { background: var(--status-risk); }
 .m-meter--breach .m-meter__fill { background: var(--status-delayed); }
-.m-meter__tick { position: absolute; top: -5px; height: 20px; width: 2px; background: var(--m-bd-strong); }
-.m-meter__read { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.m-meter__tick { position: absolute; inset-block-start: -5px; block-size: 20px; inline-size: 2px; background: var(--m-bd-strong); }
+.m-meter__read { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-block-start: 12px; }
 .m-meter__val {
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 22px;
+  font-size: var(--t-h2);
   font-weight: var(--fw-semibold);
   color: var(--m-t1);
 }
-.m-meter__verdict { font-size: 12px; font-weight: var(--fw-semibold); padding: 4px 12px; border-radius: var(--r-pill); }
-.m-meter--ok .m-meter__verdict { color: var(--status-done); background: var(--status-done-bg); }
-.m-meter--risk .m-meter__verdict { color: var(--status-risk); background: var(--status-risk-bg); }
-.m-meter--breach .m-meter__verdict { color: var(--status-delayed); background: var(--status-delayed-bg); }
+.m-meter__verdict { font-size: var(--t-caption); font-weight: var(--fw-semibold); padding-block: 4px; padding-inline: 12px; border-radius: var(--r-pill); border: 1px solid transparent; }
+.m-meter--ok .m-meter__verdict { color: var(--status-done); background: var(--status-done-bg); border-color: var(--status-done-bd); }
+.m-meter--risk .m-meter__verdict { color: var(--status-risk); background: var(--status-risk-bg); border-color: var(--status-risk-bd); }
+.m-meter--breach .m-meter__verdict { color: var(--status-delayed); background: var(--status-delayed-bg); border-color: var(--status-delayed-bd); }
 
 /* ---------- WdRail ---------- */
-.m-rail { padding: 16px 18px; background: var(--m-card); border: 1px solid var(--m-bd); border-radius: var(--m-radius); }
-.m-rail__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 14px; }
-.m-rail__title { font-size: 13px; font-weight: var(--fw-semibold); color: var(--m-t1); }
+.m-rail { padding: var(--space-4) var(--space-5); background: var(--m-card); border: 1px solid var(--m-bd); border-radius: var(--m-radius); box-shadow: var(--elev-rest); }
+.m-rail__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-block-end: 14px; }
+.m-rail__title { font-size: var(--t-body-sm); font-weight: var(--fw-semibold); color: var(--m-t1); }
+/* «day N of M» is the one live figure on this card. --m-acc carried it in amber; amber is now a
+   status hue, so the emphasis comes from the brand link colour, which is themed in both modes. */
 .m-rail__day {
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 11.5px;
-  color: var(--m-acc);
+  font-size: var(--t-micro);
+  color: var(--link);
 }
-.m-rail__track { position: relative; height: 8px; border-radius: var(--r-pill); background: var(--m-track); }
+.m-rail__track { position: relative; block-size: 8px; border-radius: var(--r-pill); background: var(--m-track); }
 .m-rail__fill {
   position: absolute;
   inset-inline-start: 0;
-  top: 0;
-  bottom: 0;
+  inset-block: 0;
   border-radius: var(--r-pill);
-  background: var(--brand-navy-600);
+  background: var(--primary-600);
   transition: width var(--dur-fast) linear, background var(--dur-base) var(--ease-out);
 }
-.m-skin--control .m-rail__fill { background: var(--brand-navy-500); }
 .m-rail--warn .m-rail__fill { background: var(--status-risk); }
 .m-rail--late .m-rail__fill { background: var(--status-delayed); }
-.m-rail__mk { position: absolute; top: -5px; width: 2px; height: 18px; background: var(--m-bd-strong); }
+.m-rail__mk { position: absolute; inset-block-start: -5px; inline-size: 2px; block-size: 18px; background: var(--m-bd-strong); }
 .m-rail__lbls {
   display: flex;
   justify-content: space-between;
-  margin-top: 9px;
+  margin-block-start: 9px;
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 10.5px;
+  font-size: var(--t-micro);
   color: var(--m-t3);
 }
 
 /* ---------- VerdictStrip ---------- */
 .m-verdict {
   border-radius: var(--m-radius);
-  padding: 14px 18px;
+  border: 1px solid transparent;
+  padding: 14px var(--space-5);
   display: flex;
   align-items: center;
   gap: 14px;
-  font-size: 13px;
+  font-size: var(--t-body-sm);
   font-weight: var(--fw-medium);
   line-height: var(--lh-normal);
   transition: background var(--dur-base) var(--ease-out);
@@ -210,13 +220,13 @@
   font-family: var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
-  font-size: 22px;
+  font-size: var(--t-h2);
   font-weight: var(--fw-semibold);
   flex: 0 0 auto;
 }
-.m-verdict--award { background: var(--status-done-bg); color: var(--status-done); }
-.m-verdict--negotiate { background: var(--status-delayed-bg); color: var(--status-delayed); }
-.m-verdict--clarify-capability { background: var(--status-progress-bg); color: var(--status-progress); }
+.m-verdict--award { background: var(--status-done-bg); border-color: var(--status-done-bd); color: var(--status-done); }
+.m-verdict--negotiate { background: var(--status-delayed-bg); border-color: var(--status-delayed-bd); color: var(--status-delayed); }
+.m-verdict--clarify-capability { background: var(--status-progress-bg); border-color: var(--status-progress-bd); color: var(--status-progress); }
 
 /* ---------- Stepper ---------- */
 .m-stepper { display: flex; align-items: center; }
@@ -224,7 +234,8 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 6px 4px;
+  padding-block: 6px;
+  padding-inline: 4px;
   background: none;
   border: none;
   font: inherit;
@@ -232,25 +243,26 @@
   color: inherit;
 }
 .m-step__c {
-  width: 26px;
-  height: 26px;
+  inline-size: 26px;
+  block-size: 26px;
   border-radius: var(--r-pill);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: var(--t-micro);
   font-weight: var(--fw-semibold);
   background: var(--m-track);
   color: var(--m-t3);
   transition: background var(--dur-base) var(--ease-out);
 }
-.m-step__t { font-size: 12.5px; color: var(--m-t3); transition: color var(--dur-base) var(--ease-out); }
-.m-step--done .m-step__c { background: var(--status-done); color: #fff; }
-.m-step--now .m-step__c { background: var(--brand-navy-800); color: #fff; box-shadow: 0 0 0 3px var(--brand-navy-50); }
-.m-skin--control .m-step--now .m-step__c { background: var(--brand-amber-400); color: var(--brand-navy-900); box-shadow: none; }
+.m-step__t { font-size: var(--t-body-sm); color: var(--m-t3); transition: color var(--dur-base) var(--ease-out); }
+.m-step--done .m-step__c { background: var(--status-done); color: var(--status-on-fill); }
+/* the halo is the secondary-button wash, which is --primary-50 on paper and a translucent
+   navy in the dark — a fixed --primary-50 ring would glow white on a dark card */
+.m-step--now .m-step__c { background: var(--btn-primary-bg); color: var(--btn-primary-fg); box-shadow: 0 0 0 3px var(--btn-secondary-bg); }
 .m-step--now .m-step__t { color: var(--m-t1); font-weight: var(--fw-semibold); }
-.m-stepper__sep { flex: 1; height: 1px; background: var(--m-bd); margin: 0 6px; min-width: 16px; }
+.m-stepper__sep { flex: 1; block-size: 1px; background: var(--m-bd); margin-inline: 6px; min-inline-size: 16px; }
 
 /* ---------- PathBadge ---------- */
 .m-path {
@@ -260,9 +272,9 @@
   background: var(--m-card);
   border: 1px solid var(--m-bd);
   border-radius: var(--r-pill);
-  padding: 5px 13px;
-  padding-inline-start: 7px;
-  font-size: 12.5px;
+  padding-block: 5px;
+  padding-inline: 7px 13px;
+  font-size: var(--t-body-sm);
   font-weight: var(--fw-medium);
   color: var(--m-t1);
 }
@@ -270,24 +282,14 @@
   font-family: var(--font-mono);
   direction: ltr;
   font-weight: var(--fw-semibold);
-  background: var(--brand-navy-800);
-  color: #fff;
-  width: 22px;
-  height: 22px;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  inline-size: 22px;
+  block-size: 22px;
   border-radius: var(--r-pill);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10.5px;
+  font-size: var(--t-micro);
 }
-.m-skin--control .m-path__no { background: var(--brand-amber-400); color: var(--brand-navy-900); }
 
-@media (prefers-reduced-motion: reduce) {
-  .m-meter__fill,
-  .m-rail__fill,
-  .m-verdict,
-  .m-step__c,
-  .m-step__t {
-    transition-duration: 0.01ms !important;
-  }
-}

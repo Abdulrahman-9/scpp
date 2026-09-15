@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+</helmet>
+
+<div dir="rtl" style="min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <!-- الشريط العلوي -->
+  <header style="position:sticky;top:0;z-index:20;height:54px;background:var(--bg-card);border-bottom:1px solid var(--border-1);display:flex;align-items:center;gap:12px;padding:0 20px">
+    <a href="تسجيل الدخول.dc.html" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:13.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)">م</span>
+      <span style="font-size:13.5px;font-weight:700">مسار</span>
+    </a>
+    <span style="font-size:10.5px;font-weight:700;color:var(--btn-secondary-fg);background:var(--btn-secondary-bg);border:1px solid var(--btn-secondary-bd);border-radius:999px;padding:3px 10px">بوابة المشغّل</span>
+    <span style="flex:1"></span>
+    <button onClick="{{ toggleTheme }}" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:var(--bg-card);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)">
+      <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+      <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+    </button>
+    <div style="display:flex;align-items:center;gap:9px;border-inline-start:1px solid var(--border-1);padding-inline-start:14px">
+      <span style="width:30px;height:30px;border-radius:999px;background:var(--bg-inset);color:var(--text-2);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">{{ userInitial }}</span>
+      <span style="display:flex;flex-direction:column;line-height:1.3">
+        <span style="font-size:12px;font-weight:700">{{ userName }}</span>
+        <span style="font-size:10.5px;color:var(--text-3)">{{ opName }}</span>
+      </span>
+    </div>
+  </header>
+
+  <main style="max-width:1060px;margin:0 auto;padding:26px 20px 60px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <h1 style="margin:0;font-size:21px;font-weight:700">طلبياتي</h1>
+        <div style="font-size:12.5px;color:var(--text-3);margin-top:3px">تُعرض طلبيات {{ opName }} فقط، مرتّبة من الأحدث. لإنجاز مرحلة تُدخل المدة الفعلية والمستندات.</div>
+      </div>
+      <button onClick="{{ openNew }}" style="height:38px;padding:0 16px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);display:inline-flex;align-items:center;gap:8px" style-hover="background-color:var(--btn-primary-hover)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        طلبية جديدة
+        <span style="font-family:var(--font-mono);font-size:10px;background:rgba(255,255,255,.18);border-radius:4px;padding:1px 6px">N</span>
+      </button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow-1)">
+          <div style="font-size:11.5px;font-weight:600;color:var(--text-3)">{{ k.label }}</div>
+          <div style="font-family:var(--font-mono);direction:ltr;text-align:right;font-size:20px;font-weight:700;margin-top:6px;color:{{ k.color }}">{{ k.val }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+        <article style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow-1);display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px;font-weight:600;color:var(--text-2)">{{ r.code }}</span>
+            <span style="font-size:10.5px;font-weight:700;border-radius:999px;padding:2.5px 10px;color:{{ r.pillFg }};background:{{ r.pillBg }};border:1px solid {{ r.pillBd }}">{{ r.pillLabel }}</span>
+            <sc-if value="{{ r.late }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:10.5px;font-weight:700;border-radius:999px;padding:2.5px 10px;color:var(--st-pending-fg);background:var(--st-pending-bg);border:1px solid var(--st-pending-bd)">حيود +{{ r.dev }} يوم</span>
+            </sc-if>
+            <span style="margin-inline-start:auto;font-family:var(--font-mono);direction:ltr;font-size:13px;font-weight:700">{{ r.value }}</span>
+          </div>
+          <div>
+            <div style="font-size:14.5px;font-weight:700">{{ r.title }}</div>
+            <div style="font-size:11.5px;color:var(--text-3);margin-top:3px">{{ r.path }} · {{ r.field }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;gap:3px;flex:1;min-width:200px">
+              <sc-for list="{{ r.rail }}" as="c" hint-placeholder-count="12">
+                <span title="{{ c.tip }}" style="flex:1;height:7px;border-radius:2px;background:{{ c.bg }}"></span>
+              </sc-for>
+            </div>
+            <span style="font-size:11.5px;color:var(--text-2);font-weight:600">{{ r.curName }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border-top:1px solid var(--border-1);padding-top:11px">
+            <sc-if value="{{ r.canAct }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ r.act }}" style="height:32px;padding:0 14px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:12px;font-weight:700;cursor:pointer" style-hover="background:var(--btn-primary-hover)">إنجاز المرحلة الحالية</button>
+            </sc-if>
+            <a href="{{ r.href }}" style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px">عرض التفاصيل<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></a>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </main>
+
+  <!-- نموذج طلبية جديدة -->
+  <sc-if value="{{ newOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeBg }}" style="position:fixed;inset:0;z-index:50;background:rgba(11,19,32,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px">
+      <form onSubmit="{{ submitNew }}" onClick="{{ stop }}" style="width:460px;max-width:100%;max-height:90vh;overflow:auto;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-pop);padding:22px;display:flex;flex-direction:column;gap:13px;animation:pop-in var(--dur-slow) var(--ease-out)">
+        <div>
+          <h2 style="margin:0;font-size:16.5px;font-weight:700">تقديم طلبية جديدة</h2>
+          <div style="font-size:11.5px;color:var(--text-3);margin-top:3px">يُقترح المسار تلقائياً وفق القيمة التخمينية (§11)، مع إمكانية اعتماد مسار آخر مسوَّغ.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label for="np-title" style="font-size:12px;font-weight:600;color:var(--text-2)">موضوع الطلبية</label>
+          <input id="np-title" value="{{ fTitle }}" onChange="{{ onFTitle }}" placeholder="مثال: توريد صمامات ضغط عالٍ — حقل الأحدب" style="width:100%;height:38px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;outline:none" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <label for="np-field" style="font-size:12px;font-weight:600;color:var(--text-2)">الحقل / الرقعة</label>
+            <input id="np-field" value="{{ fField }}" onChange="{{ onFField }}" placeholder="حقل الأحدب النفطي" style="width:100%;height:38px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;outline:none" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <label for="np-val" style="font-size:12px;font-weight:600;color:var(--text-2)">الكلفة التخمينية (USD)</label>
+            <input id="np-val" type="number" min="0" value="{{ fValue }}" onChange="{{ onFValue }}" placeholder="120000" style="width:100%;height:38px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font-family:var(--font-mono);font-size:13px;direction:ltr;outline:none" />
+          </div>
+        </div>
+        <div style="background:var(--bg-muted);border:1px solid var(--border-1);border-radius:8px;padding:11px 13px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3)">التوجيه المبدئي وفق القيمة</div>
+          <div style="font-size:12.5px;font-weight:600">{{ sugPath }}</div>
+          <div style="font-size:11.5px;color:var(--text-3)">جهة المصادقة: {{ sugTier }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label for="np-path" style="font-size:12px;font-weight:600;color:var(--text-2)">المسار المعتمد</label>
+          <select id="np-path" value="{{ fPath }}" onChange="{{ onFPath }}" style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13px;outline:none">
+            <sc-for list="{{ paths }}" as="p" hint-placeholder-count="8"><option value="{{ p }}">{{ p }}</option></sc-for>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label for="np-notes" style="font-size:12px;font-weight:600;color:var(--text-2)">ملاحظات (اختياري)</label>
+          <textarea id="np-notes" value="{{ fNotes }}" onChange="{{ onFNotes }}" rows="2" placeholder="نطاق العمل، اشتراطات المنشأ، مسوّغ المسار…" style="width:100%;padding:9px 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;outline:none;resize:vertical"></textarea>
+        </div>
+        <sc-if value="{{ fErr }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);border-radius:6px;padding:8px 11px">أدخل موضوع الطلبية وقيمة تخمينية أكبر من صفر.</div>
+        </sc-if>
+        <div style="display:flex;gap:9px;justify-content:flex-end;border-top:1px solid var(--border-1);padding-top:13px">
+          <button type="button" onClick="{{ closeModal }}" style="height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--bg-muted)">إلغاء</button>
+          <button type="submit" style="height:36px;padding:0 16px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="background:var(--btn-primary-hover)">تقديم الطلبية</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <!-- إنجاز مرحلة -->
+  <sc-if value="{{ stgOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeBg }}" style="position:fixed;inset:0;z-index:50;background:rgba(11,19,32,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px">
+      <form onSubmit="{{ submitStg }}" onClick="{{ stop }}" style="width:440px;max-width:100%;max-height:90vh;overflow:auto;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-pop);padding:22px;display:flex;flex-direction:column;gap:13px;animation:pop-in var(--dur-slow) var(--ease-out)">
+        <div>
+          <div style="font-family:var(--font-mono);direction:ltr;text-align:right;font-size:11.5px;color:var(--text-3)">{{ stgCode }}</div>
+          <h2 style="margin:3px 0 0;font-size:16.5px;font-weight:700">إنجاز المرحلة {{ stgN }} — {{ stgName }}</h2>
+          <div style="font-size:11.5px;color:var(--text-3);margin-top:3px">المدة المخططة: <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ stgPlanned }}</span> يوماً. أي تجاوز يُحتسب حيوداً ويظهر لدى الإدارة.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <label for="st-days" style="font-size:12px;font-weight:600;color:var(--text-2)">المدة الفعلية (أيام)</label>
+            <input id="st-days" type="number" min="1" value="{{ sDays }}" onChange="{{ onSDays }}" style="width:100%;height:38px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font-family:var(--font-mono);font-size:13px;direction:ltr;outline:none" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <label for="st-date" style="font-size:12px;font-weight:600;color:var(--text-2)">تاريخ الإنجاز</label>
+            <input id="st-date" type="date" value="{{ sDate }}" onChange="{{ onSDate }}" style="width:100%;height:38px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font-family:var(--font-mono);font-size:12.5px;direction:ltr;outline:none" />
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:12px;font-weight:600;color:var(--text-2)">مستندات المرحلة</span>
+          <button type="button" onClick="{{ addFile }}" style="border:1px dashed var(--border-2);background:var(--bg-muted);border-radius:8px;padding:14px;font:inherit;font-size:12px;color:var(--text-3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px" style-hover="background:var(--bg-inset)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M17 8l-5-5-5 5"></path><path d="M12 3v12"></path></svg>
+            إرفاق مستند — محضر أو كتاب رسمي (PDF)
+          </button>
+          <sc-for list="{{ sFiles }}" as="f" hint-placeholder-count="0">
+            <div style="display:flex;align-items:center;gap:8px;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:7px 11px;font-size:11.5px">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>
+              <span style="font-weight:600">{{ f }}</span>
+              <span style="margin-inline-start:auto;font-size:10.5px;color:var(--st-delivered-base);font-weight:700">جاهز</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ sErr }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);border-radius:6px;padding:8px 11px">أدخل المدة الفعلية وأرفق مستنداً واحداً على الأقل.</div>
+        </sc-if>
+        <div style="display:flex;gap:9px;justify-content:flex-end;border-top:1px solid var(--border-1);padding-top:13px">
+          <button type="button" onClick="{{ closeModal }}" style="height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--bg-muted)">إلغاء</button>
+          <button type="submit" style="height:36px;padding:0 16px;border-radius:6px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="background:var(--btn-primary-hover)">تثبيت الإنجاز</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;background:var(--side-bg);color:#fff;border-radius:8px;padding:11px 16px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-3);animation:pop-in var(--dur-fast) var(--ease-out);display:flex;align-items:center;gap:9px">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+      {{ toast }}
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;operator&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;شركة نفط الواحة الصينية&quot;, &quot;مشروع بدرة&quot;, &quot;جيو-جاد الصينية&quot;, &quot;CNOOC Africa Holding&quot;, &quot;EBN&quot;], &quot;default&quot;: &quot;شركة نفط الواحة الصينية&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;الحساب&quot;}}">class Component extends DCLogic {
+  state = { theme: 'light', orders: [], contact: '', modal: null, sel: null, counter: 0,
+    fTitle: '', fField: '', fValue: '', fPath: '', fNotes: '', fErr: false,
+    sDays: '', sDate: '2026-08-25', sFiles: [], sErr: false, toast: '' };
+  PATHS = ['المصدر الوحيد (11.5)', 'شراء منخفض القيمة (11.8.3)', 'المسار السريع (11.7)', 'الدعوة المباشرة (11.4)', 'استدراج عروض (11.8.1)', 'المناقصة المحدودة (11.2)', 'المناقصة العامة (11.1)', 'المناقصة بمرحلتين (11.3)'];
+  FILES = ['محضر-المرحلة.pdf', 'جدول-التحليل-الموحد.xlsx', 'كتاب-المصادقة-الرسمي.pdf'];
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+    this.setState({ theme: t });
+    import('./orders-data.js').then(m => {
+      this.M = m;
+      const op = this.props.operator || 'شركة نفط الواحة الصينية';
+      let orders = m.ORDERS.filter(o => o.op === op).map(o => Object.assign({}, o)), counter = 0;
+      try {
+        const raw = localStorage.getItem('masaar2-orders-' + op);
+        if (raw) { const p = JSON.parse(raw); if (p && Array.isArray(p.orders) && p.orders.length) { orders = p.orders; counter = p.counter || 0; } }
+      } catch (e) {}
+      this.setState({ orders, counter, contact: (m.OPERATORS[op] || {}).contact || 'مشغّل' });
+    });
+    this.onKey = (e) => {
+      if (e.key === 'Escape') { this.setState({ modal: null }); return; }
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target.tagName || '').toUpperCase())) return;
+      if ((e.key === 'n' || e.key === 'N') && !this.state.modal) { e.preventDefault(); this.setState({ modal: 'new', fTitle: '', fField: '', fValue: '', fPath: '', fNotes: '', fErr: false }); }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); }
+
+  op() { return this.props.operator || 'شركة نفط الواحة الصينية'; }
+  pathFor(v) { return v < 10000 ? 'شراء منخفض القيمة (11.8.3)' : v <= 100000 ? 'استدراج عروض (11.8.1)' : 'المناقصة العامة (11.1)'; }
+  tierFor(v) { return v <= 100000 ? ['t1', 'ضمن الصلاحية المالية للمقاول الرئيسي'] : v <= 2000000 ? ['t2', 'اللجنة المشتركة JMC'] : ['t3', 'شركة نفط الوسط MDOC']; }
+  showToast(msg) { this.setState({ toast: msg }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 2800); }
+  persist(orders, counter) { try { localStorage.setItem('masaar2-orders-' + this.op(), JSON.stringify({ orders, counter })); } catch (e) {} }
+
+  renderVals() {
+    const s = this.state, S = (this.M && this.M.STAGES) || [];
+    const fmt = this.M ? this.M.fmtUSD : (v) => '$' + v;
+    const active = s.orders.filter(o => !['delivered', 'cancelled'].includes(o.st) && o.cur < 12);
+    const late = active.filter(o => o.dev > 0);
+    const done = s.orders.filter(o => o.st === 'delivered' || o.cur >= 12);
+    const rows = s.orders.map(o => {
+      const stg = S.find(x => x.n === o.cur) || {};
+      const cancelled = o.st === 'cancelled', finished = o.st === 'delivered' || o.cur >= 12;
+      return {
+        code: o.code, title: o.title, field: o.field, path: o.path, value: fmt(o.value),
+        pillLabel: this.M ? this.M.stLabel(o.st) : o.st,
+        pillFg: 'var(--st-' + o.st + '-fg)', pillBg: 'var(--st-' + o.st + '-bg)', pillBd: 'var(--st-' + o.st + '-bd)',
+        late: o.dev > 0 && !finished && !cancelled, dev: String(o.dev),
+        rail: Array.from({ length: 12 }, (_, i) => {
+          const n = i + 1, g = S.find(x => x.n === n) || {};
+          return { tip: n + ' — ' + (g.name || ''), bg: cancelled ? 'var(--bg-inset)' : finished || n < o.cur ? 'var(--st-approved-base)' : n === o.cur ? 'var(--st-cancelled-base)' : 'var(--bg-inset)' };
+        }),
+        curName: cancelled ? 'أُلغيت الطلبية' : finished ? 'اكتمل المسار' : 'المرحلة ' + o.cur + '/12 — ' + (stg.name || ''),
+        canAct: !cancelled && !finished,
+        act: () => this.setState({ modal: 'stage', sel: o.code, sDays: '', sDate: '2026-08-25', sFiles: [], sErr: false }),
+        href: 'تفاصيل الطلبية.dc.html?po=' + o.code,
+      };
+    });
+    const v = Number(s.fValue) || 0;
+    const selO = s.orders.find(o => o.code === s.sel) || {}, selStg = S.find(x => x.n === selO.cur) || {};
+    return {
+      opName: this.op(), userName: s.contact || '—', userInitial: (s.contact || 'م').slice(0, 1),
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => {
+        const t = s.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        try { localStorage.setItem('masaar2-theme', t); } catch (e) {}
+        this.setState({ theme: t });
+      },
+      kpis: [
+        { label: 'قيد الإنجاز', val: String(active.length), color: 'var(--text-1)' },
+        { label: 'فيها حيود زمني', val: String(late.length), color: late.length ? 'var(--st-pending-fg)' : 'var(--text-1)' },
+        { label: 'مكتملة', val: String(done.length), color: 'var(--st-delivered-base)' },
+        { label: 'قيمة قيد الإنجاز', val: fmt(active.reduce((a, o) => a + o.value, 0)), color: 'var(--text-1)' },
+      ],
+      rows,
+      newOpen: s.modal === 'new', stgOpen: s.modal === 'stage',
+      openNew: () => this.setState({ modal: 'new', fTitle: '', fField: '', fValue: '', fPath: '', fNotes: '', fErr: false }),
+      closeBg: () => this.setState({ modal: null }),
+      closeModal: () => this.setState({ modal: null }),
+      stop: (e) => e.stopPropagation(),
+      fTitle: s.fTitle, onFTitle: (e) => this.setState({ fTitle: e.target.value, fErr: false }),
+      fField: s.fField, onFField: (e) => this.setState({ fField: e.target.value }),
+      fValue: s.fValue, onFValue: (e) => this.setState({ fValue: e.target.value, fErr: false }),
+      sugPath: this.pathFor(v), sugTier: this.tierFor(v)[1],
+      paths: this.PATHS, fPath: s.fPath || this.pathFor(v), onFPath: (e) => this.setState({ fPath: e.target.value }),
+      fNotes: s.fNotes, onFNotes: (e) => this.setState({ fNotes: e.target.value }),
+      fErr: s.fErr,
+      submitNew: (e) => {
+        e.preventDefault();
+        if (!s.fTitle.trim() || v <= 0) { this.setState({ fErr: true }); return; }
+        const n = s.counter + 1, code = 'PO-2026-0' + (150 + n);
+        const o = { code, title: s.fTitle.trim(), op: this.op(), field: s.fField.trim() || '—', path: s.fPath || this.pathFor(v), tier: this.tierFor(v)[0], value: v, st: 'pending', cur: 1, dev: 0, submitted: '2026-08-25', actuals: {}, inv: 0, bought: 0, bid: 0, items: null, notes: s.fNotes.trim(), log: null };
+        const next = [o].concat(s.orders);
+        this.persist(next, n);
+        this.setState({ orders: next, counter: n, modal: null });
+        this.showToast('تم تقديم الطلبية ' + code + ' وإحالتها إلى ' + this.tierFor(v)[1] + '.');
+      },
+      stgCode: selO.code || '', stgN: String(selO.cur || ''), stgName: selStg.name || '', stgPlanned: String(selStg.planned || ''),
+      sDays: s.sDays, onSDays: (e) => this.setState({ sDays: e.target.value, sErr: false }),
+      sDate: s.sDate, onSDate: (e) => this.setState({ sDate: e.target.value }),
+      sFiles: s.sFiles,
+      addFile: () => this.setState({ sFiles: s.sFiles.concat(this.FILES[s.sFiles.length % 3]) }),
+      sErr: s.sErr,
+      submitStg: (e) => {
+        e.preventDefault();
+        const d = Number(s.sDays);
+        if (!d || d <= 0 || !s.sFiles.length) { this.setState({ sErr: true }); return; }
+        const orders = s.orders.map(o => {
+          if (o.code !== s.sel) return o;
+          const p = (S.find(x => x.n === o.cur) || {}).planned || 0;
+          const cur = Math.min(12, o.cur + 1);
+          return Object.assign({}, o, { actuals: Object.assign({}, o.actuals, { [o.cur]: d }), dev: o.dev + Math.max(0, d - p), cur, st: cur >= 12 ? 'delivered' : o.st === 'pending' ? 'preparing' : o.st });
+        });
+        this.persist(orders, s.counter);
+        this.setState({ orders, modal: null });
+        this.showToast('تم تثبيت إنجاز المرحلة ' + (selO.cur || '') + ' — ' + (selStg.name || '') + '.');
+      },
+      toastOn: !!s.toast, toast: s.toast,
+    };
+  }
+}</script>
+</body>
+</html>

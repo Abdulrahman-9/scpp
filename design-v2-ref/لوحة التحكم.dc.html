@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="tokens-v2.css">
+</helmet>
+
+<div dir="rtl" style="display:flex;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <!-- ═══ الشريط الجانبي ═══ -->
+  <aside style="--sw:{{ sideW }};width:var(--sw,260px);--side-bg:{{ sbBg }};--side-fg:{{ sbFg }};--side-fg-2:{{ sbFg2 }};--side-active:{{ sbActive }};--side-hover:{{ sbHover }};--side-border:{{ sbBorder }};--side-count:{{ sbCount }};flex:none;background:var(--side-bg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width var(--dur-base) var(--ease-out);overflow:hidden;--focus-color:var(--focus-color-on-dark)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--side-border);min-height:58px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:14px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="line-height:1.2;white-space:nowrap">
+          <div style="font-size:14.5px;font-weight:700;color:#fff">مسار</div>
+          <div style="font-size:10px;color:var(--side-fg-2)">الإدارة العليا · نفط الوسط</div>
+        </div>
+        <span style="margin-inline-start:auto;font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--side-fg);background:var(--side-count);border-radius:4px;padding:2px 6px">v2</span>
+      </sc-if>
+    </div>
+
+    <nav aria-label="التنقل الرئيسي" style="flex:1;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden">
+      <sc-for list="{{ navPrimary }}" as="n" hint-placeholder-count="5">
+        <a href="#" onClick="{{ n.go }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:13px;font-weight:{{ n.fw }};text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-active);text-decoration:none">
+          <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span>
+            <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10.5px;font-weight:600;background:{{ n.countBg }};color:{{ n.countFg }};border-radius:999px;padding:1px 8px">{{ n.count }}</span></sc-if>
+          </sc-if>
+        </a>
+      </sc-for>
+
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ toggleSec }}" aria-expanded="{{ secOpen }}" style="display:flex;align-items:center;gap:8px;width:100%;margin-top:12px;padding:8px 10px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:10.5px;font-weight:700;letter-spacing:.07em;cursor:pointer;border-radius:6px;text-align:start;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ secCaret }};transition:transform var(--dur-fast) var(--ease-out)"><path d="M15 18l-6-6 6-6"></path></svg>
+          أدوات ومراجع
+          <sc-if value="{{ secBadge }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;background:var(--side-count);color:var(--side-fg);border-radius:999px;padding:1px 7px">{{ secBadgeN }}</span></sc-if>
+        </button>
+        <sc-if value="{{ secOpen }}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{ navSecondary }}" as="n" hint-placeholder-count="9">
+            <a href="#" onClick="{{ n.go }}" style="display:flex;align-items:center;gap:10px;padding:7.5px 10px;border-radius:6px;color:var(--side-fg-2);font-size:12.5px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover);color:var(--side-fg);text-decoration:none">
+              <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+              <span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span>
+            </a>
+          </sc-for>
+        </sc-if>
+      </sc-if>
+    </nav>
+
+    <div style="padding:12px 14px;border-top:1px solid var(--side-border)">
+      <button onClick="{{ toggleSide }}" title="طي / بسط الشريط" style="display:flex;align-items:center;gap:9px;width:100%;padding:8px 6px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ collapseCaret }};transition:transform var(--dur-base) var(--ease-out)"><path d="M9 18l6-6-6-6"></path></svg>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>طي الشريط</span></sc-if>
+      </button>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:9.5px;color:var(--side-fg-2);padding:6px 6px 0;line-height:1.7;white-space:nowrap">الدليل الحاكم<br /><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:9px">SCPP Rev 1.0 · Jan 2026</span></div>
+      </sc-if>
+    </div>
+  </aside>
+
+  <!-- ═══ المحتوى ═══ -->
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:58px;padding:0 22px;background:color-mix(in srgb, var(--bg-card) 80%, transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border-bottom:1px solid var(--border-1)">
+      <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap">
+        <span style="color:var(--text-muted)">لوحة الإدارة</span>
+        <span style="color:var(--text-disabled)">/</span>
+        <span style="font-weight:600">غرفة المتابعة</span>
+      </div>
+      <button onClick="{{ openPalette }}" style="display:flex;align-items:center;gap:9px;width:300px;max-width:34vw;height:34px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-muted);font:inherit;font-size:12.5px;cursor:text;margin-inline-start:14px;transition:border-color var(--dur-fast) var(--ease-out)" style-hover="border-color:var(--text-muted)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+        بحث سريع…
+        <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:9.5px;border:1px solid var(--border-2);border-radius:4px;padding:1px 6px;background:var(--bg-muted);direction:ltr">Ctrl K</span>
+      </button>
+      <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px">
+        <a href="نظام التصميم.dc.html" title="نظام التصميم" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:6px;border:1px solid var(--border-1);color:var(--text-3);font-size:12px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted);text-decoration:none">نظام التصميم</a>
+        <button onClick="{{ toggleTheme }}" title="تبديل الوضع الفاتح/الداكن" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+          <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+        </button>
+        <button title="الإشعارات" aria-label="الإشعارات" onClick="{{ bellToast }}" style="position:relative;width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span style="position:absolute;top:5px;inset-inline-end:6px;width:7px;height:7px;border-radius:50%;background:var(--st-late-base);border:1.5px solid var(--bg-card);animation:pulse-soft 1.8s var(--ease-out) infinite"></span>
+        </button>
+        <div style="position:relative">
+          <button onClick="{{ toggleAvatar }}" title="م. مصطفى الكرخي" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--grad-brand);color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer">مص</button>
+          <sc-if value="{{ avatarOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:40px;inset-inline-start:0;z-index:60;width:210px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:8px;box-shadow:var(--shadow-3);padding:5px;animation:pop-in var(--dur-fast) var(--ease-out)">
+              <div style="padding:9px 11px;border-bottom:1px solid var(--border-1);margin-bottom:4px"><div style="font-size:12.5px;font-weight:600">م. مصطفى الكرخي</div><div style="font-size:11px;color:var(--text-muted)">مدير النظام — SUPER_ADMIN</div></div>
+              <button onClick="{{ logoutToast }}" style="display:block;width:100%;text-align:start;padding:8px 11px;border:none;background:transparent;border-radius:5px;font:inherit;font-size:12.5px;color:var(--st-cancelled-fg);cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">تسجيل الخروج</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;padding:26px 26px 60px">
+      <div style="max-width:1280px;margin:0 auto">
+
+        <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:20px">
+          <div>
+            <h1 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-0.01em">غرفة المتابعة</h1>
+            <div style="font-size:12.5px;color:var(--text-3);margin-top:4px">محفظة <span style="font-family:var(--font-mono)">12</span> شركة مشغّلة و<span style="font-family:var(--font-mono)">13</span> حقلاً — كل ما يتطلب قرار الإدارة يبدأ من هنا · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">2026-08-24</span></div>
+          </div>
+          <div style="margin-inline-start:auto;display:flex;gap:8px">
+            <button onClick="{{ reportToast }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 15px;border-radius:6px;border:none;background-color:#0B6B45;background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:#fff;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:#0D7A4F;box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(6,78,59,.35);transform:translateY(-1px)" style-active="background-color:#095A3A;box-shadow:inset 0 2px 4px rgba(2,6,23,.3);transform:none">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
+              الكشف الأسبوعي
+            </button>
+            <button onClick="{{ newOrderToast }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 15px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out),filter var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none;filter:brightness(.98)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              طلبية جديدة
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:14px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7">
+            <button onClick="{{ k.go }}" title="{{ k.hint }}" style="text-align:start;background-color:{{ k.fill }};background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 52%,rgba(2,6,23,.08));border:1px solid rgba(255,255,255,.24);border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 1px 3px rgba(15,23,42,.12);padding:13px 14px 11px;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:5px;min-width:0;transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out)" style-hover="box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 12px 26px rgba(15,23,42,.22);transform:translateY(-2px);filter:brightness(1.08) saturate(1.05)" style-active="transform:translateY(0);filter:brightness(.97)">
+              <span style="display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span style="width:7px;height:7px;border-radius:50%;background:{{ k.dot }};flex:none;animation:{{ k.pulse }}"></span>{{ k.label }}</span>
+              <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:25px;font-weight:600;letter-spacing:-0.02em;color:{{ k.vColor }};font-variant-numeric:tabular-nums">{{ k.disp }}</span>
+              <span style="font-size:9.5px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <!-- Sparkline -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:13px;font-weight:600">الالتزام الزمني شهراً بشهر</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">نسبة المراحل المغلقة في موعدها من المستحقّة في الشهر — نقطة مستقلة لا تراكم</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;margin-inline-start:auto">
+            <span style="font-family:var(--font-mono);direction:ltr;font-size:22px;font-weight:600">87%</span>
+            <svg viewBox="0 0 132 34" width="200" height="34" style="direction:ltr" aria-hidden="true">
+              <polyline points="4,21 28,17.7 52,23.3 76,14.3 100,8.7 124,11" fill="none" stroke="var(--text-3)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <circle cx="124" cy="11" r="3" fill="var(--st-pending-base)"></circle>
+            </svg>
+            <div style="display:flex;gap:10px;direction:ltr">
+              <sc-for list="{{ sparkMonths }}" as="m" hint-placeholder-count="6"><span style="font-size:9px;color:var(--text-muted);font-family:var(--font-mono)">{{ m.l }}</span></sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- قرارات + دونات -->
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 18px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div>
+                <div style="font-size:13.5px;font-weight:600">قرارات بانتظار الإدارة</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:2px">مرتبة بالموعد النظامي — كل قرار يفتح ملفه بالسياق الكامل</div>
+              </div>
+              <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--st-pending-fg);background:var(--st-pending-bg);border:1px solid var(--st-pending-bd);border-radius:999px;padding:2px 10px">7</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="4">
+                <button onClick="{{ d.open }}" style="display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;text-align:start;padding:11px 8px;border:none;border-bottom:1px solid var(--border-1);background:transparent;font:inherit;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                  <span style="width:30px;height:30px;border-radius:7px;background:var(--st-pending-bg);border:1px solid var(--st-pending-bd);color:var(--st-pending-fg);display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+                  <span style="min-width:0">
+                    <span style="display:block;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">المصادقة على الإحالة — {{ d.title }}</span>
+                    <span style="display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap">
+                      <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:10.5px;color:var(--text-muted)">{{ d.code }}</span>
+                      <span style="display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:4px;background:{{ d.tierBg }};color:{{ d.tierFg }};border:1px solid {{ d.tierBd }};font-size:9.5px;font-weight:700"><span style="font-family:var(--font-mono)">{{ d.tierN }}</span>{{ d.tierLabel }}</span>
+                      <span style="display:inline-flex;align-items:center;gap:2px;direction:rtl">
+                        <sc-for list="{{ d.rail }}" as="m" hint-placeholder-count="8"><span style="width:{{ m.size }};height:{{ m.size }};border-radius:2px;background:{{ m.bg }};border:{{ m.bd }};box-shadow:{{ m.ring }};flex:none"></span></sc-for>
+                      </span>
+                      <span style="font-size:9.5px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr">SCPP 6.6</span>
+                    </span>
+                  </span>
+                  <span style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+                    <span style="font-size:10px;font-weight:600;color:var(--st-pending-fg)">{{ d.due }}</span>
+                    <span style="font-size:10px;color:var(--link);font-weight:600;display:inline-flex;align-items:center;gap:3px">فتح القرار<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <button onClick="{{ allDecisionsToast }}" style="margin-top:10px;border:none;background:transparent;color:var(--link);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;padding:0">عرض القرارات السبعة ←</button>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 18px">
+            <div style="font-size:13.5px;font-weight:600">المناقصات الجارية حسب طبقة الموافقة</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;margin-bottom:12px">سلّم عام: حتى صلاحية المشغّل · حتى <span style="font-family:var(--font-mono);direction:ltr">$10M</span> اللجنة المشتركة · فوقها نفط الوسط</div>
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="position:relative;width:150px;height:150px;flex:none;margin-inline:auto">
+                <svg viewBox="0 0 160 160" style="width:100%;height:100%;display:block" aria-hidden="true">
+                  <circle cx="80" cy="80" r="54" fill="none" stroke="var(--chart-track)" stroke-width="21"></circle>
+                  <circle cx="80" cy="80" r="54" fill="none" stroke="var(--tier-operator)" stroke-width="21" stroke-linecap="butt" stroke-dasharray="206.55 132.74" stroke-dashoffset="0" transform="rotate(-90 80 80)"></circle>
+                  <circle cx="80" cy="80" r="54" fill="none" stroke="var(--tier-jmc)" stroke-width="21" stroke-linecap="butt" stroke-dasharray="86.81 252.48" stroke-dashoffset="-209.55" transform="rotate(-90 80 80)"></circle>
+                  <circle cx="80" cy="80" r="54" fill="none" stroke="var(--tier-mdoc)" stroke-width="21" stroke-linecap="butt" stroke-dasharray="36.93 302.36" stroke-dashoffset="-299.37" transform="rotate(-90 80 80)"></circle>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;pointer-events:none">
+                  <span style="font-family:var(--font-mono);font-size:26px;font-weight:600;letter-spacing:-0.02em">34</span>
+                  <span style="font-size:10.5px;color:var(--text-3)">مناقصة جارية</span>
+                </div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ tierLegend }}" as="t" hint-placeholder-count="3">
+                  <button onClick="{{ t.go }}" style="display:grid;grid-template-columns:10px 1fr auto auto;align-items:center;gap:8px;padding:7px 8px;border:none;border-radius:6px;background:transparent;font:inherit;font-size:12px;color:var(--text-2);cursor:pointer;text-align:start;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                    <span style="width:10px;height:10px;border-radius:3px;background:{{ t.sw }}"></span>
+                    <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.label }}</span>
+                    <span style="font-family:var(--font-mono);font-weight:600;color:var(--text-1)">{{ t.n }}</span>
+                    <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);min-width:36px;text-align:end">{{ t.p }}</span>
+                  </button>
+                </sc-for>
+                <div style="font-size:10px;color:var(--text-muted);padding:6px 8px 0;border-top:1px solid var(--border-1);margin-top:6px">النقر يفتح سلسلة الموافقات مصفّاة على الطبقة</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- أشرطة الشركات + مدرّج -->
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px">
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 18px">
+            <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px">
+              <div style="font-size:13.5px;font-weight:600">المناقصات لكل شركة مشغّلة</div>
+              <div style="font-size:11px;color:var(--text-muted)">12 شركة — القيمة موزّعة على طبقات الموافقة · الصفرية تبقى ظاهرة</div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ companies }}" as="c" hint-placeholder-count="12">
+                <button onClick="{{ c.go }}" style="display:grid;grid-template-columns:minmax(120px,1fr) 3fr 34px 64px;align-items:center;gap:12px;padding:5.5px 8px;border:none;border-radius:6px;background:transparent;font:inherit;cursor:pointer;text-align:start;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                  <span style="font-size:11.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" dir="auto">{{ c.name }}</span>
+                  <span style="display:flex;gap:2px;height:13px;background:var(--chart-track);border-radius:999px;overflow:hidden;direction:ltr">
+                    <sc-for list="{{ c.segs }}" as="g" hint-placeholder-count="3"><span style="display:block;height:100%;width:{{ g.w }};background:{{ g.bg }};min-width:{{ g.mw }}"></span></sc-for>
+                  </span>
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);text-align:end">{{ c.n }}</span>
+                  <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px;color:var(--text-2);text-align:end">{{ c.v }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-1);font-size:10.5px;color:var(--text-3)">
+              <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2.5px;background:var(--tier-operator)"></span>ضمن الصلاحية</span>
+              <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2.5px;background:var(--tier-jmc)"></span>اللجنة المشتركة</span>
+              <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2.5px;background:var(--tier-mdoc)"></span>نفط الوسط</span>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:16px 18px;display:flex;flex-direction:column">
+            <div style="font-size:13.5px;font-weight:600">توزّع العقود حسب نسبة الإنجاز</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">النسبة مشتقّة من مراحل العقد المغلقة — <span style="font-family:var(--font-mono)">18</span> عقداً</div>
+            <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;margin-top:14px;min-height:150px">
+              <sc-for list="{{ buckets }}" as="b" hint-placeholder-count="4">
+                <button onClick="{{ b.go }}" style="display:grid;grid-template-rows:auto 1fr auto;align-items:end;justify-items:center;gap:6px;height:100%;border:none;background:transparent;border-radius:6px;padding:6px 4px;font:inherit;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                  <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:600">{{ b.n }}</span>
+                  <span style="width:100%;align-self:end;min-height:3px;height:{{ b.h }};background:var(--chart-neutral);border-radius:4px 4px 0 0;transition:background var(--dur-fast) var(--ease-out)"></span>
+                  <span style="font-family:var(--font-mono);direction:ltr;font-size:10px;color:var(--text-3)">{{ b.range }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ الدُرج — ملف الطلبية ومسارها ═══ -->
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:80">
+      <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(2,6,23,.45);backdrop-filter:blur(3px);animation:fade-in var(--dur-fast) var(--ease-out)"></div>
+      <div role="dialog" aria-label="ملف الطلبية" style="position:absolute;inset-block:0;inset-inline-start:0;width:560px;max-width:94vw;background:var(--bg-card);border-inline-end:1px solid var(--border-2);box-shadow:var(--shadow-pop);display:flex;flex-direction:column;animation:panel-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border-1)">
+          <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px;color:var(--text-3);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:5px;padding:2px 8px">{{ dw.code }}</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid var(--st-{{ dwSt }}-bd);background:var(--st-{{ dwSt }}-bg);color:var(--st-{{ dwSt }}-fg);font-size:11.5px;font-weight:600;transition:background var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out)"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-{{ dwSt }}-base)"></span>{{ dwStLabel }}</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:1.5px 8px;border-radius:4px;background:{{ dw.tierBg }};color:{{ dw.tierFg }};border:1px solid {{ dw.tierBd }};font-size:10px;font-weight:700"><span style="font-family:var(--font-mono)">{{ dw.tierN }}</span>{{ dw.tierLabel }}</span>
+          <button onClick="{{ closeDrawer }}" aria-label="إغلاق" style="margin-inline-start:auto;width:30px;height:30px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="font-size:15.5px;font-weight:600;line-height:1.4">{{ dw.title }}</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">{{ dw.op }} · {{ dw.field }} · {{ dw.path }}</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;font-size:12px;background:var(--bg-muted);border-radius:8px;padding:12px 14px">
+            <span style="color:var(--text-muted)">القيمة التخمينية</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left;font-weight:600">{{ dw.value }}</span>
+            <span style="color:var(--text-muted)">تاريخ التقديم</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left">{{ dw.submitted }}</span>
+            <span style="color:var(--text-muted)">الغلق المخطط</span><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:left">{{ dw.close }}</span>
+            <span style="color:var(--text-muted)">الحيود الحالي</span><span style="text-align:start"><span style="font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;background:{{ dw.devBg }};color:{{ dw.devFg }};border:1px solid {{ dw.devBd }};direction:ltr;unicode-bidi:isolate;font-family:var(--font-mono)">{{ dw.dev }}</span></span>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:700">مسار الطلبية — صناديق المراحل</span>
+              <span style="font-size:11px;color:var(--text-3)">المرحلة <span style="font-family:var(--font-mono)">{{ dw.curN }}</span> من <span style="font-family:var(--font-mono)">12</span></span>
+              <span style="margin-inline-start:auto;display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--st-cancelled-fg);font-weight:600"><span style="width:7px;height:7px;border-radius:2px;background:var(--st-cancelled-base)"></span>الأحمر = المرحلة الحالية</span>
+            </div>
+            <div style="display:flex;align-items:stretch;overflow-x:auto;padding:8px 2px 10px">
+              <sc-for list="{{ dwStages }}" as="g" hint-placeholder-count="6">
+                <div style="display:flex;align-items:stretch;flex:none">
+                  <div title="{{ g.name }}" style="width:126px;border:{{ g.bw }} solid {{ g.bd }};background:{{ g.bg }};border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:5px;position:relative;box-shadow:{{ g.sh }}">
+                    <sc-if value="{{ g.isCur }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute;top:-8px;inset-inline-start:8px;display:inline-flex;align-items:center;gap:4px;background:#fff;color:var(--st-cancelled-base);border:1px solid var(--st-cancelled-base);font-size:8.5px;font-weight:700;padding:1px 7px;border-radius:999px;box-shadow:var(--shadow-1)"><span style="width:4px;height:4px;border-radius:50%;background:var(--st-cancelled-base);animation:pulse-soft 1.6s var(--ease-out) infinite"></span>الحالية</span>
+                    </sc-if>
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="width:17px;height:17px;border-radius:4px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--font-mono);background:{{ g.numBg }};color:{{ g.numFg }}">{{ g.n }}</span>
+                      <span style="font-size:10.5px;font-weight:600;color:{{ g.nameFg }};line-height:1.25">{{ g.name }}</span>
+                    </div>
+                    <div style="font-size:9.5px;color:{{ g.metaFg }};line-height:1.6">مخطط <b style="font-family:var(--font-mono);color:{{ g.nameFg }}">{{ g.planned }}</b> يوم<br />{{ g.line2label }}<b style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;color:{{ g.line2color }}">{{ g.line2 }}</b></div>
+                    <span style="align-self:flex-start;font-size:8.5px;font-weight:700;padding:1px 6px;border-radius:999px;background:{{ g.chipBg }};color:{{ g.chipFg }};border:1px solid {{ g.chipBd }}">{{ g.stateLabel }}</span>
+                  </div>
+                  <sc-if value="{{ g.notLast }}" hint-placeholder-val="{{ true }}">
+                    <span style="display:flex;align-items:center;padding:0 2px;color:var(--text-disabled)"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border-1);border-radius:8px;padding:12px 14px">
+            <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">تغيير الحالة</div>
+            <div style="position:relative;display:inline-block">
+              <button onClick="{{ toggleStMenu }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);font:inherit;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--st-{{ dwSt }}-base)"></span>{{ dwStLabel }}
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ stMenuOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:36px;inset-inline-start:0;z-index:5;width:210px;background:var(--bg-card);border:1px solid var(--border-2);border-radius:8px;box-shadow:var(--shadow-3);padding:4px;animation:pop-in var(--dur-fast) var(--ease-out)">
+                  <sc-for list="{{ changeable }}" as="s" hint-placeholder-count="4">
+                    <button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:start;padding:7px 10px;border-radius:5px;border:none;background:transparent;font:inherit;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.dotVar }}"></span>{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <sc-if value="{{ confirmSt }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;padding:10px 12px;border-radius:6px;background:var(--bg-muted);border:1px solid var(--border-1);animation:pop-in var(--dur-fast) var(--ease-out)">
+                <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">تغيير حالة {{ dw.code }} إلى «{{ confirmStLabel }}»؟ سيُسجَّل في سجل التدقيق باسمك.</div>
+                <div style="display:flex;gap:6px">
+                  <button onClick="{{ applySt }}" style="height:28px;padding:0 14px;border-radius:5px;border:none;background:var(--btn-primary-bg);color:var(--btn-primary-fg);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer">تأكيد</button>
+                  <button onClick="{{ cancelSt }}" style="height:28px;padding:0 12px;border-radius:5px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer">رجوع</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border-1)">
+          <button onClick="{{ fullFileToast }}" style="height:34px;padding:0 16px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none">فتح الملف الكامل</button>
+          <button onClick="{{ closeDrawer }}" style="height:34px;padding:0 14px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover)">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ لوحة الأوامر ═══ -->
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePalette }}" style="position:fixed;inset:0;z-index:95;background:rgba(2,6,23,.5);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:flex-start;padding-top:13vh;animation:fade-in var(--dur-fast) var(--ease-out)">
+      <div onClick="{{ stop }}" role="dialog" aria-label="لوحة الأوامر" style="width:580px;max-width:calc(100vw - 48px);background:var(--bg-card);border:1px solid var(--border-2);border-radius:12px;box-shadow:var(--shadow-pop);overflow:hidden;animation:pop-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border-1)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+          <input value="{{ paletteQ }}" onChange="{{ onPaletteQ }}" data-pal-input="1" placeholder="ابحث عن شاشة أو طلبية أو إجراء…" style="flex:1;border:none;outline:none;background:transparent;color:var(--text-1);font:inherit;font-size:13.5px" />
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);border:1px solid var(--border-2);border-radius:4px;padding:1px 6px">Esc</span>
+        </div>
+        <div style="padding:6px;max-height:330px;overflow-y:auto">
+          <sc-for list="{{ paletteResults }}" as="r" hint-placeholder-count="6">
+            <div onClick="{{ r.go }}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;background:{{ r.bg }}">
+              <span style="font-size:9.5px;font-weight:700;color:var(--text-muted);border:1px solid var(--border-1);border-radius:4px;padding:1px 6px;background:var(--bg-muted);flex:none">{{ r.kind }}</span>
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.label }}</span>
+              <span style="margin-inline-start:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);direction:ltr;flex:none">{{ r.kbd }}</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ paletteEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:20px;text-align:center;font-size:12.5px;color:var(--text-muted)">لا نتائج مطابقة.</div></sc-if>
+        </div>
+        <div style="display:flex;gap:14px;padding:8px 16px;border-top:1px solid var(--border-1);font-size:10.5px;color:var(--text-muted)"><span>↑↓ تنقّل</span><span>Enter فتح</span><span>N طلبية جديدة</span><span>/ بحث</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ التنبيهات ═══ -->
+  <div style="position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid {{ t.bar }};border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px;min-width:260px;animation:toast-in var(--dur-base) var(--ease-out)">
+        <span style="color:{{ t.bar }};display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.icon }}"></path></svg></span>
+        <span style="font-size:12.5px;color:var(--text-1)">{{ t.msg }}</span>
+        <button onClick="{{ t.close }}" aria-label="إغلاق" style="margin-inline-start:auto;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;padding:2px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;collapsed&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;sideTheme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;indigo&quot;, &quot;graphite&quot;, &quot;petrol&quot;, &quot;bronze&quot;, &quot;plum&quot;], &quot;default&quot;: &quot;indigo&quot;, &quot;tsType&quot;: &quot;'indigo' | 'graphite' | 'petrol' | 'bronze' | 'plum'&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'light', collapsed: false, secOpen: false,
+    drawerOrder: null, drawerSt: 'pending', stMenuOpen: false, confirmKey: null,
+    paletteOpen: false, paletteQ: '', palIdx: 0, avatarOpen: false,
+    toasts: [], kpiVals: [0, 0, 0, 0, 0, 0, 0],
+  };
+
+  KPI_TARGETS = [34, 7, 5, 9, 87, 5, 3];
+
+  STATUSES = [
+    { k: 'pending', label: 'معلق' }, { k: 'approved', label: 'معتمد' }, { k: 'preparing', label: 'قيد التجهيز' },
+    { k: 'delivered', label: 'مُسلَّم' }, { k: 'cancelled', label: 'ملغي' },
+  ];
+
+  STAGES = [
+    { n: 1, name: 'البداية', planned: 2 }, { n: 2, name: 'المصادقة على الكلفة', planned: 5 },
+    { n: 3, name: 'الصلاحية المالية', planned: 3 }, { n: 4, name: 'اعتماد الأسلوب', planned: 4 },
+    { n: 5, name: 'الإعلان', planned: 21 }, { n: 6, name: 'الفتح الفني', planned: 1 },
+    { n: 7, name: 'التحليل الفني', planned: 10 }, { n: 8, name: 'الفتح التجاري', planned: 1 },
+    { n: 9, name: 'التحليل التجاري', planned: 7 }, { n: 10, name: 'المصادقة على الإحالة', planned: 5 },
+    { n: 11, name: 'توقيع العقد', planned: 7 }, { n: 12, name: 'النهاية', planned: 1 },
+  ];
+
+  TIERS = {
+    t1: { n: 'ط1', label: 'ضمن الصلاحية' }, t2: { n: 'ط2', label: 'اللجنة المشتركة' }, t3: { n: 'ط3', label: 'نفط الوسط' },
+  };
+
+  ORDERS = [
+    { code: 'PO-2026-0148', title: 'توريد مضخات غاطسة — حقل الأحدب', op: 'شركة نفط الواحة الصينية', field: 'حقل الأحدب النفطي', path: 'المناقصة العامة (11.1)', value: '$482,900', tier: 't3', cur: 10, dev: '+3', submitted: '2026-05-14', close: '2026-09-06', actuals: { 2: 6 } },
+    { code: 'PO-2026-0132', title: 'تجهيز أنابيب تغليف — حقل بدرة', op: 'مشروع بدرة', field: 'حقل بدرة', path: 'المناقصة المحدودة (11.2)', value: '$1,120,000', tier: 't2', cur: 10, dev: '0', submitted: '2026-06-02', close: '2026-09-18', actuals: {} },
+    { code: 'PO-2026-0125', title: 'خدمات فحص جودة اللحام — الرقعة السابعة', op: 'CNOOC Africa Holding', field: 'الرقعة السابعة', path: 'الدعوة المباشرة (11.4)', value: '$4,860,000', tier: 't3', cur: 10, dev: '+6', submitted: '2026-04-20', close: '2026-08-30', actuals: { 5: 25, 7: 14 } },
+    { code: 'PO-2026-0117', title: 'تأهيل خزانات النفط الخام — شرقي بغداد', op: 'شركة شرقي بغداد الصينية', field: 'شرقي بغداد - الجنوبية', path: 'المناقصة العامة (11.1)', value: '$2,340,000', tier: 't2', cur: 10, dev: '+1', submitted: '2026-05-01', close: '2026-09-11', actuals: {} },
+  ];
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+    if (this.props.collapsed) this.setState({ collapsed: true });
+
+    const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { this.setState({ kpiVals: this.KPI_TARGETS.slice() }); }
+    else {
+      const t0 = performance.now(), DUR = 700;
+      const tick = (ts) => {
+        const p = Math.min((ts - t0) / DUR, 1), e = 1 - Math.pow(1 - p, 3);
+        this.setState({ kpiVals: this.KPI_TARGETS.map(v => Math.round(v * e)) });
+        if (p < 1) this._raf = requestAnimationFrame(tick);
+      };
+      this._raf = requestAnimationFrame(tick);
+    }
+
+    this._onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || '';
+      const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); this.openPal(); return; }
+      if (e.key === '/' && !typing) { e.preventDefault(); this.openPal(); return; }
+      if ((e.key === 'n' || e.key === 'N') && !typing && !this.state.paletteOpen) { this.toast('اختصار N — نموذج الطلبية الجديدة ضمن المرحلة التالية.', 'ok'); return; }
+      if (e.key === 'Escape') { this.setState({ paletteOpen: false, drawerOrder: null, stMenuOpen: false, confirmKey: null, avatarOpen: false }); return; }
+      if (this.state.paletteOpen) {
+        const list = this.palResults();
+        if (e.key === 'ArrowDown') { e.preventDefault(); this.setState(s => ({ palIdx: Math.min(s.palIdx + 1, list.length - 1) })); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState(s => ({ palIdx: Math.max(s.palIdx - 1, 0) })); }
+        else if (e.key === 'Enter') { e.preventDefault(); const it = list[this.state.palIdx]; if (it) this.palGo(it); }
+      }
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); cancelAnimationFrame(this._raf); }
+
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+  toast(msg, kind) {
+    const id = Date.now() + Math.random();
+    this.setState(s => ({ toasts: [...s.toasts, { id, msg, kind }] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 4200);
+  }
+  openPal() { this.setState({ paletteOpen: true, paletteQ: '', palIdx: 0 }); setTimeout(() => { const el = document.querySelector('[data-pal-input]'); if (el) el.focus(); }, 30); }
+  openOrder(o) { this.setState({ drawerOrder: o, drawerSt: 'pending', stMenuOpen: false, confirmKey: null }); }
+
+  tierChip(t) {
+    const dark = this.state.theme === 'dark';
+    if (t === 't3') return dark ? { bg: '#1E40AF', fg: '#EFF6FF', bd: '#1E40AF' } : { bg: 'var(--primary-900)', fg: '#EFF6FF', bd: 'var(--primary-900)' };
+    if (t === 't2') return dark ? { bg: 'rgba(59,130,246,.24)', fg: '#BFDBFE', bd: 'rgba(96,165,250,.4)' } : { bg: 'var(--primary-100)', fg: 'var(--primary-800)', bd: 'var(--primary-300)' };
+    return dark ? { bg: 'rgba(59,130,246,.14)', fg: '#93C5FD', bd: 'rgba(96,165,250,.3)' } : { bg: 'var(--primary-50)', fg: 'var(--primary-700)', bd: 'var(--primary-200)' };
+  }
+  mini(st, name) {
+    const cur = st === 'current', done = st === 'done';
+    return {
+      name, size: cur ? '11px' : '8px',
+      bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--bg-inset)',
+      bd: cur ? '1px solid var(--st-cancelled-base)' : done ? '1px solid var(--st-approved-base)' : '1px solid var(--border-2)',
+      ring: cur ? '0 0 0 2px var(--st-cancelled-bg)' : 'none',
+    };
+  }
+  railFor(curIdx, count) {
+    return this.STAGES.slice(0, count || 8).map((g, i) => this.mini(i + 1 < curIdx ? 'done' : i + 1 === curIdx ? 'current' : 'next', g.name));
+  }
+  stageBoxes(order) {
+    return this.STAGES.map((g, i, arr) => {
+      const cur = g.n === order.cur, done = g.n < order.cur;
+      const actual = order.actuals[g.n] || g.planned;
+      const over = cur && order.dev.startsWith('+') && order.dev !== '+0';
+      return {
+        n: String(g.n), name: g.name, isCur: cur, notLast: i < arr.length - 1, planned: String(g.planned),
+        bw: cur ? '2px' : '1px',
+        bd: cur ? '#991B1B' : done ? '#15803D' : 'var(--surface-500)',
+        bg: cur ? 'var(--st-cancelled-base)' : done ? 'var(--st-approved-base)' : 'var(--surface-500)',
+        sh: cur ? '0 0 0 4px var(--st-late-bg), var(--shadow-2)' : 'var(--shadow-1)',
+        numBg: 'rgba(255,255,255,.24)', numFg: '#fff',
+        nameFg: '#fff', metaFg: 'rgba(255,255,255,.82)',
+        line2label: done ? 'فعلي ' : cur ? 'مضى ' : 'من–إلى ',
+        line2: done ? actual + ' يوم' : cur ? (g.planned + (over ? parseInt(order.dev, 10) : 0)) + ' يوم' : '—',
+        line2color: over ? '#FFE08A' : '#fff',
+        chipBg: cur ? '#fff' : 'rgba(255,255,255,.2)',
+        chipFg: cur ? 'var(--st-cancelled-base)' : '#fff',
+        chipBd: cur ? '#fff' : 'rgba(255,255,255,.42)',
+        stateLabel: cur ? 'جارية' : done ? 'منجزة' : 'لم تبدأ',
+      };
+    });
+  }
+
+  palItems() {
+    const screens = [
+      ['غرفة المتابعة', () => this.toast('أنت في غرفة المتابعة.', 'ok')],
+      ['المناقصات — قائمة الطلبيات', () => this.toast('شاشة قائمة الطلبيات — ضمن المرحلة التالية.', 'ok')],
+      ['سلسلة الموافقات', () => this.toast('شاشة سلسلة الموافقات — ضمن المرحلة التالية.', 'ok')],
+      ['العقود بعد الإحالة', () => this.toast('شاشة العقود — ضمن المرحلة التالية.', 'ok')],
+      ['نظام التصميم', () => { window.location.href = 'نظام التصميم.dc.html'; }],
+    ].map(x => ({ kind: 'شاشة', label: x[0], kbd: '', act: x[1] }));
+    const orders = this.ORDERS.map(o => ({ kind: 'طلبية', label: o.code + ' — ' + o.title, kbd: '', act: () => this.openOrder(o) }));
+    const actions = [
+      { kind: 'إجراء', label: 'طلبية جديدة', kbd: 'N', act: () => this.toast('نموذج الطلبية الجديدة — ضمن المرحلة التالية.', 'ok') },
+      { kind: 'إجراء', label: 'تبديل الوضع فاتح/داكن', kbd: '', act: () => this.setTheme(this.state.theme === 'dark' ? 'light' : 'dark') },
+      { kind: 'إجراء', label: 'طي/بسط الشريط الجانبي', kbd: '', act: () => this.setState(s => ({ collapsed: !s.collapsed })) },
+    ];
+    return [...screens, ...orders, ...actions];
+  }
+  palResults() {
+    const q = this.state.paletteQ.trim();
+    return this.palItems().filter(i => !q || i.label.includes(q) || i.kind.includes(q));
+  }
+  palGo(it) { this.setState({ paletteOpen: false }); it.act(); }
+
+  renderVals() {
+    const s = this.state;
+    const expanded = !s.collapsed;
+    const goToast = (m) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.toast(m + ' — ضمن المرحلة التالية.', 'ok'); };
+
+    const navPrimary = [
+      { label: 'المتابعة', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6', count: 7, cur: 'page', on: true },
+      { label: 'المناقصات', icon: 'M3 6h18 M7 12h14 M3 18h12', count: 52, go: goToast('سجل المناقصات') },
+      { label: 'سلسلة الموافقات', icon: 'M20 6L9 17l-5-5', count: 8, go: goToast('سلسلة الموافقات') },
+      { label: 'العقود', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', count: 18, go: goToast('سجل العقود') },
+      { label: 'الجهات', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3 M8 15h3', count: 0, go: goToast('سجل الجهات') },
+    ].map(n => ({
+      ...n,
+      go: n.go || ((e) => { if (e && e.preventDefault) e.preventDefault(); }),
+      bg: n.on ? 'var(--side-active)' : 'transparent',
+      fg: n.on ? '#FFFFFF' : 'var(--side-fg)',
+      fw: n.on ? 700 : 500,
+      cur: n.on ? 'page' : undefined,
+      hasCount: !!n.count, count: String(n.count),
+      countBg: n.on ? 'rgba(255,255,255,.2)' : 'var(--side-count)', countFg: n.on ? '#fff' : 'var(--side-fg)',
+    }));
+
+    const navSecondary = [
+      { label: 'التقارير', icon: 'M9 17V9 M13 17V13 M17 17V11 M3 3h18v18H3z' },
+      { label: 'الامتثال الزمني', icon: 'M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z' },
+      { label: 'الامتثال واللجان', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+      { label: 'المشغّلون', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3' },
+      { label: 'الحقول', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6' },
+      { label: 'العطل الرسمية', icon: 'M3 4h18v18H3z M16 2v4 M8 2v4 M3 10h18' },
+      { label: 'الوصول والأدوار', icon: 'M9 7a4 4 0 1 1 0 .01 M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2' },
+      { label: 'دليل المسارات', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6' },
+      { label: 'سجل التدقيق', icon: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' },
+    ].map(n => ({ ...n, go: (e) => { if (e && e.preventDefault) e.preventDefault(); this.toast('شاشة «' + n.label + '» — ضمن المرحلة التالية.', 'ok'); } }));
+
+    const mdocFill = s.theme === 'dark' ? '#1E40AF' : '#172554';
+    const kdefs = [
+      { label: 'مناقصات مفتوحة', fill: '#0284C7', sub: 'فتح السجل المصفّى ←', suffix: '' },
+      { label: 'بانتظار المصادقة', fill: '#D97706', sub: 'فتح السجل المصفّى ←', suffix: '' },
+      { label: 'مراحل متأخرة', fill: '#BE123C', sub: 'فتح السجل المصفّى ←', suffix: '', pulse: true },
+      { label: 'عقود قيد التنفيذ', fill: '#7C3AED', sub: 'فتح السجل المصفّى ←', suffix: '' },
+      { label: 'الالتزام بالجداول', fill: '#16A34A', sub: 'كل الفترات · الامتثال الزمني ←', suffix: '%' },
+      { label: 'بانتظار اللجنة المشتركة', fill: '#1D4ED8', sub: 'سلسلة الموافقات · ط2 ←', suffix: '' },
+      { label: 'بانتظار نفط الوسط', fill: mdocFill, sub: 'سلسلة الموافقات · ط3 ←', suffix: '' },
+    ];
+    const kpis = kdefs.map((k, i) => ({
+      label: k.label, fill: k.fill, sub: k.sub, hint: k.label,
+      dot: '#FFFFFF',
+      disp: s.kpiVals[i] + k.suffix,
+      vColor: '#FFFFFF',
+      pulse: k.pulse ? 'pulse-soft 1.8s var(--ease-out) infinite' : 'none',
+      go: goToast('«' + k.label + '»'),
+    }));
+
+    const sparkMonths = ['MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'].map(l => ({ l }));
+
+    const decisions = this.ORDERS.map(o => {
+      const tc = this.tierChip(o.tier), tm = this.TIERS[o.tier];
+      return {
+        code: o.code, title: o.title, due: 'بانتظار التوقيع',
+        tierN: tm.n, tierLabel: tm.label, tierBg: tc.bg, tierFg: tc.fg, tierBd: tc.bd,
+        rail: this.railFor(o.cur, 12), open: () => this.openOrder(o),
+      };
+    });
+
+    const tierLegend = [
+      { label: 'ضمن صلاحية المشغّل', sw: 'var(--tier-operator)', n: '21', p: '62%' },
+      { label: 'اللجنة المشتركة JMC', sw: 'var(--tier-jmc)', n: '9', p: '26%' },
+      { label: 'نفط الوسط MDOC', sw: 'var(--tier-mdoc)', n: '4', p: '12%' },
+    ].map(t => ({ ...t, go: goToast('سلسلة الموافقات — ' + t.label) }));
+
+    const comp = [
+      ['شركة نفط الواحة الصينية', 6, 48.2, [3, 2, 1]], ['CNOOC Africa Holding', 5, 36.9, [2, 1, 2]],
+      ['شركة شرقي بغداد الصينية', 4, 22.4, [2, 2, 0]], ['مشروع بدرة', 4, 18.7, [3, 1, 0]],
+      ['جيو-جاد الصينية', 3, 14.2, [2, 1, 0]], ['FBN', 3, 9.8, [2, 1, 0]],
+      ['شركة نفط الهلال الإماراتية', 2, 7.5, [1, 1, 0]], ['KAR', 2, 5.1, [2, 0, 0]],
+      ['EBN', 2, 3.4, [1, 0, 1]], ['ADO Digital Energy', 1, 2.2, [1, 0, 0]],
+      ['Qarnayn Petroleum', 1, 1.6, [1, 0, 0]], ['FZE', 1, 0.9, [1, 0, 0]],
+    ];
+    const maxV = 48.2;
+    const tierColors = ['var(--tier-operator)', 'var(--tier-jmc)', 'var(--tier-mdoc)'];
+    const companies = comp.map(c => {
+      const total = c[3][0] + c[3][1] + c[3][2];
+      const scale = (c[2] / maxV) * 100;
+      return {
+        name: c[0], n: String(c[1]), v: c[2] >= 1 ? '$' + c[2].toFixed(1) + 'M' : '$' + Math.round(c[2] * 1000) + 'K',
+        segs: c[3].map((k, i) => ({ w: (total ? (k / total) * scale : 0).toFixed(2) + '%', bg: tierColors[i], mw: k > 0 ? '3px' : '0' })).filter(g => g.mw !== '0'),
+        go: goToast('سجل المناقصات — ' + c[0]),
+      };
+    });
+
+    const buckets = [
+      { range: '0–24%', n: '3', h: '50%' }, { range: '25–49%', n: '5', h: '83%' },
+      { range: '50–74%', n: '6', h: '100%' }, { range: '75–100%', n: '4', h: '67%' },
+    ].map(b => ({ ...b, go: goToast('سجل العقود — إنجاز ' + b.range) }));
+
+    const dw = s.drawerOrder;
+    let dwVals = {};
+    if (dw) {
+      const tc = this.tierChip(dw.tier), tm = this.TIERS[dw.tier];
+      const late = dw.dev.startsWith('+') && dw.dev !== '+0';
+      dwVals = {
+        dw: {
+          code: dw.code, title: dw.title, op: dw.op, field: dw.field, path: dw.path, value: dw.value,
+          submitted: dw.submitted, close: dw.close, curN: String(dw.cur),
+          tierN: tm.n, tierLabel: tm.label, tierBg: tc.bg, tierFg: tc.fg, tierBd: tc.bd,
+          dev: late ? dw.dev + ' أيام' : 'مطابق',
+          devBg: late ? 'var(--st-late-bg)' : 'var(--st-approved-bg)',
+          devFg: late ? 'var(--st-late-fg)' : 'var(--st-approved-fg)',
+          devBd: late ? 'var(--st-late-bd)' : 'var(--st-approved-bd)',
+        },
+        dwStages: this.stageBoxes(dw),
+      };
+    }
+    const curSt = this.STATUSES.find(x => x.k === s.drawerSt);
+    const changeable = this.STATUSES.filter(x => x.k !== s.drawerSt).map(x => ({
+      ...x, dotVar: 'var(--st-' + x.k + '-base)', pick: () => this.setState({ stMenuOpen: false, confirmKey: x.k }),
+    }));
+    const confirmObj = s.confirmKey ? this.STATUSES.find(x => x.k === s.confirmKey) : null;
+
+    const palRes = this.palResults().map((r, i) => ({
+      kind: r.kind, label: r.label, kbd: r.kbd, bg: i === s.palIdx ? 'var(--bg-muted)' : 'transparent', go: () => this.palGo(r),
+    }));
+    const toasts = s.toasts.map(t => ({
+      msg: t.msg, bar: t.kind === 'err' ? 'var(--st-cancelled-base)' : 'var(--st-approved-base)',
+      icon: t.kind === 'err' ? 'M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01' : 'M20 6L9 17l-5-5',
+      close: () => this.setState(st => ({ toasts: st.toasts.filter(x => x.id !== t.id) })),
+    }));
+
+    const SIDE_THEMES = {
+      indigo: null,
+      graphite: { bg: 'linear-gradient(180deg,#1E293B 0%,#0F172A 70%)', dbg: 'linear-gradient(180deg,#16213A 0%,#0B1222 70%)', fg: '#E2E8F0', fg2: 'rgba(226,232,240,.62)', active: 'rgba(148,163,184,.18)', hover: 'rgba(148,163,184,.09)', border: 'rgba(148,163,184,.16)', count: 'rgba(148,163,184,.2)' },
+      petrol: { bg: 'linear-gradient(180deg,#115E59 0%,#042F2E 70%)', dbg: 'linear-gradient(180deg,#0B3B37 0%,#06201E 70%)', fg: '#CCFBF1', fg2: 'rgba(204,251,241,.62)', active: 'rgba(45,212,191,.2)', hover: 'rgba(45,212,191,.09)', border: 'rgba(204,251,241,.14)', count: 'rgba(204,251,241,.18)' },
+      bronze: { bg: 'linear-gradient(180deg,#292524 0%,#171412 70%)', dbg: 'linear-gradient(180deg,#221E1C 0%,#120F0D 70%)', fg: '#EDE5D8', fg2: 'rgba(237,229,216,.6)', active: 'rgba(201,137,44,.26)', hover: 'rgba(201,137,44,.11)', border: 'rgba(237,229,216,.13)', count: 'rgba(201,137,44,.3)' },
+      plum: { bg: 'linear-gradient(180deg,#4A1D6E 0%,#2A1045 70%)', dbg: 'linear-gradient(180deg,#3A1758 0%,#200C36 70%)', fg: '#EDE4FA', fg2: 'rgba(237,228,250,.62)', active: 'rgba(192,132,252,.22)', hover: 'rgba(192,132,252,.1)', border: 'rgba(237,228,250,.14)', count: 'rgba(192,132,252,.24)' },
+    };
+    const sp = SIDE_THEMES[this.props.sideTheme || 'indigo'];
+    const dark = s.theme === 'dark';
+    const sb = (k) => (sp ? (k === 'bg' ? (dark ? sp.dbg : sp.bg) : sp[k]) : '');
+
+    return {
+      sbBg: sb('bg'), sbFg: sb('fg'), sbFg2: sb('fg2'), sbActive: sb('active'), sbHover: sb('hover'), sbBorder: sb('border'), sbCount: sb('count'),
+      sideW: s.collapsed ? '72px' : '260px', expanded,
+      collapseCaret: s.collapsed ? 'rotate(180deg)' : 'none',
+      toggleSide: () => this.setState(st => ({ collapsed: !st.collapsed })),
+      secOpen: s.secOpen, toggleSec: () => this.setState(st => ({ secOpen: !st.secOpen })),
+      secCaret: s.secOpen ? 'rotate(-90deg)' : 'none',
+      secBadge: !s.secOpen, secBadgeN: '9',
+      navPrimary, navSecondary,
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      toggleAvatar: () => this.setState(st => ({ avatarOpen: !st.avatarOpen })),
+      avatarOpen: s.avatarOpen,
+      bellToast: () => this.toast('7 إشعارات غير مقروءة — مركز الإشعارات ضمن المرحلة التالية.', 'ok'),
+      logoutToast: () => { this.setState({ avatarOpen: false }); this.toast('تسجيل الخروج — ضمن المرحلة التالية.', 'ok'); },
+      reportToast: () => this.toast('كشف الحيود الأسبوعي — ضمن المرحلة التالية.', 'ok'),
+      newOrderToast: () => this.toast('نموذج الطلبية الجديدة — ضمن المرحلة التالية.', 'ok'),
+      allDecisionsToast: () => this.toast('قائمة القرارات الكاملة — ضمن المرحلة التالية.', 'ok'),
+      fullFileToast: () => this.toast('ملف الطلبية الكامل — ضمن المرحلة التالية.', 'ok'),
+      kpis, sparkMonths, decisions, tierLegend, companies, buckets,
+      drawerOpen: !!dw, closeDrawer: () => this.setState({ drawerOrder: null, stMenuOpen: false, confirmKey: null }),
+      ...dwVals,
+      dwSt: s.drawerSt, dwStLabel: curSt ? curSt.label : '',
+      stMenuOpen: s.stMenuOpen, toggleStMenu: () => this.setState(st => ({ stMenuOpen: !st.stMenuOpen, confirmKey: null })),
+      changeable, confirmSt: !!confirmObj, confirmStLabel: confirmObj ? confirmObj.label : '',
+      applySt: () => { const k = s.confirmKey; this.setState({ drawerSt: k, confirmKey: null }); this.toast('تم تحديث حالة الطلبية ' + (dw ? dw.code : '') + '.', 'ok'); },
+      cancelSt: () => this.setState({ confirmKey: null }),
+      paletteOpen: s.paletteOpen, openPalette: () => this.openPal(), closePalette: () => this.setState({ paletteOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      paletteQ: s.paletteQ, onPaletteQ: (e) => this.setState({ paletteQ: e.target.value, palIdx: 0 }),
+      paletteResults: palRes, paletteEmpty: palRes.length === 0,
+      toasts,
+    };
+  }
+}
+</script>
+</body>
+</html>

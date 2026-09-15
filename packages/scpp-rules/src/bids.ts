@@ -53,6 +53,16 @@ export function isLateBid(submittedAt: string, closingAt: string): boolean {
   return Date.parse(submittedAt) > Date.parse(closingAt);
 }
 
+/**
+ * Late by DATE (10.6.1) — the closing is stated by day, so a bid is late only when its calendar date
+ * is AFTER the closing date. Slices both operands to their date part and compares as ISO strings
+ * (lexical = chronological, timezone-immune), so no call site can reintroduce a midnight/timezone
+ * drift by forgetting to normalize a timestamp. This is the form the bid-closing gates use.
+ */
+export function isLateBidByDate(submittedAt: string, closingDate: string): boolean {
+  return submittedAt.slice(0, 10) > closingDate.slice(0, 10);
+}
+
 /** Closing on a holiday/weekend extends to the next working day. */
 export function effectiveClosingDate(planned: DateInput, cal: WorkingCalendar = IRAQ_CALENDAR): string {
   return toIso(nextWorkingDayOnOrAfter(planned, cal));

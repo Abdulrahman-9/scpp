@@ -1,0 +1,154 @@
+/* ========================================================================
+   A4 official reports — RTL Arabic documents, print-ready.
+   Swept to DESIGN-V2-SPEC §4 (BUILD-2 step 9).
+
+   ── THE SHEET IS PAPER IN BOTH THEMES ───────────────────────────────────
+   `.rp-page` carries `theme-light`, the one class tokens.css shares with
+   `:root`. That re-anchors the whole subtree to the LIGHT palette from a
+   single declaration list — so a reader working in the dark still sees a
+   white sheet with black ink, and nothing here re-declares a colour to get
+   it. The screen furniture around the sheet (`.rp-screen`, `.rp-toolbar`)
+   stays themed on purpose: it is application chrome, not the document.
+
+   ── THE PRINT TYPE SCALE IS ITS OWN ─────────────────────────────────────
+   The sizes below (11.5 / 11 / 10.5 / 9px at 210mm) are deliberately outside
+   the screen `--t-*` ladder: the same nominal size is a different reading
+   distance on paper, and a document that borrows a UI scale prints either
+   airy or cramped. They are not colour, and they are not duplicated anywhere.
+   ======================================================================== */
+.rp-screen {
+  background: var(--bg-inset);
+  min-block-size: 100vh;
+  padding: var(--space-6) var(--space-4) 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+.rp-toolbar {
+  inline-size: 210mm;
+  max-inline-size: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rp-toolbar__title { font-size: var(--t-body); font-weight: var(--fw-semibold); }
+.rp-toolbar__spacer { flex: 1; }
+.rp-modeseg { display: inline-flex; border: 1px solid var(--border-control); border-radius: var(--r-sm); overflow: hidden; background: var(--bg-card); }
+.rp-modeseg__btn { font: inherit; font-size: var(--t-caption); padding: 6px var(--space-3); border: none; background: transparent; color: var(--text-2); cursor: pointer; }
+.rp-modeseg__btn + .rp-modeseg__btn { border-inline-start: 1px solid var(--border-1); }
+.rp-modeseg__btn--on { background: var(--btn-primary-bg); color: var(--btn-primary-fg); }
+
+.rp-page {
+  inline-size: 210mm;
+  min-block-size: 297mm;
+  /* white is the MATERIAL of an A4 sheet, not a palette value — it is the one
+     literal in this sheet, and it is the same literal in every theme */
+  background: #FFFFFF;
+  box-shadow: var(--shadow-3);
+  padding: 16mm;
+  box-sizing: border-box;
+  color: var(--text-1);
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+}
+.rp-hdr { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block-end: var(--space-2); border-bottom: 2.5px solid var(--primary-900); }
+.rp-hdr img { height: 26px; }
+.rp-hdr__ref { text-align: end; font-family: var(--font-mono); direction: ltr; font-size: 9px; color: var(--text-3); line-height: 1.6; }
+.rp-body { flex: 1; display: flex; flex-direction: column; gap: 18px; padding-block-start: 14px; }
+.rp-ftr { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block-start: var(--space-2); margin-block-start: 14px; border-top: 1px solid var(--border-2); font-size: 10px; color: var(--text-3); }
+.rp-ftr__ref { font-family: var(--font-mono); direction: ltr; }
+
+.rp-titleblock { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); margin-block-start: 6px; }
+.rp-eyebrow { font-size: 11px; font-weight: var(--fw-semibold); letter-spacing: 0.1em; color: var(--link); }
+.rp-h1 { margin: 4px 0 0; font-size: 25px; font-weight: var(--fw-bold); letter-spacing: -0.01em; }
+.rp-metatbl { border-collapse: collapse; font-size: 11.5px; }
+.rp-metatbl td { padding: 3px 10px; border: 1px solid var(--border-2); }
+.rp-metatbl td.k { background: var(--bg-muted); font-weight: var(--fw-semibold); white-space: nowrap; }
+.rp-metatbl td.v { font-family: var(--font-mono); direction: ltr; }
+
+.rp-sec--avoid { break-inside: avoid; }
+.rp-sec__head { display: flex; align-items: center; gap: var(--space-2); margin-block-end: var(--space-2); }
+.rp-sec__n { font-family: var(--font-mono); font-size: 11px; font-weight: var(--fw-semibold); color: var(--link); }
+.rp-sec__t { font-size: 14.5px; font-weight: var(--fw-bold); }
+.rp-sec__hint { font-size: 10.5px; color: var(--text-3); }
+.rp-p { margin: 0; font-size: 12px; line-height: 1.9; color: var(--text-2); }
+/* the standfirst under a report's H1 — one class instead of a per-report inline margin */
+.rp-sub { margin-block-start: 6px; }
+.rp-mono { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; }
+/* A machine figure inside a table cell: an LTR island that still anchors to the COLUMN's start
+   edge. `direction: ltr` alone re-anchors the text to the physical left, so in an RTL table the
+   number drifts away from its own column head — the same defect `td.mono` fixes in styles.css.
+   A class rather than a per-cell inline style, so a report carries no numeric literals at all. */
+.rp-num { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; text-align: start; }
+
+.rp-kvtbl { inline-size: 100%; border-collapse: collapse; font-size: 11.5px; }
+.rp-kvtbl td { padding: 6px 10px; border: 1px solid var(--border-2); }
+.rp-kvtbl td.k { background: var(--bg-muted); font-weight: var(--fw-semibold); }
+
+.rp-tbl { inline-size: 100%; border-collapse: collapse; font-size: 11px; }
+/* white on --primary-900 is 10.36:1 — the header band is the one filled surface on the sheet,
+   and paper is light by construction, so the ink is simply white */
+.rp-tbl th { padding: 6px var(--space-2); border: 1px solid var(--primary-800); background: var(--primary-900); color: #FFFFFF; font-weight: var(--fw-semibold); text-align: start; }
+.rp-tbl th.c, .rp-tbl td.c { text-align: center; }
+.rp-tbl td { padding: 5px var(--space-2); border: 1px solid var(--border-2); }
+.rp-tbl tr { break-inside: avoid; }
+.rp-tbl tr.rp-row--now { background: var(--primary-50); }
+.rp-tbl tr.rp-row--low { background: var(--status-done-bg); }
+.rp-dev--early { color: var(--status-done); font-weight: var(--fw-semibold); }
+.rp-dev--late { color: var(--status-risk); font-weight: var(--fw-semibold); }
+.rp-dev--late5 { color: var(--status-delayed); font-weight: var(--fw-semibold); }
+.rp-st--now { color: var(--status-progress); font-weight: var(--fw-bold); }
+.rp-st--muted { color: var(--text-3); }
+.rp-ok { color: var(--status-done); font-weight: var(--fw-semibold); }
+.rp-bad { color: var(--status-delayed); font-weight: var(--fw-semibold); }
+
+.rp-note { margin-block-start: var(--space-2); border: 1px dashed var(--border-2); background: var(--bg-muted); border-radius: var(--r-xs); padding: 7px var(--space-3); font-size: 10.5px; color: var(--text-2); break-inside: avoid; }
+
+/* The stamped scope/filter/row-count line every printed page carries (request 7 + methodology م5).
+   A rule above and below rather than a filled band: on paper a tint costs toner and reads as a
+   highlight, and this sentence is provenance, not emphasis. It must never break across pages —
+   half a stamp is a document that names half its scope. */
+.rp-stamp {
+  margin-block-start: 10px;
+  padding-block: 6px;
+  border-block: 1px solid var(--border-2);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  break-inside: avoid;
+}
+.rp-conclusion { margin-block-start: var(--space-2); border: 1px solid var(--status-done-bd); background: var(--status-done-bg); border-radius: var(--r-xs); padding: var(--space-2) var(--space-3); font-size: 11.5px; color: var(--status-done); break-inside: avoid; }
+.rp-conclusion--warn { border-color: var(--status-delayed-bd); background: var(--status-delayed-bg); color: var(--status-delayed); }
+.rp-list { margin: 0; padding-inline-start: var(--space-5); font-size: 12px; line-height: 2; color: var(--text-2); }
+
+.rp-sign { break-inside: avoid; margin-block-start: 10px; border-top: 1px solid var(--border-2); padding-block-start: var(--space-4); }
+.rp-sign__grid { display: grid; grid-template-columns: 1fr 1fr 1fr 110px; gap: 18px; align-items: end; }
+.rp-sign__col { display: flex; flex-direction: column; gap: 26px; }
+.rp-sign__role { font-size: 11.5px; font-weight: var(--fw-bold); }
+.rp-sign__line { display: flex; flex-direction: column; gap: 6px; }
+.rp-sign__rule { border-bottom: 1px solid var(--text-1); block-size: 20px; }
+.rp-sign__cap { font-size: 10px; color: var(--text-3); }
+.rp-sign__stamp { inline-size: 100px; block-size: 100px; border: 1.5px dashed var(--border-control); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); }
+
+.rp-bars { display: flex; flex-direction: column; gap: var(--space-2); }
+.rp-bar { display: flex; align-items: center; gap: var(--space-3); }
+.rp-bar__l { inline-size: 46%; font-size: 11.5px; color: var(--text-2); }
+.rp-bar__track { flex: 1; block-size: 12px; background: var(--chart-track); border-radius: var(--r-pill); overflow: hidden; }
+.rp-bar__fill { block-size: 100%; border-radius: var(--r-pill); background: var(--link); }
+.rp-bar__v { inline-size: 60px; text-align: end; font-family: var(--font-mono); direction: ltr; font-size: 11px; }
+
+@media print {
+  /* الطباعة فاتحة قسراً (DESIGN-V2-SPEC §3-هـ). الآلية الأساسية بلا كلفة: كتلة الوضع الداكن
+     ملفوفة بـ@media screen، فلا تُطبَّق هنا وتبقى :root الفاتحة — بلا إعادة تعريف للوحة، أي بلا
+     مصدر حقيقة ثانٍ. **لا يُكتب أي لون هنا**؛ هذان السطران يكمّلان ما لا تحلّه: سياق تركيب
+     <html> وميراث color-scheme. الأبيض هنا خاصّية المادّة (ورقة A4)، لا لون من اللوحة. */
+  :root { color-scheme: light; }
+  html, body { background: #fff; }
+  .rp-screen { background: #fff; padding: 0; display: block; }
+  .rp-toolbar { display: none; }
+  .rp-page { box-shadow: none; inline-size: auto; min-block-size: auto; padding: 0; margin: 0; }
+  @page { size: A4; margin: 16mm; }
+}

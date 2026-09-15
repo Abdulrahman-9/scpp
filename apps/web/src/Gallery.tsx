@@ -1,7 +1,10 @@
-import { awardVerdict, variationOrdersCap } from '@masaar/scpp-rules';
+import { awardVerdict, scheduleCompliancePct, variationOrdersCap } from '@masaar/scpp-rules';
+import { calendarDaysBetween } from '@masaar/working-days';
 import { CapMeter, KpiTile, PathBadge, SKINS, StatusPill, Stepper, VerdictStrip, WdRail, type SkinKey } from '@masaar/ui';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { decisionQueue } from './admin/adminDerive';
+import { currentStage, expectedAwardDate, useStore } from './store';
 
 const CONTRACT = 10_000_000;
 const ESTIMATE = 4_200_000;
@@ -9,6 +12,7 @@ const ESTIMATE = 4_200_000;
 export default function Gallery() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'ar' ? 'ar' : 'en';
+  const { state } = useStore();
 
   const [skin, setSkin] = useState<SkinKey>('ledger');
   const [voPct, setVoPct] = useState(4.2);
@@ -20,13 +24,25 @@ export default function Gallery() {
   const verdict = awardVerdict(bid, ESTIMATE);
   const steps = [t('gallery.step1'), t('gallery.step2'), t('gallery.step3'), t('gallery.step4')];
 
+  // The gallery's own hint promises every component reads the engine — so these four tiles are the
+  // SAME derivations the home KPIs use (App.tsx), never a hardcoded figure dressed as engine output.
+  const openTenders = state.tenders.filter((tn) => currentStage(tn)).length;
+  const awaitingRatification = decisionQueue(state).length;
+  const scheduleCompliance = scheduleCompliancePct(
+    state.tenders.flatMap((tn) => tn.stages.filter((s) => s.plannedTo).map((s) => ({ plannedEnd: s.plannedTo!, actualEnd: s.actualTo }))),
+  );
+  const awardSpans = state.tenders
+    .map((tn) => { const a = expectedAwardDate(tn); return a ? calendarDaysBetween(tn.createdOn, a) : null; })
+    .filter((d): d is number => d != null);
+  const avgAwardDays = awardSpans.length ? Math.round(awardSpans.reduce((s, d) => s + d, 0) / awardSpans.length) : 0;
+
   return (
     <>
       <section className="card">
         <h2>{t('gallery.title')}</h2>
         <p className="hint">{t('gallery.hint')}</p>
         <div className="skin-tabs">
-          {(['ledger', 'control', 'blueprint'] as const).map((k) => (
+          {(['ledger', 'blueprint'] as const).map((k) => (
             <button
               key={k}
               className={`skin-tab${skin === k ? ' skin-tab--on' : ''}`}
@@ -63,10 +79,10 @@ export default function Gallery() {
         <div className="g-group">
           <div className="g-label">{t('gallery.kpis')}</div>
           <div className="g-grid4">
-            <KpiTile label={t('kpi.openTenders')} value={18} />
-            <KpiTile label={t('kpi.awaitingRatification')} value={4} />
-            <KpiTile label={t('kpi.scheduleCompliance')} value={87} suffix="%" />
-            <KpiTile label={t('kpi.avgAwardDays')} value={64} />
+            <KpiTile label={t('kpi.openTenders')} value={openTenders} />
+            <KpiTile label={t('kpi.awaitingRatification')} value={awaitingRatification} />
+            <KpiTile label={t('kpi.scheduleCompliance')} value={scheduleCompliance} suffix="%" />
+            <KpiTile label={t('kpi.avgAwardDays')} value={avgAwardDays} />
           </div>
         </div>
 

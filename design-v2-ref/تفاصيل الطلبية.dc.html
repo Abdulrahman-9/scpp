@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+  <style>
+    @media print { [data-noprint] { display: none !important; } body { background: #fff !important; } }
+  </style>
+</helmet>
+
+<div dir="rtl" data-screen-label="تفاصيل الطلبية" style="display:flex;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <aside data-noprint="1" style="width:{{ sideW }};flex:none;background:var(--side-bg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width var(--dur-base) var(--ease-out);overflow:hidden;--focus-color:var(--focus-color-on-dark)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--side-border);min-height:58px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:14px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="line-height:1.2;white-space:nowrap">
+          <div style="font-size:14.5px;font-weight:700;color:#fff">مسار</div>
+          <div style="font-size:10px;color:var(--side-fg-2)">الإدارة العليا · نفط الوسط</div>
+        </div>
+        <span style="margin-inline-start:auto;font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--side-fg);background:var(--side-count);border-radius:4px;padding:2px 6px">v2</span>
+      </sc-if>
+    </div>
+    <nav aria-label="التنقل الرئيسي" style="flex:1;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden">
+      <sc-for list="{{ navPrimary }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ n.go }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:13px;font-weight:{{ n.fw }};text-decoration:none;white-space:nowrap;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-active);text-decoration:none">
+          <span style="display:flex;flex:none;width:18px;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span style="overflow:hidden;text-overflow:ellipsis">{{ n.label }}</span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 14px;border-top:1px solid var(--side-border)">
+      <button onClick="{{ toggleSide }}" title="طي / بسط الشريط" style="display:flex;align-items:center;gap:9px;width:100%;padding:8px 6px;border:none;background:transparent;color:var(--side-fg-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--side-hover)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ collapseCaret }};transition:transform var(--dur-base) var(--ease-out)"><path d="M9 18l6-6-6-6"></path></svg>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>طي الشريط</span></sc-if>
+      </button>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header data-noprint="1" style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:58px;padding:0 22px;background:color-mix(in srgb, var(--bg-card) 80%, transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border-bottom:1px solid var(--border-1)">
+      <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap;min-width:0">
+        <a href="لوحة التحكم.dc.html" style="color:var(--text-muted);font-weight:400">لوحة الإدارة</a>
+        <span style="color:var(--text-disabled)">/</span>
+        <a href="قائمة الطلبيات.dc.html" style="color:var(--text-muted);font-weight:400">قائمة الطلبيات</a>
+        <span style="color:var(--text-disabled)">/</span>
+        <span style="font-weight:600;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:12px">{{ code }}</span>
+      </div>
+      <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px">
+        <button onClick="{{ toggleTheme }}" title="تبديل الوضع" aria-label="تبديل الوضع" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+          <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+          <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+        </button>
+        <button onClick="{{ logout }}" title="م. مصطفى الكرخي — تسجيل الخروج" style="width:32px;height:32px;border-radius:50%;border:none;background:var(--grad-brand);color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer">مص</button>
+      </div>
+    </header>
+
+    <div style="flex:1;padding:26px 26px 60px">
+      <div style="max-width:1180px;margin:0 auto">
+
+        <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+
+        <!-- رأس الملف -->
+        <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px">
+          <div style="min-width:0;flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+              <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:13px;font-weight:600;color:var(--link)">{{ code }}</span>
+              <button onClick="{{ copyCode }}" title="نسخ رقم الطلبية" style="width:22px;height:22px;border-radius:5px;border:1px solid var(--border-1);background:transparent;color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;border:1px solid var(--st-{{ st }}-bd);background:var(--st-{{ st }}-bg);color:var(--st-{{ st }}-fg);font-size:11px;font-weight:600;white-space:nowrap"><span style="width:5px;height:5px;border-radius:50%;background:var(--st-{{ st }}-base)"></span>{{ stLabel }}</span>
+              <sc-if value="{{ isLate }}" hint-placeholder-val="{{ false }}"><span style="font-size:9.5px;font-weight:700;padding:1.5px 8px;border-radius:999px;background:var(--st-late-bg);color:var(--st-late-fg);border:1px solid var(--st-late-bd);direction:ltr;unicode-bidi:isolate;animation:pulse-soft 2.2s var(--ease-out) infinite">حيود {{ devTxt }} يوم</span></sc-if>
+            </div>
+            <h1 style="margin:0;font-size:21px;font-weight:600;letter-spacing:-0.01em;line-height:1.35">{{ title }}</h1>
+            <div style="font-size:12px;color:var(--text-3);margin-top:5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+              <span>{{ op }}</span><span style="color:var(--text-disabled)">·</span><span>{{ field }}</span><span style="color:var(--text-disabled)">·</span>
+              <span>{{ path }}</span><span style="color:var(--text-disabled)">·</span>
+              <span style="display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:5px;background:{{ tierBg }};color:{{ tierFg }};border:1px solid {{ tierBd }};font-size:9.5px;font-weight:700;white-space:nowrap"><span style="font-family:var(--font-mono)">{{ tierN }}</span>{{ tierLabel }}</span>
+            </div>
+          </div>
+          <div data-noprint="1" style="display:flex;gap:8px;align-items:center;flex:none">
+            <a href="قائمة الطلبيات.dc.html" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:6px;border:1px solid var(--border-control);color:var(--text-2);font-size:12.5px;font-weight:600;text-decoration:none;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover);text-decoration:none">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+              رجوع للقائمة
+            </a>
+            <button onClick="{{ printPage }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--btn-ghost-hover)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+              تنزيل PDF
+            </button>
+            <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 15px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+              تغيير الحالة
+            </button>
+          </div>
+        </div>
+
+        <!-- شريط الأرقام -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:11px 14px;min-width:0">
+              <div style="font-size:10.5px;font-weight:600;color:var(--text-muted);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.label }}</div>
+              <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:17px;font-weight:600;color:{{ k.fg }};font-variant-numeric:tabular-nums;white-space:nowrap">{{ k.v }}</span><span style="font-size:10px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- التبويبات -->
+        <div data-noprint="1" style="display:flex;gap:2px;border-bottom:1px solid var(--border-1);margin-bottom:16px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.go }}" style="border:none;background:transparent;cursor:pointer;font:inherit;font-size:12.5px;font-weight:{{ t.fw }};color:{{ t.fg }};padding:9px 14px;border-bottom:2px solid {{ t.line }};margin-bottom:-1px;display:inline-flex;align-items:center;gap:7px;transition:color var(--dur-fast) var(--ease-out)" style-hover="color:var(--text-1)">
+              {{ t.label }}
+              <sc-if value="{{ t.hasN }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;background:var(--bg-muted);color:var(--text-3);border-radius:999px;padding:0 7px">{{ t.n }}</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start">
+          <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+
+            <!-- تبويب: البيانات الأساسية -->
+            <sc-if value="{{ tabInfo }}" hint-placeholder-val="{{ true }}">
+              <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden;animation:fade-in 120ms var(--ease-out)">
+                <div style="padding:12px 18px;border-bottom:1px solid var(--border-1);font-size:13px;font-weight:700">البيانات الأساسية</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding:8px 18px 14px">
+                  <sc-for list="{{ kv }}" as="r" hint-placeholder-count="8">
+                    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border-1)">
+                      <span style="font-size:11.5px;color:var(--text-muted);flex:none">{{ r.k }}</span>
+                      <span style="font-size:12.5px;font-weight:600;color:var(--text-1);text-align:start;font-family:{{ r.font }};direction:{{ r.dir }};unicode-bidi:isolate;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.v }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden">
+                <div style="padding:12px 18px;border-bottom:1px solid var(--border-1);display:flex;align-items:baseline;gap:8px"><span style="font-size:13px;font-weight:700">بنود الطلبية</span><span style="font-size:11px;color:var(--text-muted)"><span style="font-family:var(--font-mono)">{{ itemsN }}</span> بند</span></div>
+                <div style="display:grid;grid-template-columns:36px 1fr 90px 80px 110px 120px;gap:10px;padding:8px 18px;background:var(--bg-muted);border-bottom:1px solid var(--border-1);font-size:10.5px;font-weight:600;color:var(--text-muted)">
+                  <span>#</span><span>البيان</span><span>الكمية</span><span>الوحدة</span><span style="text-align:left">سعر الوحدة</span><span style="text-align:left">الإجمالي</span>
+                </div>
+                <sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
+                  <div style="display:grid;grid-template-columns:36px 1fr 90px 80px 110px 120px;gap:10px;align-items:center;padding:9px 18px;border-bottom:1px solid var(--border-1);font-size:12px">
+                    <span style="font-family:var(--font-mono);color:var(--text-muted);font-size:11px">{{ it.n }}</span>
+                    <span style="font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.name }}</span>
+                    <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2)">{{ it.qty }}</span>
+                    <span style="color:var(--text-3);font-size:11.5px">{{ it.unit }}</span>
+                    <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-2);text-align:left;font-variant-numeric:tabular-nums">{{ it.price }}</span>
+                    <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;font-weight:600;text-align:left;font-variant-numeric:tabular-nums">{{ it.total }}</span>
+                  </div>
+                </sc-for>
+                <div style="display:flex;justify-content:flex-end;align-items:baseline;gap:12px;padding:11px 18px;background:var(--bg-muted)">
+                  <span style="font-size:11.5px;color:var(--text-muted)">إجمالي البنود</span>
+                  <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums">{{ grandTotal }}</span>
+                </div>
+              </div>
+
+              <sc-if value="{{ hasNotes }}" hint-placeholder-val="{{ false }}">
+                <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 18px">
+                  <div style="font-size:12px;font-weight:700;margin-bottom:6px">ملاحظات نطاق العمل</div>
+                  <p style="margin:0;font-size:12.5px;color:var(--text-2);line-height:1.75;text-wrap:pretty">{{ notes }}</p>
+                </div>
+              </sc-if>
+            </sc-if>
+
+            <!-- تبويب: المسار الزمني -->
+            <sc-if value="{{ tabTimeline }}" hint-placeholder-val="{{ false }}">
+              <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden;animation:fade-in 120ms var(--ease-out)">
+                <div style="padding:12px 18px;border-bottom:1px solid var(--border-1);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                  <span style="font-size:13px;font-weight:700;margin-inline-end:auto">المسار الزمني — {{ path }}</span>
+                  <span style="font-size:11px;color:var(--text-muted)">المخطط الكلي <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600;color:var(--text-2)">{{ plannedTotal }}</span> يوم عمل</span>
+                  <span style="font-size:11px;color:var(--text-muted)">المتوقع الحالي <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-weight:600;color:var(--text-2)">{{ projTotal }}</span> يوم</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:1.5px 9px;border-radius:999px;border:1px solid {{ devTotBd }};background:{{ devTotBg }};color:{{ devTotFg }};font-size:10px;font-weight:700;direction:ltr;unicode-bidi:isolate">{{ devTotTxt }}</span>
+                </div>
+                <div style="display:grid;grid-template-columns:40px 1fr 96px 96px 108px;gap:10px;padding:8px 18px;background:var(--bg-muted);border-bottom:1px solid var(--border-1);font-size:10.5px;font-weight:600;color:var(--text-muted)">
+                  <span></span><span>المرحلة والفترة الزمنية</span><span style="text-align:left">المدة المخططة</span><span style="text-align:left">الفعلية</span><span>الحيود / مطابقة</span>
+                </div>
+                <sc-for list="{{ stages }}" as="g" hint-placeholder-count="12">
+                  <div style="display:grid;grid-template-columns:40px 1fr 96px 96px 108px;gap:10px;align-items:center;padding:0 18px;background:{{ g.rowBg }}">
+                    <span style="display:flex;flex-direction:column;align-items:center;align-self:stretch">
+                      <span style="width:2px;flex:1;background:{{ g.lineTop }}"></span>
+                      <span style="width:24px;height:24px;flex:none;border-radius:50%;border:2px solid {{ g.bubBd }};background:{{ g.bubBg }};color:{{ g.bubFg }};display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;font-weight:700;box-shadow:{{ g.ring }}">
+                        <sc-if value="{{ g.done }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+                        <sc-if value="{{ g.notDone }}" hint-placeholder-val="{{ true }}"><span>{{ g.n }}</span></sc-if>
+                      </span>
+                      <span style="width:2px;flex:1;background:{{ g.lineBot }}"></span>
+                    </span>
+                    <span style="min-width:0;padding:9px 0">
+                      <span style="display:flex;align-items:center;gap:7px"><span style="font-size:12.5px;font-weight:{{ g.nameFw }};color:{{ g.nameFg }}">{{ g.name }}</span>
+                        <sc-if value="{{ g.isCur }}" hint-placeholder-val="{{ false }}"><span style="font-size:9px;font-weight:700;padding:0.5px 7px;border-radius:999px;background:var(--st-late-bg);color:var(--st-late-fg);border:1px solid var(--st-late-bd);animation:pulse-soft 2.2s var(--ease-out) infinite">جارية الآن</span></sc-if>
+                        <sc-if value="{{ g.skipped }}" hint-placeholder-val="{{ false }}"><span style="font-size:9px;font-weight:700;padding:0.5px 7px;border-radius:999px;background:var(--bg-muted);color:var(--text-muted);border:1px solid var(--border-1)">أوقفت</span></sc-if>
+                      </span>
+                      <span style="display:block;font-size:10px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ g.period }}</span>
+                    </span>
+                    <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;color:var(--text-3);text-align:left">{{ g.planned }}</span>
+                    <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11.5px;font-weight:600;color:{{ g.actFg }};text-align:left">{{ g.actual }}</span>
+                    <span><span style="display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:999px;border:1px solid {{ g.devBd }};background:{{ g.devBg }};color:{{ g.devFg }};font-size:9.5px;font-weight:700;white-space:nowrap;direction:ltr;unicode-bidi:isolate">{{ g.devTxt }}</span></span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <!-- تبويب: المرفقات -->
+            <sc-if value="{{ tabFiles }}" hint-placeholder-val="{{ false }}">
+              <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden;animation:fade-in 120ms var(--ease-out)">
+                <div style="padding:12px 18px;border-bottom:1px solid var(--border-1);display:flex;align-items:baseline;gap:8px"><span style="font-size:13px;font-weight:700">المرفقات</span><span style="font-size:11px;color:var(--text-muted)">وثائق المراحل المنجزة</span></div>
+                <sc-for list="{{ files }}" as="f" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border-1)">
+                    <span style="width:34px;height:34px;flex:none;border-radius:6px;background:{{ f.iconBg }};color:{{ f.iconFg }};border:1px solid {{ f.iconBd }};display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:.04em">{{ f.ext }}</span>
+                    <span style="min-width:0;flex:1">
+                      <span style="display:block;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.name }}</span>
+                      <span style="display:block;font-size:10px;color:var(--text-muted);margin-top:1px">{{ f.stage }} · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ f.date }}</span> · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ f.size }}</span></span>
+                    </span>
+                    <button onClick="{{ f.dl }}" title="تنزيل" style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:5px;border:1px solid var(--border-2);background:var(--bg-card);color:var(--text-3);font:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+                      تنزيل
+                    </button>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ noFiles }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:30px 20px;text-align:center;font-size:12px;color:var(--text-muted)">لا توجد مرفقات مرفوعة لهذه الطلبية بعد.</div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- تبويب: السجل -->
+            <sc-if value="{{ tabLog }}" hint-placeholder-val="{{ false }}">
+              <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);overflow:hidden;animation:fade-in 120ms var(--ease-out)">
+                <div style="padding:12px 18px;border-bottom:1px solid var(--border-1);display:flex;align-items:baseline;gap:8px"><span style="font-size:13px;font-weight:700">سجل الإجراءات</span><span style="font-size:11px;color:var(--text-muted)">الأحدث أولاً</span></div>
+                <sc-for list="{{ logRows }}" as="l" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-1)">
+                    <span style="width:30px;height:30px;flex:none;border-radius:50%;background:{{ l.avBg }};color:{{ l.avFg }};display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700">{{ l.init }}</span>
+                    <span style="min-width:0;flex:1;line-height:1.5">
+                      <span style="font-size:12.5px"><span style="font-weight:700">{{ l.who }}</span> — {{ l.action }}</span>
+                      <sc-if value="{{ l.hasNote }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:11.5px;color:var(--text-2);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:6px 10px;margin-top:5px">{{ l.note }}</span></sc-if>
+                      <span style="display:block;font-size:10px;color:var(--text-muted);margin-top:3px">{{ l.role }} · <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ l.date }}</span></span>
+                    </span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+          </div>
+
+          <!-- العمود الجانبي -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:10px">المشغّل المقدِّم</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:36px;height:36px;flex:none;border-radius:8px;background:var(--grad-brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{{ opInit }}</span>
+                <span style="min-width:0;line-height:1.4">
+                  <span style="display:block;font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ op }}</span>
+                  <span style="display:block;font-size:10.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ field }}</span>
+                </span>
+              </div>
+              <div style="border-top:1px dashed var(--border-1);margin-top:12px;padding-top:10px;display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11.5px"><span style="color:var(--text-muted)">جهة الاتصال</span><span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ contact }}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11.5px"><span style="color:var(--text-muted)">الصفة</span><span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ contactRole }}</span></div>
+              </div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:10px">الشركات المتنافسة</div>
+              <sc-for list="{{ counts }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:10px;padding:5px 0">
+                  <span style="font-size:11.5px;color:var(--text-2);flex:1">{{ c.k }}</span>
+                  <span style="flex:2;height:5px;border-radius:999px;background:var(--chart-track);overflow:hidden;direction:ltr"><span style="display:block;height:100%;border-radius:999px;background:var(--chart-neutral);width:{{ c.w }}"></span></span>
+                  <span style="font-family:var(--font-mono);font-size:11.5px;font-weight:600;width:18px;text-align:center">{{ c.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-1);border-radius:8px;box-shadow:var(--shadow-1);padding:14px 16px">
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px">الأسلوب والصلاحية</div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11.5px"><span style="color:var(--text-muted)">المسار</span><span style="font-weight:600">{{ path }}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11.5px;align-items:center"><span style="color:var(--text-muted)">سلّم الموافقة</span><span style="display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:5px;background:{{ tierBg }};color:{{ tierFg }};border:1px solid {{ tierBd }};font-size:9.5px;font-weight:700"><span style="font-family:var(--font-mono)">{{ tierN }}</span>{{ tierLabel }}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11.5px"><span style="color:var(--text-muted)">المرجع الإجرائي</span><span style="font-weight:600;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">SCPP Rev 1.0 §11</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </sc-if>
+
+        <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="height:64px;border-radius:8px;background:var(--bg-muted);position:relative;overflow:hidden"><span style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.4s infinite"></span></div>
+            <div style="height:220px;border-radius:8px;background:var(--bg-muted);position:relative;overflow:hidden"><span style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.4s infinite"></span></div>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- درج تغيير الحالة -->
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-noprint="1" style="position:fixed;inset:0;z-index:90">
+      <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(2,6,23,.45);backdrop-filter:blur(4px);animation:fade-in 120ms var(--ease-out)"></div>
+      <div role="dialog" aria-label="تغيير حالة الطلبية" style="position:absolute;inset-block:0;inset-inline-end:0;width:380px;max-width:92vw;background:var(--bg-card);border-inline-start:1px solid var(--border-1);box-shadow:var(--shadow-pop);display:flex;flex-direction:column;animation:panel-in var(--dur-base) var(--ease-out)">
+        <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-1)">
+          <div style="line-height:1.35"><div style="font-size:14px;font-weight:700">تغيير حالة الطلبية</div><div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">{{ code }}</div></div>
+          <button onClick="{{ closeDrawer }}" aria-label="إغلاق" style="margin-inline-start:auto;width:30px;height:30px;border-radius:6px;border:1px solid var(--border-1);background:transparent;color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:var(--bg-muted)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;margin-bottom:8px">الحالة الجديدة</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ stOptions }}" as="so" hint-placeholder-count="5">
+                <button onClick="{{ so.pick }}" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;border:1.5px solid {{ so.bd }};background:{{ so.bg }};cursor:pointer;font:inherit;text-align:start;transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+                  <span style="width:8px;height:8px;border-radius:50%;background:var(--st-{{ so.k }}-base);flex:none"></span>
+                  <span style="font-size:12.5px;font-weight:600;color:var(--text-1);flex:1">{{ so.label }}</span>
+                  <sc-if value="{{ so.isCur }}" hint-placeholder-val="{{ false }}"><span style="font-size:9.5px;color:var(--text-muted)">الحالية</span></sc-if>
+                  <sc-if value="{{ so.picked }}" hint-placeholder-val="{{ false }}"><span style="color:var(--primary-600);display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span></sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;margin-bottom:6px">تعليق <span style="font-weight:400;color:var(--text-muted)">(اختياري — يُدرَج في السجل)</span></div>
+            <textarea value="{{ comment }}" onChange="{{ onComment }}" rows="3" placeholder="سبب التغيير أو مرجع الكتاب الرسمي…" style="width:100%;padding:9px 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:12.5px;resize:vertical;outline:none"></textarea>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);background:var(--bg-muted);border:1px solid var(--border-1);border-radius:6px;padding:9px 12px;line-height:1.6">يُسجَّل التغيير باسم <span style="font-weight:600;color:var(--text-2)">م. مصطفى الكرخي — نفط الوسط</span> مع الطابع الزمني، ويظهر فوراً في تبويب السجل.</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border-1)">
+          <button onClick="{{ confirmStatus }}" disabled="{{ confirmDis }}" style="flex:1;height:36px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;opacity:{{ confirmOp }};box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15)" style-hover="background-color:var(--btn-primary-hover)">تأكيد التغيير</button>
+          <button onClick="{{ closeDrawer }}" style="height:36px;padding:0 16px;border-radius:6px;border:1px solid var(--border-control);background:transparent;color:var(--text-2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:var(--btn-ghost-hover)">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border-2);border-inline-start:3px solid {{ t.bar }};border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 14px;min-width:260px;animation:toast-in var(--dur-base) var(--ease-out)">
+        <span style="color:{{ t.bar }};display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+        <span style="font-size:12.5px;color:var(--text-1)">{{ t.msg }}</span>
+        <button onClick="{{ t.close }}" aria-label="إغلاق" style="margin-inline-start:auto;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;padding:2px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;collapsed&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;العرض&quot;}, &quot;po&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;PO-2026-0148&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;البيانات&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'light', collapsed: false, data: null, po: null,
+    tab: 'info', drawerOpen: false, newSt: '', comment: '',
+    stOverride: null, localLog: [], toasts: [],
+  };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+    if (this.props.collapsed) this.setState({ collapsed: true });
+    try {
+      const po = new URLSearchParams(location.search).get('po');
+      if (po) this.setState({ po });
+    } catch (e) {}
+    import('./orders-data.js').then((m) => this.setState({ data: m }));
+    this._onKey = (e) => { if (e.key === 'Escape' && this.state.drawerOpen) this.setState({ drawerOpen: false }); };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+  toast(msg) {
+    const id = Date.now() + Math.random();
+    this.setState(s => ({ toasts: [...s.toasts, { id, msg }] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 4000);
+  }
+  order() {
+    const d = this.state.data;
+    if (!d) return null;
+    const code = this.state.po || this.props.po;
+    return d.ORDERS.find(o => o.code === code) || d.ORDERS[0];
+  }
+  tierChip(t) {
+    const dark = this.state.theme === 'dark';
+    if (t === 't3') return dark ? { bg: '#1E40AF', fg: '#EFF6FF', bd: '#1E40AF' } : { bg: 'var(--primary-900)', fg: '#EFF6FF', bd: 'var(--primary-900)' };
+    if (t === 't2') return dark ? { bg: 'rgba(59,130,246,.24)', fg: '#BFDBFE', bd: 'rgba(96,165,250,.4)' } : { bg: 'var(--primary-100)', fg: 'var(--primary-800)', bd: 'var(--primary-300)' };
+    return dark ? { bg: 'rgba(59,130,246,.14)', fg: '#93C5FD', bd: 'rgba(96,165,250,.3)' } : { bg: 'var(--primary-50)', fg: 'var(--primary-700)', bd: 'var(--primary-200)' };
+  }
+
+  renderVals() {
+    const s = this.state, d = s.data, o = this.order();
+    const expanded = !s.collapsed;
+    const navPrimary = [
+      { label: 'المتابعة', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6', href: 'لوحة التحكم.dc.html' },
+      { label: 'المناقصات', icon: 'M3 6h18 M7 12h14 M3 18h12', href: 'قائمة الطلبيات.dc.html', on: true },
+      { label: 'سلسلة الموافقات', icon: 'M20 6L9 17l-5-5', href: 'سلسلة الموافقات.dc.html' },
+      { label: 'العقود', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', href: 'العقود.dc.html' },
+      { label: 'الجهات', icon: 'M4 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18 M15 9h4a1 1 0 0 1 1 1v12 M8 7h3 M8 11h3 M8 15h3', href: 'الجهات.dc.html' },
+    ].map(n => ({
+      ...n, href: n.href || '#',
+      go: n.href ? undefined : (e) => { e.preventDefault(); this.toast('شاشة «' + n.t + '» — ضمن المرحلة التالية.'); },
+      bg: n.on ? 'var(--side-active)' : 'transparent', fg: n.on ? '#FFFFFF' : 'var(--side-fg)', fw: n.on ? 700 : 500,
+      cur: n.on ? 'page' : undefined,
+    }));
+
+    const chrome = {
+      sideW: s.collapsed ? '72px' : '260px', expanded,
+      collapseCaret: s.collapsed ? 'rotate(180deg)' : 'none',
+      toggleSide: () => this.setState(st => ({ collapsed: !st.collapsed })),
+      navPrimary,
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      logout: () => { window.location.href = 'تسجيل الدخول.dc.html'; },
+      printPage: () => window.print(),
+      toasts: s.toasts.map(t => ({
+        msg: t.msg, bar: 'var(--st-approved-base)',
+        close: () => this.setState(st => ({ toasts: st.toasts.filter(x => x.id !== t.id) })),
+      })),
+    };
+    if (!o) return { ...chrome, ready: false, loading: true, code: '…', drawerOpen: false };
+
+    const st = s.stOverride || o.st;
+    const isLate = o.dev > 0 && (st === 'pending' || st === 'approved' || st === 'preparing');
+    const tc = this.tierChip(o.tier), tm = d.TIERS[o.tier];
+    const cancelled = st === 'cancelled', delivered = st === 'delivered';
+
+    // المسار الزمني
+    let cursor = o.submitted, plannedTotal = 0, projTotal = 0;
+    const stages = d.STAGES.map((g) => {
+      const done = delivered || g.n < o.cur;
+      const isCur = !delivered && !cancelled && g.n === o.cur;
+      const skipped = cancelled && g.n > o.cur;
+      const act = o.actuals && o.actuals[g.n] != null ? o.actuals[g.n] : null;
+      const dur = done && act != null ? act : g.planned;
+      plannedTotal += g.planned;
+      if (!skipped) projTotal += dur;
+      const from = cursor, to = d.addDays(cursor, dur);
+      if (!skipped) cursor = to;
+      const dev = done && act != null ? act - g.planned : 0;
+      const devChip = skipped ? { txt: '—', bg: 'transparent', fg: 'var(--text-disabled)', bd: 'transparent' }
+        : !done ? (isCur ? { txt: 'قيد القياس', bg: 'var(--bg-muted)', fg: 'var(--text-3)', bd: 'var(--border-1)' } : { txt: '—', bg: 'transparent', fg: 'var(--text-disabled)', bd: 'transparent' })
+        : dev > 0 ? { txt: '+' + dev + ' يوم', bg: 'var(--st-late-bg)', fg: 'var(--st-late-fg)', bd: 'var(--st-late-bd)' }
+        : { txt: 'مطابق', bg: 'var(--st-approved-bg)', fg: 'var(--st-approved-fg)', bd: 'var(--st-approved-bd)' };
+      return {
+        n: String(g.n), name: g.name, done, notDone: !done, isCur, skipped,
+        nameFw: isCur ? 700 : done ? 600 : 500,
+        nameFg: skipped ? 'var(--text-disabled)' : isCur ? 'var(--text-1)' : done ? 'var(--text-1)' : 'var(--text-muted)',
+        period: skipped ? '' : from + ' → ' + to,
+        planned: g.planned + 'ي',
+        actual: done ? (act != null ? act + 'ي' : g.planned + 'ي') : '—',
+        actFg: done && act != null && act > g.planned ? 'var(--st-late-fg)' : 'var(--text-2)',
+        devTxt: devChip.txt, devBg: devChip.bg, devFg: devChip.fg, devBd: devChip.bd,
+        bubBg: done ? 'var(--st-approved-bg)' : isCur ? 'var(--st-late-bg)' : 'var(--bg-muted)',
+        bubBd: done ? 'var(--st-approved-base)' : isCur ? 'var(--st-late-base)' : 'var(--border-2)',
+        bubFg: done ? 'var(--st-approved-fg)' : isCur ? 'var(--st-late-fg)' : 'var(--text-muted)',
+        ring: isCur ? '0 0 0 3px var(--st-late-bg)' : 'none',
+        lineTop: g.n === 1 ? 'transparent' : (done || isCur) ? 'var(--st-approved-base)' : 'var(--border-2)',
+        lineBot: g.n === 12 ? 'transparent' : done ? 'var(--st-approved-base)' : 'var(--border-2)',
+        rowBg: isCur ? 'var(--st-late-bg)' : 'transparent',
+      };
+    });
+    const devTot = o.dev;
+    const devTotChip = devTot > 0
+      ? { txt: '+' + devTot + ' يوم حيود', bg: 'var(--st-late-bg)', fg: 'var(--st-late-fg)', bd: 'var(--st-late-bd)' }
+      : { txt: 'مطابق للخطة', bg: 'var(--st-approved-bg)', fg: 'var(--st-approved-fg)', bd: 'var(--st-approved-bd)' };
+
+    // البيانات الأساسية
+    const mono = 'var(--font-mono)', sans = 'var(--font-sans)';
+    const kv = [
+      { k: 'رقم الطلبية', v: o.code, font: mono, dir: 'ltr' },
+      { k: 'تاريخ التقديم', v: o.submitted, font: mono, dir: 'ltr' },
+      { k: 'الحقل / الرقعة', v: o.field, font: sans, dir: 'rtl' },
+      { k: 'المشغّل', v: o.op, font: sans, dir: 'rtl' },
+      { k: 'أسلوب التعاقد', v: o.path, font: sans, dir: 'rtl' },
+      { k: 'سلّم الموافقة', v: tm.n + ' — ' + tm.label, font: sans, dir: 'rtl' },
+      { k: 'القيمة التخمينية', v: d.fmtUSD(o.value), font: mono, dir: 'ltr' },
+      { k: 'المرحلة الحالية', v: o.cur + ' / 12 — ' + d.STAGES[o.cur - 1].name, font: sans, dir: 'rtl' },
+    ];
+    const items = d.defaultItems(o).map((it, i) => ({
+      n: String(i + 1), name: it.name, qty: String(it.qty), unit: it.unit,
+      price: d.fmtUSD(it.price), total: d.fmtUSD(it.qty * it.price),
+    }));
+    const grand = d.defaultItems(o).reduce((a, it) => a + it.qty * it.price, 0);
+
+    // المرفقات — وثائق المراحل المنجزة
+    const sz = (m) => { const x = (o.value % m) / 97 + 0.4; return x.toFixed(1) + ' MB'; };
+    const filesAll = [
+      { at: 1, name: 'وثائق الطلبية الأصلية', ext: 'PDF', stage: 'البداية', size: sz(211) },
+      { at: 2, name: 'الكلفة التخمينية المعتمدة', ext: 'XLSX', stage: 'المصادقة على الكلفة', size: sz(83) },
+      { at: 5, name: 'نص الإعلان وقصاصات الصحف', ext: 'PDF', stage: 'الإعلان', size: sz(157) },
+      { at: 6, name: 'محضر الفتح الفني', ext: 'PDF', stage: 'الفتح الفني', size: sz(119) },
+      { at: 8, name: 'محضر الفتح التجاري', ext: 'PDF', stage: 'الفتح التجاري', size: sz(139) },
+      { at: 10, name: 'توصية الإحالة الموقعة', ext: 'PDF', stage: 'المصادقة على الإحالة', size: sz(191) },
+      { at: 11, name: 'نسخة العقد الموقّعة', ext: 'PDF', stage: 'توقيع العقد', size: sz(173) },
+    ].filter(f => delivered || f.at <= o.cur);
+    let fc = o.submitted;
+    const files = filesAll.map(f => {
+      fc = d.addDays(o.submitted, f.at * 3);
+      const isX = f.ext === 'XLSX';
+      return {
+        ...f, date: fc,
+        iconBg: isX ? 'var(--st-approved-bg)' : 'var(--st-cancelled-bg)',
+        iconFg: isX ? 'var(--st-approved-fg)' : 'var(--st-cancelled-fg)',
+        iconBd: isX ? 'var(--st-approved-bd)' : 'var(--st-cancelled-bd)',
+        dl: () => this.toast('نسخة تجريبية — ربط الملفات ضمن مرحلة التطوير.'),
+      };
+    });
+
+    // السجل
+    const init = (w) => w.trim().slice(0, 2);
+    const logAll = [...d.defaultLog(o), ...s.localLog];
+    const logRows = logAll.slice().reverse().map((l, i) => ({
+      who: l.who, role: l.role, action: l.action, date: l.date,
+      note: l.note || '', hasNote: !!l.note, init: init(l.who),
+      avBg: i === 0 ? 'var(--grad-brand)' : 'var(--bg-inset)', avFg: i === 0 ? '#fff' : 'var(--text-3)',
+    }));
+
+    // التبويبات
+    const tabDefs = [
+      { k: 'info', label: 'البيانات الأساسية' },
+      { k: 'timeline', label: 'المسار الزمني', n: '12' },
+      { k: 'files', label: 'المرفقات', n: String(files.length) },
+      { k: 'log', label: 'السجل', n: String(logRows.length) },
+    ];
+    const tabs = tabDefs.map(t => ({
+      label: t.label, n: t.n || '', hasN: !!t.n,
+      fw: s.tab === t.k ? 700 : 500,
+      fg: s.tab === t.k ? 'var(--text-1)' : 'var(--text-3)',
+      line: s.tab === t.k ? 'var(--primary-600)' : 'transparent',
+      go: () => this.setState({ tab: t.k }),
+    }));
+
+    const kpis = [
+      { label: 'القيمة التخمينية', v: d.fmtUSD(o.value), sub: 'USD', fg: 'var(--text-1)' },
+      { label: 'المرحلة الحالية', v: o.cur + ' / 12', sub: d.STAGES[o.cur - 1].name, fg: 'var(--text-1)' },
+      { label: 'الحيود الزمني', v: devTot > 0 ? '+' + devTot : '0', sub: devTot > 0 ? 'يوم تأخير' : 'مطابق للخطة', fg: devTot > 0 ? 'var(--st-late-fg)' : 'var(--st-approved-fg)' },
+      { label: 'تاريخ التقديم', v: o.submitted, sub: '', fg: 'var(--text-1)' },
+    ];
+
+    const counts = [
+      { k: 'التي تمت دعوتها', v: o.inv }, { k: 'المتقدمة للشراء', v: o.bought }, { k: 'المشاركة بالعطاءات', v: o.bid },
+    ].map(c => {
+      const mx = Math.max(o.inv, o.bought, o.bid, 1);
+      return { k: c.k, v: String(c.v), w: Math.round((c.v / mx) * 100) + '%' };
+    });
+
+    const log0 = d.defaultLog(o)[0];
+    const stOptions = d.STATUSES.map(x => ({
+      k: x.k, label: x.label, isCur: x.k === st, picked: s.newSt === x.k,
+      bd: s.newSt === x.k ? 'var(--primary-600)' : 'var(--border-1)',
+      bg: s.newSt === x.k ? 'var(--primary-50)' : 'var(--bg-card)',
+      pick: () => this.setState({ newSt: x.k }),
+    }));
+    const canConfirm = !!s.newSt && s.newSt !== st;
+
+    return {
+      ...chrome, ready: true, loading: false,
+      code: o.code, title: o.title, op: o.op, field: o.field, path: o.path,
+      st, stLabel: d.stLabel(st), isLate, devTxt: '+' + o.dev,
+      tierN: tm.n, tierLabel: tm.label, tierBg: tc.bg, tierFg: tc.fg, tierBd: tc.bd,
+      copyCode: () => { try { navigator.clipboard.writeText(o.code); } catch (e) {} this.toast('تم نسخ رقم الطلبية.'); },
+      openDrawer: () => this.setState({ drawerOpen: true, newSt: '', comment: '' }),
+      closeDrawer: () => this.setState({ drawerOpen: false }),
+      drawerOpen: s.drawerOpen,
+      kpis, tabs,
+      tabInfo: s.tab === 'info', tabTimeline: s.tab === 'timeline', tabFiles: s.tab === 'files', tabLog: s.tab === 'log',
+      kv, items, itemsN: String(items.length), grandTotal: d.fmtUSD(grand),
+      notes: o.notes || '', hasNotes: !!o.notes,
+      stages, plannedTotal: String(plannedTotal), projTotal: String(projTotal),
+      devTotTxt: devTotChip.txt, devTotBg: devTotChip.bg, devTotFg: devTotChip.fg, devTotBd: devTotChip.bd,
+      files, noFiles: files.length === 0,
+      logRows,
+      opInit: init(o.op), contact: log0.who, contactRole: log0.role,
+      counts,
+      stOptions, comment: s.comment, onComment: (e) => this.setState({ comment: e.target.value }),
+      confirmDis: !canConfirm, confirmOp: canConfirm ? 1 : 0.45,
+      confirmStatus: () => {
+        if (!canConfirm) return;
+        const today = new Date().toISOString().slice(0, 10);
+        const entry = {
+          who: 'م. مصطفى الكرخي', role: 'نفط الوسط — MDOC',
+          action: 'تغيير الحالة من «' + d.stLabel(st) + '» إلى «' + d.stLabel(s.newSt) + '»',
+          date: today, note: s.comment.trim(),
+        };
+        this.setState(x => ({ stOverride: x.newSt, localLog: [...x.localLog, entry], drawerOpen: false, tab: 'log' }));
+        this.toast('تم تحديث الحالة.');
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

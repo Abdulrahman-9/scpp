@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/styles.css">
+  <script src="_ds/masaar-design-system-019e24f9-7b6b-72c0-a77f-4ecc10469e45/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="tokens-v2.css">
+</helmet>
+
+<div dir="rtl" style="display:grid;grid-template-columns:1.15fr 1fr;min-height:100vh;background:var(--bg-page);color:var(--text-1);font-family:var(--font-sans)">
+
+  <!-- اللوحة التعريفية -->
+  <section style="background:radial-gradient(ellipse at 10% 0%, rgba(14,165,233,.18), transparent 52%),radial-gradient(ellipse at 90% 100%, rgba(96,165,250,.16), transparent 58%),var(--side-bg);color:#fff;display:flex;flex-direction:column;padding:36px 44px;position:relative;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--grad-brand);color:#fff;font-weight:700;font-size:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 1px rgba(255,255,255,.18)">م</span>
+      <span style="font-size:14px;font-weight:700">مسار</span>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.05em;background:rgba(255,255,255,.16);border-radius:4px;padding:2px 6px">v2</span>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;max-width:520px">
+      <div>
+        <h1 style="margin:0;font-size:30px;font-weight:700;letter-spacing:-0.01em;line-height:1.25">شركة نفط الوسط</h1>
+        <div style="font-size:14px;color:rgba(224,231,255,.78);margin-top:6px">قسم شؤون التراخيص البترولية</div>
+        <div style="font-size:16.5px;font-weight:600;margin-top:14px">نظام متابعة الطلبيات والمناقصات</div>
+        <p style="font-size:13px;color:rgba(224,231,255,.72);line-height:1.9;margin:8px 0 0">متابعة الطلبيات والمناقصات ومسارات الموافقة وفق إجراءات التعاقد والمشتريات الموحدة — من التقديم حتى توقيع العقد.</p>
+      </div>
+
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)">
+        <div style="font-size:10.5px;font-weight:700;color:rgba(224,231,255,.66);letter-spacing:.04em;margin-bottom:10px">مسار الطلبية — المرحلة الحالية مؤشَّرة بالأحمر</div>
+        <div style="display:flex;align-items:center;gap:5px">
+          <sc-for list="{{ railBoxes }}" as="b" hint-placeholder-count="7">
+            <span style="position:relative;width:{{ b.w }};height:22px;border-radius:5px;background-color:{{ b.bg }};background-image:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.04) 55%,rgba(2,6,23,.1));box-shadow:inset 0 1px 0 rgba(255,255,255,.28);flex:none;display:inline-flex;align-items:center;justify-content:center">
+              <sc-if value="{{ b.cur }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;inset-inline-start:4px;background:#fff;color:var(--st-cancelled-base);font-size:8px;font-weight:700;padding:0.5px 6px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 3px rgba(2,6,23,.3)">الحالية</span></sc-if>
+              <span style="font-family:var(--font-mono);font-size:9px;font-weight:700;color:#fff">{{ b.n }}</span>
+            </span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ feats }}" as="f" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 13px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.14);flex:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ f.icon }}"></path></svg></span>
+            <span style="font-size:12.5px;font-weight:600">{{ f.label }}</span>
+            <span style="margin-inline-start:auto;font-size:11px;color:rgba(224,231,255,.6)">{{ f.sub }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="font-size:10px;color:rgba(224,231,255,.55);font-family:var(--font-mono);direction:ltr;text-align:right">SCPP Rev 1.0 · Jan 2026</div>
+  </section>
+
+  <!-- نموذج الدخول -->
+  <main style="display:flex;flex-direction:column;padding:24px 28px;position:relative">
+    <div style="display:flex;justify-content:flex-end">
+      <button onClick="{{ toggleTheme }}" title="تبديل الوضع" aria-label="تبديل الوضع" style="width:34px;height:34px;border-radius:6px;border:1px solid var(--border-1);background:var(--bg-card);color:var(--text-3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></sc-if>
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg></sc-if>
+      </button>
+    </div>
+
+    <div style="flex:1;display:flex;align-items:center;justify-content:center">
+      <form onSubmit="{{ submit }}" style="width:380px;max-width:100%;background:var(--bg-card);border:1px solid var(--border-1);border-radius:12px;box-shadow:var(--shadow-2);padding:28px 26px;display:flex;flex-direction:column;gap:14px;animation:pop-in var(--dur-slow) var(--ease-out)">
+        <div>
+          <h2 style="margin:0;font-size:20px;font-weight:700">تسجيل الدخول</h2>
+          <div style="font-size:12.5px;color:var(--text-3);margin-top:4px">{{ roleSub }}</div>
+        </div>
+
+        <div role="tablist" aria-label="نوع الحساب" style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--bg-muted);border:1px solid var(--border-1);border-radius:8px;padding:3px">
+          <button type="button" role="tab" aria-selected="{{ adminSel }}" onClick="{{ pickAdmin }}" style="display:inline-flex;align-items:center;justify-content:center;gap:7px;height:32px;border:none;border-radius:6px;background:{{ adminBg }};color:{{ adminFg }};box-shadow:{{ adminSh }};font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            الإدارة العليا
+          </button>
+          <button type="button" role="tab" aria-selected="{{ opSel }}" onClick="{{ pickOp }}" style="display:inline-flex;align-items:center;justify-content:center;gap:7px;height:32px;border:none;border-radius:6px;background:{{ opBg }};color:{{ opFg }};box-shadow:{{ opSh }};font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 21V12h6v9"></path></svg>
+            مشغّل
+          </button>
+          <button type="button" role="tab" aria-selected="{{ jmcSel }}" onClick="{{ pickJmc }}" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;border:none;border-radius:6px;background:{{ jmcBg }};color:{{ jmcFg }};box-shadow:{{ jmcSh }};font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg>
+            اللجنة
+          </button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label for="lg-user" style="font-size:12px;font-weight:600;color:var(--text-2)">اسم المستخدم أو البريد</label>
+          <div style="position:relative">
+            <span style="position:absolute;inset-inline-start:11px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+            <input id="lg-user" value="{{ user }}" onChange="{{ onUser }}" placeholder="مثال: m.alkarkhi" style="width:100%;height:42px;padding:0 38px 0 12px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13.5px;outline:none;transition:border-color var(--dur-fast) var(--ease-out)" />
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <label for="lg-pass" style="font-size:12px;font-weight:600;color:var(--text-2)">كلمة المرور</label>
+            <a href="#" onClick="{{ forgot }}" style="font-size:11px;font-weight:600">نسيت كلمة المرور؟</a>
+          </div>
+          <div style="position:relative">
+            <span style="position:absolute;inset-inline-start:11px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:flex"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+            <input id="lg-pass" type="{{ passType }}" value="{{ pass }}" onChange="{{ onPass }}" placeholder="••••••••" style="width:100%;height:42px;padding:0 38px;border-radius:6px;border:1px solid var(--border-control);background:var(--bg-card);color:var(--text-1);font:inherit;font-size:13.5px;outline:none;transition:border-color var(--dur-fast) var(--ease-out)" />
+            <button type="button" onClick="{{ toggleShow }}" aria-label="إظهار كلمة المرور" style="position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-muted)">
+              <sc-if value="{{ showPass }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><path d="M1 1l22 22"></path></svg></sc-if>
+              <sc-if value="{{ hidePass }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+            </button>
+          </div>
+        </div>
+
+        <sc-if value="{{ forgotOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--btn-secondary-fg);background:var(--btn-secondary-bg);border:1px solid var(--btn-secondary-bd);border-radius:6px;padding:8px 11px;line-height:1.7;animation:pop-in var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            <span>لاستعادة كلمة المرور راسل إدارة النظام — قسم شؤون التراخيص البترولية، الرقم الداخلي <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate">4410</span>.</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ wrong }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);border-radius:6px;padding:8px 11px;animation:pop-in var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+            بيانات الدخول غير صحيحة. حاول مجدداً.
+          </div>
+        </sc-if>
+        <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--st-cancelled-fg);background:var(--st-cancelled-bg);border:1px solid var(--st-cancelled-bd);border-radius:6px;padding:8px 11px;animation:pop-in var(--dur-fast) var(--ease-out)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+            أدخل اسم المستخدم وكلمة المرور.
+          </div>
+        </sc-if>
+
+        <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);cursor:pointer;user-select:none">
+          <input type="checkbox" checked="{{ remember }}" onChange="{{ onRemember }}" style="width:15px;height:15px;accent-color:var(--primary-600);cursor:pointer" />
+          تذكّرني لمدة 30 يوماً
+        </label>
+
+        <button type="submit" style="height:42px;border-radius:6px;border:none;background-color:var(--btn-primary-bg);background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%);color:var(--btn-primary-fg);font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(15,23,42,.15);display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:background-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)" style-hover="background-color:var(--btn-primary-hover);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 8px 18px rgba(30,58,138,.3);transform:translateY(-1px)" style-active="background-color:var(--btn-primary-active);box-shadow:inset 0 2px 4px rgba(2,6,23,.25);transform:none">
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;flex:none"></span>جارٍ الدخول…</sc-if>
+          <sc-if value="{{ idle }}" hint-placeholder-val="{{ true }}">دخول إلى النظام</sc-if>
+        </button>
+
+        <button type="button" onClick="{{ prefill }}" style="border:1px dashed var(--border-2);background:var(--bg-muted);border-radius:6px;padding:8px 11px;font:inherit;font-size:11.5px;color:var(--text-3);cursor:pointer;text-align:start;transition:background var(--dur-fast) var(--ease-out)" style-hover="background:var(--bg-inset)">
+          حساب تجريبي: <span style="font-weight:600;color:var(--text-2)">سيف</span> / <span style="font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;font-size:11px;color:var(--text-2)">123456</span> — انقر للملء
+        </button>
+
+        <div style="text-align:center;font-size:11.5px;color:var(--text-muted)">تحتاج مساعدة بالدخول؟ <a href="#" onClick="{{ forgot }}" style="font-weight:600">تواصل مع إدارة النظام</a></div>
+      </form>
+    </div>
+
+    <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">مسار v2 · نظام إدارة الطلبيات والمناقصات وفق SCPP Rev 1.0 · تطوير وتصميم م.م عبدالرحمن أحمد عبيد</div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;light&quot;, &quot;tsType&quot;: &quot;'light' | 'dark'&quot;, &quot;section&quot;: &quot;العرض&quot;}}">
+class Component extends DCLogic {
+  state = { theme: 'light', user: '', pass: '', show: false, remember: true, loading: false, err: false, wrong: false, role: 'admin', forgotOpen: false };
+
+  componentDidMount() {
+    let t = 'light';
+    try { t = localStorage.getItem('masaar2-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    if (this.props.theme && !localStorage.getItem('masaar2-theme')) t = this.props.theme;
+    this.setTheme(t, false);
+  }
+  setTheme(t, persist) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (persist !== false) { try { localStorage.setItem('masaar2-theme', t); } catch (e) {} }
+    this.setState({ theme: t });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const railBoxes = [1, 2, 3, 4, 5, 6, 7].map(n => ({
+      n: String(n), w: n === 4 ? '40px' : '30px', cur: n === 4,
+      bg: n < 4 ? 'var(--st-approved-base)' : n === 4 ? 'var(--st-cancelled-base)' : 'rgba(255,255,255,.16)',
+    }));
+    const seg = (on) => ({
+      bg: on ? 'var(--bg-card)' : 'transparent',
+      fg: on ? 'var(--text-1)' : 'var(--text-3)',
+      sh: on ? 'var(--shadow-1)' : 'none',
+    });
+    const A = seg(s.role === 'admin'), O = seg(s.role === 'operator'), J = seg(s.role === 'jmc');
+    const subs = { admin: 'أدخل بيانات حسابك للمتابعة إلى لوحة التحكم', operator: 'بوابة المشغّل — إدخال الطلبيات ومتابعة مراحلها', jmc: 'بوابة اللجنة المشتركة — مراجعة الطلبيات وإصدار القرار' };
+    return {
+      railBoxes,
+      roleSub: subs[s.role],
+      adminSel: s.role === 'admin', opSel: s.role === 'operator', jmcSel: s.role === 'jmc',
+      pickAdmin: () => this.setState({ role: 'admin' }),
+      pickOp: () => this.setState({ role: 'operator' }),
+      pickJmc: () => this.setState({ role: 'jmc' }),
+      adminBg: A.bg, adminFg: A.fg, adminSh: A.sh, opBg: O.bg, opFg: O.fg, opSh: O.sh, jmcBg: J.bg, jmcFg: J.fg, jmcSh: J.sh,
+      forgot: (e) => { e.preventDefault(); this.setState(st => ({ forgotOpen: !st.forgotOpen })); },
+      forgotOpen: s.forgotOpen,
+      feats: [
+        { label: 'مسارات موافقة مرنة', sub: 'الطرق الثماني وفق §11', icon: 'M12 3l9 6-9 6-9-6 9-6z M3 14l9 6 9-6' },
+        { label: 'إشعارات لحظية', sub: 'حيود ومواعيد نظامية', icon: 'M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0' },
+        { label: 'صلاحيات حسب الدور', sub: 'مشغّل · لجنة · إدارة', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+      ],
+      isLight: s.theme === 'light', isDark: s.theme === 'dark',
+      toggleTheme: () => this.setTheme(s.theme === 'dark' ? 'light' : 'dark'),
+      user: s.user, pass: s.pass,
+      onUser: (e) => this.setState({ user: e.target.value, err: false, wrong: false }),
+      onPass: (e) => this.setState({ pass: e.target.value, err: false, wrong: false }),
+      passType: s.show ? 'text' : 'password',
+      showPass: s.show, hidePass: !s.show,
+      toggleShow: () => this.setState(st => ({ show: !st.show })),
+      remember: s.remember, onRemember: (e) => this.setState({ remember: e.target.checked }),
+      err: s.err, loading: s.loading, idle: !s.loading,
+      prefill: () => this.setState({ user: 'سيف', pass: '123456', err: false }),
+      submit: (e) => {
+        e.preventDefault();
+        if (!s.user.trim() || !s.pass) { this.setState({ err: true, wrong: false }); return; }
+        if (s.user.trim() !== 'سيف' || s.pass !== '123456') { this.setState({ wrong: true, err: false }); return; }
+        this.setState({ loading: true, err: false, wrong: false });
+        const dest = { admin: 'لوحة التحكم.dc.html', operator: 'بوابة المشغل.dc.html', jmc: 'بوابة اللجنة.dc.html' }[s.role];
+        setTimeout(() => { window.location.href = dest; }, 700);
+      },
+      wrong: s.wrong,
+    };
+  }
+}
+</script>
+</body>
+</html>

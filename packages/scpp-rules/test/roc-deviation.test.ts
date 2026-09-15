@@ -4,6 +4,7 @@ import {
   scheduleCompliancePct,
   stageCanClose,
   stageDeviationDays,
+  stageDeviationWorkingDays,
 } from '@masaar/scpp-rules';
 
 describe('rocParticipation — tiers (6.5 / 12.2)', () => {
@@ -56,6 +57,16 @@ describe('deviation engine', () => {
 
   it('no closed stages → 100%', () => {
     expect(scheduleCompliancePct([{ plannedEnd: '2026-07-01' }])).toBe(100);
+  });
+
+  it('working-day deviation excludes the Fri/Sat weekend, signed', () => {
+    // Thu 2026-06-04 → Mon 2026-06-08 crosses the Fri+Sat weekend → Sun+Mon = +2 WD late
+    expect(stageDeviationWorkingDays('2026-06-04', '2026-06-08')).toBe(2);
+    // early by the same span is negative
+    expect(stageDeviationWorkingDays('2026-06-08', '2026-06-04')).toBe(-2);
+    expect(stageDeviationWorkingDays('2026-06-08', '2026-06-08')).toBe(0);
+    // Mon 2026-06-01 → Thu 2026-06-04, no weekend crossed → 3 WD
+    expect(stageDeviationWorkingDays('2026-06-01', '2026-06-04')).toBe(3);
   });
 
   it('stages cannot close without required documents', () => {

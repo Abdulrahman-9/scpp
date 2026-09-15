@@ -5,14 +5,18 @@ import type {
   AnnouncementState,
   AuditEntry,
   BidderState,
+  ContractStageKey,
   ContractState,
   GuaranteeState,
   MctState,
   RatificationState,
   StageState,
   Tender,
+  TenderLifecycle,
+  UserAccount,
   VendorState,
 } from '../store';
+import type { ApiRole } from '../session';
 import type {
   ApiAnnouncement,
   ApiAudit,
@@ -21,6 +25,7 @@ import type {
   ApiMct,
   ApiMethod,
   ApiStage,
+  ApiUser,
   ApiTender,
   ApiVendor,
   Num,
@@ -45,8 +50,11 @@ function mapStage(s: ApiStage): StageState {
     key: s.key,
     plannedFrom: date(s.plannedFrom),
     plannedTo: date(s.plannedTo),
+    actualFrom: date(s.actualFrom ?? null),
     actualTo: date(s.actualTo),
     uploadedDocs: s.documents.map((d) => d.kind),
+    // D1 — both halves or nothing, the same pairing the server enforces on write
+    ...(s.devReasonCat && s.devReasonNote ? { devReason: { cat: s.devReasonCat, note: s.devReasonNote } } : {}),
   };
 }
 
@@ -73,6 +81,10 @@ function mapBidder(b: ApiBidder): BidderState {
     bondOk: b.bondOk,
     technicalResult: b.technicalResult ? (b.technicalResult.toLowerCase() as 'pass' | 'fail') : undefined,
     priceUSD: b.priceUSD == null ? undefined : num(b.priceUSD),
+    ...(b.submittedAt ? { submittedAt: b.submittedAt.slice(0, 10) } : {}),
+    ...(b.materials && b.materials.length
+      ? { materials: b.materials.map((m) => ({ materialId: m.materialId, imported: m.imported, origin: m.origin ?? undefined, oemAuthorizedFrom: m.oemAuthorizedFrom ?? undefined, onMooList: m.onMooList ?? false })) }
+      : {}),
   };
 }
 
@@ -93,6 +105,10 @@ export function mapTender(t: ApiTender): Tender {
   const ratification: RatificationState | undefined = t.ratification
     ? { status: t.ratification.status.toLowerCase() as 'ratified' | 'returned', by: t.ratification.by, on: date(t.ratification.on)!, notes: t.ratification.notes ?? undefined }
     : undefined;
+  const lifecycle: TenderLifecycle | undefined =
+    t.status && t.status !== 'ACTIVE'
+      ? { status: t.status.toLowerCase() as 'cancelled' | 'suspended', reason: t.statusReason ?? '', on: date(t.statusChangedOn) ?? '', by: t.statusChangedBy ?? '' }
+      : undefined;
   return {
     id: t.id,
     code: t.code,
@@ -108,6 +124,12 @@ export function mapTender(t: ApiTender): Tender {
     bidders: t.bidders.map(mapBidder),
     mct: mapMct(t.mct),
     ratification,
+    lifecycle,
+    ...(t.scope && t.scope !== 'OTHER' ? { scope: t.scope } : { scope: 'OTHER' }),
+    ...(t.localContentClauseAffixed ? { localContentClauseAffixed: true } : {}),
+    ...(t.stateResponses && t.stateResponses.length
+      ? { stateResponses: t.stateResponses.map((r) => ({ company: r.company, status: r.status.toLowerCase() as 'accepted' | 'pending' | 'declined', ...(r.evidence ? { evidence: r.evidence } : {}) })) }
+      : {}),
   };
 }
 
@@ -121,12 +143,23 @@ export function mapContract(c: ApiContract): ContractState {
     id: c.id,
     code: c.code,
     title: { ar: c.tender?.titleAr ?? c.code, en: c.tender?.titleEn ?? c.code },
+    contractorName: c.contractorName ?? c.vendor?.name ?? '—',
+    // cross-record link keys — undefined when the server relation is unset (honestly unlinked)
+    tenderId: c.tenderId ?? undefined,
+    vendorId: c.vendorId ?? c.vendor?.id ?? undefined,
+    signedOn: date(c.signedOn) ?? '',
     valueUSD: num(c.valueUSD),
     termDays: c.termDays,
     voTotalUSD: c.vos.reduce((s, v) => s + num(v.valueUSD), 0),
     extensionDays: c.extensions.reduce((s, e) => s + e.days, 0),
     ldTotalUSD: c.lds.reduce((s, l) => s + num(l.valueUSD), 0),
+    suspensionDays: 0, // not modelled server-side yet
     guarantees,
+    stages: (c.stages ?? []).map((s) => ({
+      key: s.key as ContractStageKey,
+      plannedTo: date(s.plannedTo) ?? undefined,
+      actualTo: date(s.actualTo) ?? undefined,
+    })),
   };
 }
 
@@ -148,4 +181,18 @@ export function mapVendor(v: ApiVendor): VendorState {
 
 export function mapAudit(a: ApiAudit): AuditEntry {
   return { ts: a.ts, action: a.action, target: a.target };
+}
+
+/** The server is the authority on roles; an unknown value would be a schema drift, so it is kept as-is. */
+export function mapUser(u: ApiUser): UserAccount {
+  return {
+    id: u.id,
+    azureOid: u.azureOid,
+    name: u.name,
+    email: u.email,
+    role: u.role as ApiRole,
+    operatorId: u.operatorId ?? undefined,
+    twoFa: u.twoFa,
+    disabled: u.disabled,
+  };
 }
